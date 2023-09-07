@@ -1,0 +1,11 @@
+@mixin headline-text {
+  font-family: museo-slab-rounded, sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+@mixin body-text {
+  font-family: forma-djr-display, sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}

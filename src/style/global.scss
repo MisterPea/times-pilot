@@ -1,0 +1,36 @@
+@import "./mixins.scss";
+
+:root {
+  --green-text: #388634;
+  --background-green: #40993b;
+  --accent-blue: #59789f;
+  --accent-yellow: #ccff00;
+  --warning: #f58f00;
+  --error: #dc0105;
+  --main-dark: #3d3d3d;
+  --white: #ffffff;
+  --white-two: #f3f2ef;
+  --white-three: #e6e6e6;
+  --white-disabled: #ceccc8;
+  --dark-disabled: #a3a19e;
+  --next-main-dark: #4f4f4f;
+  --darkest: #262626;
+  --darkest-match: #e6e6e6;
+  --lightest-text: #767676;
+  --background: #f3f2ef;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: var(--main-dark);
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {}
+} */
