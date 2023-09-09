@@ -1,0 +1,83 @@
+@import "../../style/mixins.scss";
+
+.main_button {
+  // body
+  &_base {
+    display: flex;
+    max-width: 15rem;
+    background-color: var(--main-dark);
+    border-bottom: 1px solid var(--darkest);
+    border-radius: 0.5rem;
+    transition: all 150ms ease-in-out;
+
+    &.full_width {
+      max-width: 100%;
+    }
+
+    &.destructive {
+      background-color: var(--error);
+      border: 1px solid var(--darkest-20pct);
+      &.disabled {
+        background-color: var(--error-disabled-base);
+        border: 1px solid var(--error-disabled-base);
+        > span {
+          color: var(--error-disabled-content);
+        }
+      }
+    }
+
+    &.danger {
+      background-color: var(--white);
+      border: 1px solid var(--error);
+      > span {
+        color: var(--error);
+      }
+    }
+
+    &.disabled {
+      background-color: var(--disabled);
+      border-bottom: 1px solid var(--disabled);
+      cursor: default;
+      > span {
+        color: var(--disabled-match);
+      }
+    }
+  }
+
+  // label
+  &_content {
+    line-height: normal;
+    letter-spacing: var(--body-letter-spacing);
+    font-size: 1.25rem;
+    color: var(--white);
+    @include body-text;
+    margin: 0.35rem 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  // hovers - excludes touch
+  @media (hover: hover) {
+    // base
+    &_base:not(.destructive):not(.disabled):not(.danger):hover {
+      background-color: var(--darkest);
+      > span {
+        color: var(--darkest-match);
+      }
+    }
+
+    // destructive
+    &_base:is(.destructive):not(.disabled):hover {
+      background-color: var(--error-hover);
+      border: 1px solid var(--error-hover);
+    }
+
+    // danger
+    &_base:is(.danger):hover {
+      border: 1px solid var(--error-hover);
+      > span {
+        color: var(--error-hover);
+      }
+    }
+  }
+}

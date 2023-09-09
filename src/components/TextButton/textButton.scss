@@ -1,0 +1,45 @@
+@import "../../style/mixins.scss";
+
+.text_button {
+  // body
+  &_base {
+    display: flex;
+    width: 10rem;
+    border-radius: 0.5rem;
+    transition: all 150ms ease-in-out;
+  }
+
+  // label
+  &_content {
+    line-height: normal;
+    letter-spacing: 0.0925rem;
+    font-size: 1.125rem;
+    text-decoration: underline;
+    text-underline-offset: 0;
+    text-decoration-color: rgba(150, 150, 150, 0);
+    color: var(--next-main-dark);
+    @include body-text;
+    margin: 1.125rem 0;
+    width: 100%;
+    text-align: center;
+    transition: all 150ms ease-in-out;
+  }
+
+  // hovers - excludes touch
+  @media (hover: hover) {
+    // base
+    &_base:hover > span {
+      color: var(--lightest-text);
+      text-underline-offset: 0.2rem;
+      text-decoration-color:var(--darkest-20pct);
+    }
+  }
+
+  // touch - show underline
+  @media (hover: none) {
+    &_base > span {
+      text-underline-offset: 0.2rem;
+      text-decoration-color: var(--darkest-20pct);
+    }
+  }
+}
