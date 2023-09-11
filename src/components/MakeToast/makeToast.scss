@@ -1,0 +1,36 @@
+@import "../../style/mixins.scss";
+
+.toaster {
+  &_base {
+    height: fit-content;
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    transform: translateY(-5px);
+    animation: 300ms ease-in-out slideIn;
+
+    &.close {
+      transform: translateY(100px);
+      animation: 300ms ease-in-out slideOut;
+    }
+  }
+}
+
+
+@keyframes slideIn {
+  from {
+    transform: translateY(100px);
+  }
+  to {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateY(-5px);
+  }
+  to {
+    transform: translateY(100px);
+  }
+}

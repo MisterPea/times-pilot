@@ -1,0 +1,47 @@
+@import "../../style/mixins.scss";
+
+.toast {
+  &_base {
+    display: flex;
+    background-color: var(--background-green);
+    width: fit-content;
+    max-width: 300px;
+    align-items: center;
+    border-radius: 8px;
+    padding: 0.4rem;
+    padding-left: 0.7rem;
+    letter-spacing: 0.07rem;
+    font-size: 0.9rem;
+    position: relative;
+    margin: 0 auto;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.75);
+
+    &.error {
+      background-color: var(--error);
+    }
+    p {
+      @include body-text;
+      color: var(--white);
+      margin-right: 10px;
+      display: inline;
+      max-width: 270px;
+    }
+
+    button {
+      background: none;
+      padding: 0;
+      margin: 0;
+      g {
+        opacity: 0.5;
+        transition: opacity 250ms ease-in-out;
+      }
+    }
+    @media (hover: hover) {
+      button:hover {
+        g {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
