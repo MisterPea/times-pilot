@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface AutoSaveProps {
   saving: boolean;
@@ -28,14 +28,14 @@ export default function AutoSave({ saving, error }: AutoSaveProps) {
   function updateMessage(messageTop: number, reference: HTMLLIElement | null) {
     innerWrapRef.current?.querySelectorAll('.condition').forEach((e) => {
       if (e.classList !== reference?.classList) {
-        if(e instanceof HTMLElement) { // cast e as HTMLElement
-          e.style.opacity = "0"
-          e.setAttribute("aria-hidden","true")
+        if (e instanceof HTMLElement) { // cast e as HTMLElement
+          e.style.opacity = "0";
+          e.setAttribute("aria-hidden", "true");
         }
       } else {
-        if(e instanceof HTMLElement) {
-          e.style.opacity = "1"
-          e.setAttribute("aria-hidden","false")
+        if (e instanceof HTMLElement) {
+          e.style.opacity = "1";
+          e.setAttribute("aria-hidden", "false");
         }
       }
     });

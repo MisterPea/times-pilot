@@ -1,23 +1,40 @@
+@import "../components/MainButton/mainButton.scss";
+@import "../components/TextButton/textButton.scss";
+@import "../components/AutoSave/autoSave.scss";
+@import "../components/MakeToast/makeToast.scss";
+@import "../components/MakeToast/toast.scss";
+@import "../components/TextInput/textInput.scss";
+@import "../components/ToggleSelector/toggleSelector.scss";
 @import "./mixins.scss";
 
 :root {
   --green-text: #388634;
+  --green-text-dark: #31762d;
   --background-green: #40993b;
+  --background-green-tsp: #40993b85;
   --accent-blue: #59789f;
   --accent-yellow: #ccff00;
   --warning: #f58f00;
   --error: #dc0105;
+  --error-hover: #cd0306;
+  --error-disabled-base: #ffd9d9;
+  --error-disabled-content: #ecacad;
   --main-dark: #3d3d3d;
   --white: #ffffff;
   --white-two: #f3f2ef;
   --white-three: #e6e6e6;
-  --white-disabled: #ceccc8;
-  --dark-disabled: #a3a19e;
+  --disabled-match: #ceccc8;
+  --disabled: #a3a19e;
+  --active-underline: #a3a19e;
   --next-main-dark: #4f4f4f;
   --darkest: #262626;
+  --darkest-20pct: #26262650;
   --darkest-match: #e6e6e6;
   --lightest-text: #767676;
   --background: #f3f2ef;
+  --body-letter-spacing: 0.0725em;
+  --valid-input: #dcf9e2;
+  --error-input: hsl(0, 80%, 94%);
 }
 
 * {
@@ -29,6 +46,11 @@
 a {
   text-decoration: none;
   color: var(--main-dark);
+}
+
+button {
+  border: none;
+  cursor: pointer;
 }
 
 /* @media (prefers-color-scheme: dark) {
