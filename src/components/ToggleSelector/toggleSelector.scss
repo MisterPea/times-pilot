@@ -1,0 +1,36 @@
+@import "../../style/mixins.scss";
+
+.toggle_base {
+  border: 1px solid var(--main-dark);
+  width: fit-content;
+  display: flex;
+  border-radius: 0.6rem;
+  background-color: var(--white);
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+  p {
+    // background-color: bisque;
+    height: fit-content;
+    align-items: stretch;
+    font-size: 1.05rem;
+    padding: 0.3rem 0.6rem;
+    @include body-text;
+    letter-spacing: var(--body-letter-spacing);
+    transition: all 200ms ease-in-out;
+  }
+  &.selected {
+    background-color: var(--main-dark);
+    p {
+      color: var(--white);
+    }
+  }
+  @media (hover: hover) {
+    &:not(.selected):hover {
+      background-color: var(--background);
+      border-color: var(--next-main-dark);
+      p {
+        color: var(--next-main-dark);
+      }
+    }
+  }
+}
