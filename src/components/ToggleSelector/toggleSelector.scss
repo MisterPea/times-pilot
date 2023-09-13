@@ -7,16 +7,15 @@
   border-radius: 0.6rem;
   background-color: var(--white);
   cursor: pointer;
-  transition: all 200ms ease-in-out;
+  transition: all 150ms ease-in;
   p {
-    // background-color: bisque;
     height: fit-content;
     align-items: stretch;
     font-size: 1.05rem;
     padding: 0.3rem 0.6rem;
     @include body-text;
     letter-spacing: var(--body-letter-spacing);
-    transition: all 200ms ease-in-out;
+    transition: all 200ms ease-in;
   }
   &.selected {
     background-color: var(--main-dark);
@@ -31,6 +30,9 @@
       p {
         color: var(--next-main-dark);
       }
+    }
+    &:is(.selected):hover {
+      background-color: var(--next-main-dark);
     }
   }
 }

@@ -1,4 +1,3 @@
-
 interface ToggleSelectorProps {
   label: string;
   selected: boolean;
@@ -6,11 +5,12 @@ interface ToggleSelectorProps {
 }
 
 export default function ToggleSelector({ label, selected, toggleCallback }: ToggleSelectorProps) {
+
   return (
     <div
       className={`toggle_base${selected ? ' selected' : ''}`}
       role="button"
-      onClick={() => toggleCallback(label)}
+      onClick={toggleCallback.bind(null,label)}
     >
       <p>{label}</p>
     </div>
