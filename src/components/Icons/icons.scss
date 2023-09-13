@@ -1,0 +1,41 @@
+@import "../../style/mixins.scss";
+
+.icon {
+  &_base {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 2rem;
+    border: 1px solid var(--icon-border);
+    background-color: var(--background);
+    transition: background-color 200ms ease-in-out;
+    &:hover {
+      background-color: var(--background-darker);
+      svg {
+        // edit hover style
+        color: var(--next-main-dark);
+      }
+    }
+    svg {
+      height: 1.1rem;
+      width: 1.1rem;
+    }
+  }
+  &_inner {
+    color: var(--lightest-text);
+
+    // Bookmark style
+    &_top {
+      color: var(--error);
+      position: absolute;
+      margin: 0 0.35rem;
+      opacity: 0;
+      transition: opacity 120ms ease-in;
+      &.selected {
+        opacity: 1;
+      }
+    }
+    &_bottom {
+      color: var(--error);
+    }
+  }
+}

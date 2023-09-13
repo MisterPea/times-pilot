@@ -1,0 +1,20 @@
+@import "../../style/mixins.scss";
+
+.section_group_base {
+  height: fit-content;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  border-bottom: 1px solid #000000;
+ 
+  &::-webkit-scrollbar {
+    height:  0;
+  }
+  ul {
+    display: flex;
+    flex-direction: row;
+    scroll-behavior: smooth;
+  }
+  li {
+    flex-shrink: 0;
+  }
+} 

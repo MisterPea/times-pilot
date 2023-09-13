@@ -1,0 +1,35 @@
+@import "../../style/mixins.scss";
+
+.section_button_base {
+  background: none;
+  background-color: #000000;
+  height: 2.375rem;
+  position: relative;
+  overflow: hidden;
+  p {
+    @include body-text;
+    letter-spacing: var(--body-letter-spacing);
+    color: var(--white);
+    font-size: 1rem;
+    padding: 0 1.25rem;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    height: 0.4rem;
+    width: 100%;
+    background-color: var(--accent-yellow);
+    left: 0;
+    bottom: 0;
+    transform: translateY(0.5rem);
+    transition: all 200ms ease-in-out;
+  }
+  &.selected::after {
+    transform: translateY(0);
+  }
+  &.selected {
+    p {
+      color: var(--accent-yellow);
+    }
+  }
+}

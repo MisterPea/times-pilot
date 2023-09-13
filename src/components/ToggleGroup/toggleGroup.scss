@@ -1,0 +1,8 @@
+@import '../../style/mixins.scss';
+
+.toggle_group_base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 0.25rem;
+}
