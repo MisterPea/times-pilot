@@ -5,6 +5,10 @@
 @import "../components/MakeToast/toast.scss";
 @import "../components/TextInput/textInput.scss";
 @import "../components/ToggleSelector/toggleSelector.scss";
+@import "../components/ToggleGroup/toggleGroup.scss";
+@import "../components/SectionButton/sectionButton.scss";
+@import "../components/SectionGroup/sectionGroup.scss";
+@import "../components/Icons/icons.scss";
 @import "./mixins.scss";
 
 :root {
@@ -21,6 +25,7 @@
   --error-disabled-content: #ecacad;
   --main-dark: #3d3d3d;
   --white: #ffffff;
+  --icon-border:#dfdfdf;
   --white-two: #f3f2ef;
   --white-three: #e6e6e6;
   --disabled-match: #ceccc8;
@@ -32,6 +37,7 @@
   --darkest-match: #e6e6e6;
   --lightest-text: #767676;
   --background: #f3f2ef;
+  --background-darker: hsl(44, 14%, 90%);
   --body-letter-spacing: 0.0725em;
   --valid-input: #dcf9e2;
   --error-input: hsl(0, 80%, 94%);
@@ -51,6 +57,10 @@ a {
 button {
   border: none;
   cursor: pointer;
+}
+
+ul,li {
+  list-style: none;
 }
 
 /* @media (prefers-color-scheme: dark) {
