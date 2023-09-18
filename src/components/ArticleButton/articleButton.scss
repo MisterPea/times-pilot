@@ -1,0 +1,105 @@
+@import "../../style/mixins.scss";
+
+/* Mobile */
+.article_mobile_base {
+  width: 100%;
+  border-radius: 0.4375rem;
+  border-right: 0.7px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 0.7px solid rgba(0, 0, 0, 0.3);
+  border-left: 0.7px solid rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  &:active {
+    cursor: grabbing;
+  }
+  .under_button {
+    position: absolute;
+    z-index: 0;
+    height: 100%;
+    background-color: var(--background-green);
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    transform-origin: 0;
+    width: 0;
+    will-change: width;
+    cursor: pointer;
+    &.bookmarked {
+      background-color: var(--warning);
+    }
+    &__svg_wrapper {
+      height: 2rem;
+      min-width: 2rem;
+      margin-left: -10px;
+    }
+    svg {
+      height: 100%;
+      width: 100%;
+      color: var(--white);
+    }
+  }
+}
+.top_level_wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0.4375rem;
+  left: 0px;
+  padding: 1rem 0 1rem 1.5rem;
+  background-color: var(--white);
+  transform: translateX(0);
+  will-change: transform;
+  z-index: 10;
+}
+.bookmark_flag_wrap {
+  position: absolute;
+  top: 0;
+  left: 0.25rem;
+  z-index: 100;
+}
+.article_mobile_content-left {
+  &--top {
+    display: flex;
+    margin-bottom: 5px;
+    align-items: center;
+    .image_wrap {
+      pointer-events: none;
+      flex-shrink: 0;
+      position: relative;
+      border-radius: 0.875rem;
+      overflow: hidden;
+      height: 4rem;
+      width: 4rem;
+      border: 0.5px solid rgba(64, 58, 49, 0.5);
+      margin-right: 0.65rem;
+    }
+    h2 {
+      @include headline-text;
+      font-size: 1.1rem;
+      color: var(--darkest);
+      line-height: normal;
+      pointer-events: none;
+    }
+  }
+  &--bottom {
+    summary {
+      @include body-text;
+      font-size: 1rem;
+      line-height: 1.3125rem; /* 131.25% */
+      letter-spacing: var(--body-letter-spacing);
+      color: var(--next-main-dark);
+    }
+  }
+}
+.article_mobile_content-right {
+  &--icon_button {
+    margin: 0 0.5rem;
+    position: relative;
+    z-index: 10;
+  }
+}
