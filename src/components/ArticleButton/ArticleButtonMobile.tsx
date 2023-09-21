@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Image from "next/image";
 import BookmarkFlag from "../Icons/BookmarkFlag";
 import { BsBookmarkPlus, BsBookmarkDash } from 'react-icons/bs';
 import EditClipboardIcon from "../Icons/EditClipboardIcon";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface ArticleButtonMobileProps {
   imageURL: string;
@@ -12,9 +13,24 @@ interface ArticleButtonMobileProps {
   bookmarked: boolean;
   addTopicsCallback: () => void;
   toggleBookmarkCallback: () => void;
+  onSwipeOpen: any;
+  currentSwipe: string | null;
+  id: string;
 }
 
-export default function ArticleButtonMobile({ imageURL, headline, summary, url, bookmarked, addTopicsCallback, toggleBookmarkCallback }: ArticleButtonMobileProps) {
+export default function ArticleButtonMobile({
+  imageURL,
+  headline,
+  summary,
+  url,
+  bookmarked,
+  addTopicsCallback,
+  toggleBookmarkCallback,
+  onSwipeOpen,
+  currentSwipe,
+  id
+}: ArticleButtonMobileProps) {
+
   const mainArticleRef = useRef<HTMLElement | null>(null);
   const topLevelRef = useRef<HTMLDivElement | null>(null);
   const underButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -24,6 +40,28 @@ export default function ArticleButtonMobile({ imageURL, headline, summary, url, 
   let isDragging = false;
   let resistanceFactor = 0.01;
 
+  // This handles the auto-close is another article is swiped
+  useEffect(() => {
+    if (topLevelRef.current && currentSwipe !== id && currentSwipe !== null) {
+      if (getTranslateX(topLevelRef.current) > 0) {
+        handleForceClose();
+      }
+    }
+  }, [currentSwipe, id, topLevelRef]);
+
+  useEffect(() => {
+    if (mainArticleRef.current) {
+      mainArticleRef.current.addEventListener("touchstart", handleMouseDown);
+      mainArticleRef.current.addEventListener("mousedown", handleMouseDown);
+    }
+    return () => {
+      if (mainArticleRef.current) {
+        mainArticleRef.current.removeEventListener("touchstart", handleMouseDown);
+        mainArticleRef.current.removeEventListener("mousedown", handleMouseDown);
+      }
+    };
+  }, [mainArticleRef]);
+
   function getTranslateX(element: HTMLElement) {
     const computedStyle = window.getComputedStyle(element);
     const transform = computedStyle.getPropertyValue('transform');
@@ -31,27 +69,54 @@ export default function ArticleButtonMobile({ imageURL, headline, summary, url, 
     return matrix.e; // translateX
   }
 
-  function handleMouseDown(e: any) {
+  function handleMouseDown(e: MouseEvent | TouchEvent) {
     if (mainArticleRef.current && topLevelRef.current) {
       isDragging = true;
-      mainArticleRef.current.addEventListener('pointermove', handleMouseMove);
-      mainArticleRef.current.addEventListener('pointerup', handleMouseUp);
-      mainArticleRef.current.addEventListener('pointerleave', handleMouseUp);
+      onSwipeOpen(id);
+      mainArticleRef.current.addEventListener('mousemove', handleMouseMove);
+      mainArticleRef.current.addEventListener('mouseup', handleMouseUp);
+      mainArticleRef.current.addEventListener('mouseleave', handleMouseUp);
+      mainArticleRef.current.addEventListener('touchmove', handleMouseMove);
+      mainArticleRef.current.addEventListener('touchend', handleMouseUp);
+      mainArticleRef.current.addEventListener('touchcancel', handleMouseUp);
       initTranslateX = getTranslateX(topLevelRef.current);
-      startingPoint = e.pageX;
+      startingPoint = (e as MouseEvent).pageX ?? (e as TouchEvent).changedTouches[0].pageX;
       maxOpenWidth = mainArticleRef.current.offsetWidth * 0.2;
       topLevelRef.current!.style.transition = 'none';
       underButtonRef.current!.style.transition = 'none';
     }
   }
 
+  function handleForceClose() {
+    console.log(">>FORCE CLOSE");
+    isDragging = false;
+    if (mainArticleRef.current && topLevelRef.current) {
+      mainArticleRef.current.removeEventListener('mousemove', handleMouseMove);
+      mainArticleRef.current.removeEventListener('mouseleave', handleMouseUp);
+      mainArticleRef.current.removeEventListener('mouseup', handleMouseUp);
+      mainArticleRef.current.removeEventListener('touchmove', handleMouseMove);
+      mainArticleRef.current.removeEventListener('touchend', handleMouseUp);
+      mainArticleRef.current.removeEventListener('touchcancel', handleMouseUp);
+      requestAnimationFrame(() => {
+        topLevelRef.current!.style.transition = "transform 200ms ease-in";
+        underButtonRef.current!.style.transition = "width 205ms ease-in";
+        topLevelRef.current!.style.transform = 'translate3d(0,0,0)';
+        underButtonRef.current!.style.width = '0px';
+      });
+    }
+  }
+
   function handleMouseUp() {
     let underButtonRest = 0;
     isDragging = false;
+    onSwipeOpen(null);
     if (mainArticleRef.current && topLevelRef.current) {
-      mainArticleRef.current.removeEventListener('pointermove', handleMouseMove);
-      mainArticleRef.current.removeEventListener('pointerleave', handleMouseUp);
-      mainArticleRef.current.removeEventListener('pointerup', handleMouseUp);
+      mainArticleRef.current.removeEventListener('mousemove', handleMouseMove);
+      mainArticleRef.current.removeEventListener('mouseleave', handleMouseUp);
+      mainArticleRef.current.removeEventListener('mouseup', handleMouseUp);
+      mainArticleRef.current.removeEventListener('touchmove', handleMouseMove);
+      mainArticleRef.current.removeEventListener('touchend', handleMouseUp);
+      mainArticleRef.current.removeEventListener('touchcancel', handleMouseUp);
       let whereToRest = 0;
       const endTranslateX = getTranslateX(topLevelRef.current);
       if (endTranslateX > maxOpenWidth) {
@@ -62,17 +127,15 @@ export default function ArticleButtonMobile({ imageURL, headline, summary, url, 
       }
       requestAnimationFrame(() => {
         topLevelRef.current!.style.transition = "transform 200ms ease-in";
-        underButtonRef.current!.style.transition = "width 205ms ease-in";
+        underButtonRef.current!.style.transition = "width 200ms ease-in";
         topLevelRef.current!.style.transform = `translate3d(${whereToRest}px,0,0)`;
         underButtonRef.current!.style.width = `${underButtonRest}px`;
       });
     }
   }
 
-  function handleMouseMove(e: MouseEvent) {
+  function handleMouseMove(e: any) {
     if (isDragging) {
-      e.preventDefault();
-
       const distanceMoved = e.pageX - startingPoint;
       const resistance = Math.abs(distanceMoved) * resistanceFactor;
       const newTranslateX = Math.max(distanceMoved + initTranslateX, 0);
@@ -100,7 +163,6 @@ export default function ArticleButtonMobile({ imageURL, headline, summary, url, 
 
   return (
     <article
-      onPointerDown={handleMouseDown}
       onClick={(e) => {
         if (topLevelRef.current) {
           if (getTranslateX(topLevelRef.current) === 0) {

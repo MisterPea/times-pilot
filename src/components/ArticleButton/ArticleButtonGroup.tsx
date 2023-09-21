@@ -52,8 +52,15 @@ interface ArticleButtonGroupProps {
 
 export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps) {
   const [rankedArticles, setRankedArticles] = useState<Article[]>([]);
+  const [isOpen, setIsOpen] = useState<string | null>(null); // current swipes that are open
+
+  function handleOpenSwipe(id: string) {
+
+  }
+  function handleClosedSwipe() { }
 
   useEffect(() => {
+    // ONLY FOR 768px AND UP //
     /* The idea here is to have no empty cells, so we double the width so we fill
        blank space. The maximum number of doubles is 4, so we find the 4 longest
        title and headlines, because those are the ones we'd want to spread out.
@@ -65,8 +72,8 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
       const summaryVal = articles[i].abstract.length;
       seenArticles.push([i, titleVal + summaryVal]);
     }
+    // Sort longest title/summary to shortest
     seenArticles.sort(([a, b], [c, d]) => d - b);
-    // const degrees = [' dbl-one', ' dbl-two', ' dbl-three', ' dbl-four'];
 
     // Get the top 4 longest articles
     const truncated = seenArticles.slice(0, 4).map((elem) => elem[0]);
@@ -117,7 +124,7 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
     <>
       <div className="article_group--base">
         <ul className="article_group--ul">
-          {rankedArticles.map(({ title, abstract, url, multimedia, addClass }, index) => (
+          {rankedArticles.map(({ title, abstract, url, multimedia, addClass, short_url }, index) => (
             <>
               <li key={`${index}-mobile`} className="article_group-mobile">
                 <ArticleButtonMobile
@@ -128,6 +135,9 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
                   bookmarked={false}
                   toggleBookmarkCallback={() => { }}
                   addTopicsCallback={() => { }}
+                  id={`${index}-${short_url}`}
+                  currentSwipe={isOpen}
+                  onSwipeOpen={setIsOpen}
                 />
               </li>
               <li key={`${index}-tablet`} className={`article_group-tablet${addClass ? ' ' + addClass : ''}`}>
