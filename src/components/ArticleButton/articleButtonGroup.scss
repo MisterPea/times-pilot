@@ -1,0 +1,72 @@
+@import "../../style/mixins.scss";
+// .article_group {
+//   &--ul {
+//     display: flex;
+//     flex-wrap: wrap;
+//     flex-direction: row;
+//     justify-content: space-between;
+//     background-color: var(--background);
+//   }
+
+//   // li style
+//   @media (max-width: 767px) {
+//     &-tablet {
+//       display: none;
+//     }
+//     &-mobile {
+//       display: block;
+//       margin: 4px;
+//     }
+//   }
+//   @media (min-width: 768px) {
+//     &-mobile {
+//       display: none;
+//     }
+//     &-tablet {
+//       flex: 0 1 calc(50% - 5px);
+//       min-height: 100%;
+//       margin: 0 2.5px 5px;
+//     }
+//     &-tablet--full {
+//       flex: 1 0 100%;
+//       min-height: 100%;
+//       margin: 0 2.5px 5px;
+//     }
+//   }
+// }
+.article_group {
+  &--ul {
+    display: grid;
+    background-color: var(--background);
+    grid-auto-flow: row dense;
+  }
+
+  // li style
+  @media (max-width: 767px) {
+    &-tablet {
+      display: none;
+    }
+    &-mobile {
+      display: block;
+      margin: 4px;
+    }
+  }
+  @media (min-width: 768px) {
+    &--ul {
+      grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
+    }
+    &-mobile {
+      display: none;
+    }
+    &-tablet {
+      // flex: 0 1 calc(50% - 5px);
+      margin: 0 2.5px 5px;
+    }
+    &-tablet {
+      &.dbl-one {
+        margin: 0 2.5px 5px;
+        grid-column: span 2;
+      }
+    }
+  }
+}
