@@ -39,3 +39,18 @@
     }
   }
 }
+
+/* Bookmark Flag */
+.bookmark_flag {
+  transform: scaleY(0);
+  transform-origin: 0 0;
+  transition: all 120ms ease-in;
+  width: fit-content;
+  height: 2.3rem;
+  position: absolute;
+  transition: all 120ms ease-in;
+  &.selected {
+    transform: scaleX(100%);
+    transition: all 400ms cubic-bezier(0.36, 1.83, 0.41, 0.68);
+  }
+}

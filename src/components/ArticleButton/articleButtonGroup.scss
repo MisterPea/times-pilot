@@ -1,39 +1,5 @@
 @import "../../style/mixins.scss";
-// .article_group {
-//   &--ul {
-//     display: flex;
-//     flex-wrap: wrap;
-//     flex-direction: row;
-//     justify-content: space-between;
-//     background-color: var(--background);
-//   }
 
-//   // li style
-//   @media (max-width: 767px) {
-//     &-tablet {
-//       display: none;
-//     }
-//     &-mobile {
-//       display: block;
-//       margin: 4px;
-//     }
-//   }
-//   @media (min-width: 768px) {
-//     &-mobile {
-//       display: none;
-//     }
-//     &-tablet {
-//       flex: 0 1 calc(50% - 5px);
-//       min-height: 100%;
-//       margin: 0 2.5px 5px;
-//     }
-//     &-tablet--full {
-//       flex: 1 0 100%;
-//       min-height: 100%;
-//       margin: 0 2.5px 5px;
-//     }
-//   }
-// }
 .article_group {
   &--ul {
     display: grid;
@@ -41,17 +7,15 @@
     grid-auto-flow: row dense;
   }
 
-  // li style
-  @media (max-width: 767px) {
-    &-tablet {
-      display: none;
-    }
-    &-mobile {
-      display: block;
-      margin: 4px;
-    }
+  &-tablet {
+    display: none;
   }
-  @media (min-width: 768px) {
+  &-mobile {
+    display: block;
+    margin: 2px;
+  }
+
+  @include small--768px-and-up {
     &--ul {
       grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
     }
@@ -59,14 +23,61 @@
       display: none;
     }
     &-tablet {
-      // flex: 0 1 calc(50% - 5px);
+      display: block;
       margin: 0 2.5px 5px;
     }
+    &-tablet.two_wide {
+      margin: 0 2.5px 5px;
+      grid-column: span 2;
+    }
+  }
+
+  @include med--960px-and-up {
+    &--ul {
+      grid-template-columns: repeat(auto-fill, minmax(33%, 1fr));
+    }
+    &-mobile {
+      display: none;
+    }
     &-tablet {
-      &.dbl-one {
-        margin: 0 2.5px 5px;
-        grid-column: span 2;
-      }
+      display: block;
+      margin: 0 2.5px 5px;
+    }
+    &-tablet.three_wide {
+      margin: 0 2.5px 5px;
+      grid-column: span 2;
+    }
+  }
+  @include lg--1280px-and-up {
+    &--ul {
+      grid-template-columns: repeat(auto-fill, minmax(25%, 1fr));
+    }
+    &-mobile {
+      display: none;
+    }
+    &-tablet {
+      display: block;
+      margin: 0 2.5px 5px;
+    }
+    &-tablet.four_wide {
+      margin: 0 2.5px 5px;
+      grid-column: span 2;
+    }
+  }
+  @include xl--1920px-and-up {
+    &--ul {
+      grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+    }
+    &-mobile {
+      display: none;
+    }
+    &-tablet {
+      display: block;
+      margin: 0 2.5px 5px;
+    }
+    &-tablet.five_wide {
+      margin: 0 2.5px 5px;
+      grid-column: span 2;
     }
   }
 }

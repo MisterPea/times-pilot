@@ -1,7 +1,8 @@
 @import "../../style/mixins.scss";
 
 /* Mobile */
-.article_mobile_base {
+.article_mobile_base,
+.article_tablet_base {
   width: 100%;
   border-radius: 0.4375rem;
   border-right: 0.7px solid rgba(0, 0, 0, 0.3);
@@ -55,6 +56,10 @@
   transform: translateX(0);
   will-change: transform;
   z-index: 10;
+  &:has(.icon_wrap) {
+    // for non-mobile
+    padding-right: 1rem;
+  }
 }
 .bookmark_flag_wrap {
   position: absolute;
@@ -87,12 +92,28 @@
     }
   }
   &--bottom {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+    // align-items: center;
     summary {
       @include body-text;
       font-size: 1rem;
       line-height: 1.3125rem; /* 131.25% */
       letter-spacing: var(--body-letter-spacing);
       color: var(--next-main-dark);
+    }
+    .icon_wrap {
+      margin-right: 0.5rem;
+      margin-top: 0.5rem;
+      margin-bottom: -0.25rem;
+      display: flex;
+      justify-content: flex-end;
+      background-color: tomato;
+      .icon_base:last-child {
+        margin-left: 1rem;
+      }
     }
   }
 }
@@ -101,5 +122,65 @@
     margin: 0 0.5rem;
     position: relative;
     z-index: 10;
+  }
+}
+
+
+// Tablet style
+.article_tablet {
+  &_base {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    justify-content: space-between;
+    padding: 1rem 1rem 1rem 1.5rem;
+    background-color:var(--white);
+  }
+  &_content--top {
+    display: flex;
+    flex-direction: column;
+    .image_headline {
+      display: flex;
+      margin-bottom: 5px;
+      h2 {
+        @include headline-text;
+        font-size: 1.1rem;
+        color: var(--darkest);
+        line-height: normal;
+        pointer-events: none;
+      }
+    }
+    .image_wrap {
+      pointer-events: none;
+      flex-shrink: 0;
+      position: relative;
+      border-radius: 0.875rem;
+      overflow: hidden;
+      height: 4rem;
+      width: 4rem;
+      border: 0.5px solid rgba(64, 58, 49, 0.5);
+      margin-right: 0.65rem;
+    }
+    summary {
+      @include body-text;
+      font-size: 1rem;
+      line-height: 1.3125rem; /* 131.25% */
+      letter-spacing: var(--body-letter-spacing);
+      color: var(--next-main-dark);
+
+    }
+  }
+  &_content--bottom {
+    align-self: flex-end;
+    .icon_wrap {
+      margin-right: 0.5rem;
+      margin-top: 0.5rem;
+      margin-bottom: -0.25rem;
+      display: flex;
+      justify-content: flex-end;
+      .icon_base:last-child {
+        margin-left: 1rem;
+      }
+    }
   }
 }

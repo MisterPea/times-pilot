@@ -9,3 +9,20 @@
   font-weight: 500;
   font-style: normal;
 }
+
+// media queries
+@mixin small--768px-and-up {
+  @media (min-width: 768px) { @content; }
+}
+
+@mixin med--960px-and-up {
+@media (min-width: 960px) { @content; }
+}
+
+@mixin lg--1280px-and-up {
+@media (min-width: 1280px) { @content; }
+}
+
+@mixin xl--1920px-and-up {
+@media (min-width: 1920px) { @content; }
+}
