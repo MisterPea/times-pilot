@@ -34,11 +34,13 @@ export default function ArticleButtonMobile({
   const mainArticleRef = useRef<HTMLElement | null>(null);
   const topLevelRef = useRef<HTMLDivElement | null>(null);
   const underButtonRef = useRef<HTMLButtonElement | null>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   let initTranslateX = 0;
   let startingPoint = 0;
   let maxOpenWidth = 0;
   let isDragging = false;
-  let resistanceFactor = 0.01;
+  let resistanceFactor = 0.025;
+  let scrolling = false;
 
   // This handles the auto-close is another article is swiped
   useEffect(() => {
@@ -61,6 +63,26 @@ export default function ArticleButtonMobile({
       }
     };
   }, [mainArticleRef]);
+
+  useEffect(() => {
+    document.addEventListener('scroll', () => {
+      scrolling = true;
+      // handleForceClose();
+      handleScrollEnd();
+    });
+    return () => {
+      document.removeEventListener('scroll', handleScrollEnd);
+    };
+  }, []);
+
+  function handleScrollEnd() {
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
+    scrollTimeoutRef.current = setTimeout(() => {
+      scrolling = false;
+    }, 300);
+  }
 
   function getTranslateX(element: HTMLElement) {
     const computedStyle = window.getComputedStyle(element);
@@ -88,7 +110,6 @@ export default function ArticleButtonMobile({
   }
 
   function handleForceClose() {
-    console.log(">>FORCE CLOSE");
     isDragging = false;
     if (mainArticleRef.current && topLevelRef.current) {
       mainArticleRef.current.removeEventListener('mousemove', handleMouseMove);
@@ -120,22 +141,28 @@ export default function ArticleButtonMobile({
       let whereToRest = 0;
       const endTranslateX = getTranslateX(topLevelRef.current);
       if (endTranslateX > maxOpenWidth) {
-        whereToRest = maxOpenWidth;
+        /*
+        Don't exactly know why + 10 works.
+        Animations break otherwise.
+        Doesn't make sense - change at your own peril 
+        */
+        whereToRest = maxOpenWidth + 10;
         underButtonRest = maxOpenWidth + 10;
       } else {
         whereToRest = 0;
       }
+      topLevelRef.current!.style.transition = "transform 200ms ease-in-out";
+      underButtonRef.current!.style.transition = "width 200ms ease-in-out";
       requestAnimationFrame(() => {
-        topLevelRef.current!.style.transition = "transform 200ms ease-in";
-        underButtonRef.current!.style.transition = "width 200ms ease-in";
-        topLevelRef.current!.style.transform = `translate3d(${whereToRest}px,0,0)`;
+        topLevelRef.current!.style.transform = `translateX(${whereToRest}px)`;
         underButtonRef.current!.style.width = `${underButtonRest}px`;
       });
     }
   }
 
   function handleMouseMove(e: any) {
-    if (isDragging) {
+    e.preventDefault();
+    if (isDragging && scrolling === false) {
       const distanceMoved = e.pageX - startingPoint;
       const resistance = Math.abs(distanceMoved) * resistanceFactor;
       const newTranslateX = Math.max(distanceMoved + initTranslateX, 0);
@@ -156,6 +183,7 @@ export default function ArticleButtonMobile({
 
 
   function handleBookmarkToggle() {
+    handleForceClose();
     topLevelRef.current!.addEventListener('transitionend', () => {
       toggleBookmarkCallback();
     }, { once: true });
@@ -163,16 +191,17 @@ export default function ArticleButtonMobile({
 
   return (
     <article
-      onClick={(e) => {
-        if (topLevelRef.current) {
-          if (getTranslateX(topLevelRef.current) === 0) {
-            e.stopPropagation();
-            window.open(url, "_blank", "noopener noreferrer");
-          }
-        }
-      }}
       ref={mainArticleRef} className="article_mobile_base">
-      <div ref={topLevelRef} className="top_level_wrapper">
+      <div
+        onPointerUp={(e) => {
+          if (topLevelRef.current) {
+            if (getTranslateX(topLevelRef.current) === 0) {
+              e.stopPropagation();
+              window.open(url, "_blank", "noopener noreferrer");
+            }
+          }
+        }}
+        ref={topLevelRef} className="top_level_wrapper">
         <div className="bookmark_flag_wrap"><BookmarkFlag selected={bookmarked} /></div>
         <div className="article_mobile_content-left">
           <div className="article_mobile_content-left--top">
@@ -198,8 +227,12 @@ export default function ArticleButtonMobile({
         </div>
       </div>
       <button
-        onClick={handleBookmarkToggle}
-        ref={underButtonRef} className={`under_button${bookmarked ? " bookmarked" : ""}`}>
+        onClick={(e) => {
+          e.stopPropagation();
+          handleBookmarkToggle();
+        }}
+        ref={underButtonRef} className={`under_button${bookmarked ? " bookmarked" : ""}`}
+      >
         <div className="under_button__svg_wrapper">
           {bookmarked ? <BsBookmarkDash /> : <BsBookmarkPlus />}
         </div>

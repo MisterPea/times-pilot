@@ -6,8 +6,14 @@ interface BookmarkIconProps {
 }
 
 export default function BookmarkIcon({ selected, callback }: BookmarkIconProps) {
+  
+  function handleToggle(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    callback();
+  }
+  
   return (
-    <button className='icon_base'>
+    <button onClick={handleToggle} className='icon_base'>
       <div className={`icon_inner_top${selected ? ' selected' : ''}`}><BsBookmarkFill /></div>
       <div className='icon_inner_bottom'><BsBookmark /></div>
     </button>

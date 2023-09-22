@@ -5,8 +5,14 @@ interface EditClipboardIconProps {
 }
 
 export default function EditClipboardIcon({ callback }: EditClipboardIconProps) {
+
+  function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    callback();
+  }
+  
   return (
-    <button className='icon_base'>
+    <button onClick={handleClick} className='icon_base'>
       <div className='icon_inner'><LuClipboardEdit /></div>
     </button>
   );

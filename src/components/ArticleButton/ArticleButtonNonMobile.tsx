@@ -1,8 +1,5 @@
 import Image from "next/image";
-import BookmarkFlag from "../Icons/BookmarkFlag";
-import { BsBookmarkPlus, BsBookmarkDash } from 'react-icons/bs';
 import EditClipboardIcon from "../Icons/EditClipboardIcon";
-import { useRef } from "react";
 import BookmarkIcon from "../Icons/BookmarkIcon";
 
 interface ArticleButtonMobileProps {
