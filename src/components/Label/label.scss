@@ -1,0 +1,17 @@
+@import "../../style/mixins.scss";
+
+.non_clickable_label {
+  @include body-text;
+  letter-spacing: var(--body-letter-spacing);
+  color: var(--main-dark);
+  &.--large {
+    font-size: 1.95rem;
+  }
+  &.--medium {
+    font-size: 1.8rem;
+  }
+  &.--small {
+    font-size: 1.1875;
+    color: var(--lightest-text);
+  }
+}
