@@ -1,0 +1,41 @@
+@import "../../style/mixins.scss";
+
+.bookmarked_article {
+  display: flex;
+  margin: 0.5rem 1rem;
+  position: relative;
+  &--undo_overlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.7)
+  }
+  &--text_content {
+    h2 {
+      @include headline-text;
+      color: var(--main-dark);
+      font-size: 1.05rem;
+      margin: 4px 0;
+    }
+    p {
+      @include body-text;
+      letter-spacing: var(--body-letter-spacing);
+      color: var(--lightest-text);
+      font-size: 0.925rem;
+    }
+    p.date {
+      font-size: 0.6rem;
+    }
+  }
+  &--control {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    button {
+      width: 2rem;
+      height: 2rem;
+      background-color: var(--error);
+      border-radius: 1rem;
+    }
+  }
+}
