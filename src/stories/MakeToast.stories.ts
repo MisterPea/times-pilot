@@ -25,7 +25,7 @@ export const Primary: Story = {
 
 export const Error: Story = {
   args: {
-    data: "3 Topics Have Been Added to Your Subscription",
+    data: "There Has Been An Error Adding Topics!",
     deploy: false,
     isError: true,
     viewLength: 5000

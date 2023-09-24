@@ -4,13 +4,14 @@ import '../style/global.scss';
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 
 const meta: Meta<typeof ArticleButtonMobile> = {
-  title: 'Article Button/Mobile',
+  title: 'Article/Mobile Article',
   component: ArticleButtonMobile,
   parameters: {
     viewport: {
       viewports: INITIAL_VIEWPORTS,
       defaultViewport:'iphone12'
-    }
+    },
+    layout:'fullscreen'
   }
 };
 
@@ -23,7 +24,6 @@ export const Primary: Story = {
     headline: "Lorem ipsum dolor sit amet consectetur. Quis ut enim pharetra quisque id.",
     summary: "Lorem ipsum dolor sit amet consectetur. Tincidunt ac pharetra quisque id. Id sem faucibus nec imperdiet convallis.",
     bookmarked: false,
-
   }
 }
 

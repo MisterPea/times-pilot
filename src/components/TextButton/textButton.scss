@@ -23,6 +23,10 @@
     width: 100%;
     text-align: center;
     transition: all 150ms ease-in-out;
+    &.left {
+      text-align: left;
+      margin: 0;
+    }
   }
 
   // hovers - excludes touch
@@ -31,7 +35,7 @@
     &_base:hover > span {
       color: var(--lightest-text);
       text-underline-offset: 0.2rem;
-      text-decoration-color:var(--darkest-20pct);
+      text-decoration-color: var(--darkest-20pct);
     }
   }
 

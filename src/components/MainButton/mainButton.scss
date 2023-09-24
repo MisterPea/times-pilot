@@ -9,6 +9,12 @@
     border-bottom: 1px solid var(--darkest);
     border-radius: 0.5rem;
     transition: all 150ms ease-in-out;
+    &.html_btn {
+      width: 15rem;
+      &.full_width {
+        width: 100%;
+      }
+    }
 
     &.full_width {
       max-width: 100%;
@@ -54,6 +60,16 @@
     margin: 0.35rem 0;
     width: 100%;
     text-align: center;
+    &--wrap {
+      margin: 0 auto;
+      display: flex;
+      width: fit-content;
+    }
+    svg {
+      margin-left: 0.5rem;
+      height: 1.5rem;
+      width: 1.5rem;
+    }
   }
 
   // hovers - excludes touch

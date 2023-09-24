@@ -10,8 +10,6 @@ interface MainButtonProps {
   disabled?: boolean;
 }
 
-
-
 export default function MainButton({
   label,
   link,

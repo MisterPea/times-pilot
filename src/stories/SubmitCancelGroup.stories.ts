@@ -15,11 +15,14 @@ export const Primary: Story = {
     submitLink: "#",
     cancelLink: "#",
     fullWidth:false,
-    //   link:"#",
-    //   fullWidth: false,
-    //   destructive: false,
-    //   danger: false,
-    //   disabled: false,
   }
 }
 
+export const FullWidthDestructive: Story = {
+  args: {
+    submitLink: "#",
+    cancelLink: "#",
+    fullWidth:true,
+    submitState:"destructive"
+  }
+}

@@ -14,6 +14,7 @@ const meta: Meta<typeof BookmarkedArticle> = {
     layout: 'fullscreen'
   }
 };
+const deleteCall = () => console.log("ready to delete")
 
 export default meta;
 type Story = StoryObj<typeof BookmarkedArticle>;
@@ -23,7 +24,7 @@ export const Primary: Story = {
     date: "Jan 22, 2222",
     headline: "Lorem ipsum dolor sit amet consectetur. Quis ut enim pharetra quisque id.",
     summary: "Lorem ipsum dolor sit amet consectetur. Tincidunt ac pharetra quisque id. Id sem faucibus nec imperdiet convallis.",
-    deleteCallback: () => { },
+    deleteCallback: deleteCall,
     linkToArticle: "#",
   }
 }

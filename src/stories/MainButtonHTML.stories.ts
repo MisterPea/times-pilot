@@ -24,7 +24,7 @@ export const Primary: Story = {
 
 export const UndoWithIcon: Story = {
   args: {
-    label: "Undo Delete",
+    label: "Undo Remove",
     linkCallback: () => { },
     fullWidth: false,
     destructive: false,

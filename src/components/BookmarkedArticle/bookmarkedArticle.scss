@@ -4,11 +4,55 @@
   display: flex;
   margin: 0.5rem 1rem;
   position: relative;
+  transform-origin: top;
+  &.remove_top {
+    animation: minimizeArticle 200ms ease-in forwards;
+    animation-delay: 190ms;
+  }
+  .delete_overlay {
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(0);
+    transform-origin: 0;
+    z-index: 2;
+    &.remove {
+      transform: scaleY(1);
+      animation: deleteSequence 190ms ease;
+    }
+  }
+
   &--undo_overlay {
     position: absolute;
     height: 100%;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.7)
+    background-color: rgba(255, 255, 255, 0.7);
+    animation: undoFadeIn 200ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 1;
+    &.stop {
+      opacity: 0;
+      animation: undoFadeOut 600ms ease;
+    }
+  }
+  .countdown_bar {
+    position: absolute;
+    bottom: 0;
+    height: 4px;
+    width: 100%;
+    transform-origin: 0;
+    transform: scaleX(1);
+    background-color: var(--error);
+    animation: scaleCountdown 5s linear;
+    &.stop {
+      transform: scaleX(0);
+      animation-direction: reverse;
+    }
   }
   &--text_content {
     h2 {
@@ -37,5 +81,52 @@
       background-color: var(--error);
       border-radius: 1rem;
     }
+  }
+}
+
+@keyframes scaleCountdown {
+  0% {
+    transform: scaleX(0);
+    background-color: var(--background-green);
+  }
+  100% {
+    transform: scaleX(1);
+    background-color: var(--error);
+  }
+}
+
+@keyframes undoFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes undoFadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes deleteSequence {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes minimizeArticle {
+  0% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(0);
   }
 }
