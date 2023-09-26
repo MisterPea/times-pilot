@@ -1,0 +1,26 @@
+@import "../../style/mixins.scss";
+
+.modal_base .top_frame {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+.modal_base .bottom_frame {
+  margin-top: 3.75rem;
+}
+
+.modal_base .create_acct_button {
+  margin-top: 1.25rem;
+  background: none;
+  @include body-text;
+  letter-spacing: var(--body-letter-spacing);
+  font-size: 1rem;
+  text-align: center;
+  width: 100%;
+  color: var(--lightest-text);
+  span {
+    text-decoration: underline;
+    font-style: italic;
+  }
+}
