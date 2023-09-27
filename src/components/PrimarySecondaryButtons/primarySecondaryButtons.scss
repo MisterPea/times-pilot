@@ -1,0 +1,13 @@
+.primary_secondary_group {
+  display: flex;
+  flex-direction: column;
+  max-width: 15rem;
+  margin: 0 auto;
+  &.full_width {
+    max-width: unset;
+  }
+  .secondary {
+    width: fit-content;
+    margin: 0 auto;
+  }
+}
