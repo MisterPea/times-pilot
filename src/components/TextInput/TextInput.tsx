@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BiShowAlt, BiHide } from 'react-icons/bi';
 
 interface TextInputProps {
@@ -9,6 +9,7 @@ interface TextInputProps {
   parentSetState?: (newValue: string) => void;
   foundError?: boolean;
   errorText?: string;
+  validInputCallback?: (newValue: boolean) => void;
 }
 
 // Default regular expressions
@@ -17,11 +18,21 @@ const regex = {
   password: /^(?=.*[A-Z])(?=.*[0-9]).{8,}$/g
 };
 
-export default function TextInput({ type = "text", label, parentSetState, regexTest, foundError, errorText }: TextInputProps) {
+export default function TextInput({
+  type = "text",
+  label,
+  parentSetState,
+  regexTest,
+  foundError,
+  errorText,
+  validInputCallback
+}: TextInputProps) {
+
   const [localInputVal, setLocalInputValue] = useState<string>('');
   const [hasValidInput, setHasValidInput] = useState<boolean>(false);
   const [localError, setLocalError] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   // We callback the local state to the parent.
   // We could forward the ref, but we would still have to manually call for an update.
@@ -42,14 +53,30 @@ export default function TextInput({ type = "text", label, parentSetState, regexT
     }
   }, [foundError]);
 
+  // Capture for Enter and Esc
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyFocusCheck);
+    return () => {
+      document.removeEventListener('keydown', handleKeyFocusCheck);
+    };
+  }, []);
+
+  function handleKeyFocusCheck(key: KeyboardEvent) {
+    document.activeElement === inputRef.current;
+    if (key.code === 'Escape' && document.activeElement === inputRef.current) {
+      inputRef.current?.blur();
+    }
+  }
+
   // Logic to test the text inputs
   function testInput() {
-
     let appliedRegex = regex[regexTest] || new RegExp(regexTest!);
 
     const isValid = appliedRegex.test(localInputVal);
-    // console.log(appliedRegex.test(localInputVal),hasValidInput, isValid);
     setHasValidInput(isValid);
+    if (validInputCallback) {
+      validInputCallback(isValid);
+    }
   }
 
   return (
@@ -59,6 +86,7 @@ export default function TextInput({ type = "text", label, parentSetState, regexT
         {showPassword ? <BiHide /> : <BiShowAlt />}
       </button>}
       <input
+        ref={inputRef}
         type={showPassword ? 'text' : type}
         className={`${hasValidInput ? 'valid' : 'not-valid'}`}
         onChange={(e) => setLocalInputValue(e.target.value)}

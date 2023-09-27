@@ -71,6 +71,7 @@
     display: flex;
     margin-bottom: 5px;
     align-items: center;
+    z-index: 1;
     .image_wrap {
       pointer-events: none;
       flex-shrink: 0;
@@ -120,7 +121,7 @@
   &--icon_button {
     margin: 0 0.5rem;
     position: relative;
-    z-index: 10;
+    z-index: 100;
   }
 }
 

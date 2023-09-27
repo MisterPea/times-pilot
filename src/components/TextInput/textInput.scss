@@ -3,7 +3,7 @@
 .text_input {
   display: flex;
   flex-direction: column;
-  padding: 1.3rem 0.5rem 0;
+  padding: 1.3rem 0 0;
   &:focus-within label,
   .has-input {
     transform: translateY(-2rem) translateX(-1rem) scale(0.75);

@@ -181,7 +181,6 @@ export default function ArticleButtonMobile({
     }
   }
 
-
   function handleBookmarkToggle() {
     handleForceClose();
     topLevelRef.current!.addEventListener('transitionend', () => {

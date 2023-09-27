@@ -9,7 +9,7 @@ const meta: Meta<typeof ModalPassword> = {
   parameters: {
     viewport: {
       viewports: INITIAL_VIEWPORTS,
-      defaultViewport: 'iPad'
+      defaultViewport: 'ipad'
     },
     layout: 'fullscreen'
   }

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import MainButtonHTML from "../MainButtonHTML/MainButtonHTML";
 
 interface BookmarkedArticleProps {
@@ -6,13 +6,15 @@ interface BookmarkedArticleProps {
   headline: string;
   summary: string;
   linkToArticle: string;
-  deleteCallback: () => void;
+  deleteCallback: (id: string) => void;
+  id: string;
 }
 
-export default function BookmarkedArticle({ headline, summary, date, linkToArticle, deleteCallback }: BookmarkedArticleProps) {
+export default function BookmarkedArticle({ headline, summary, date, linkToArticle, deleteCallback, id }: BookmarkedArticleProps) {
   const [enableDelete, setEnableDelete] = useState<boolean>(false);
   const countdownBarRef = useRef<HTMLDivElement | null>(null);
   const articleRef = useRef<HTMLElement | null>(null);
+  let observer: MutationObserver;
 
   function handleDeleteCall() {
     const config = { attributes: true, childList: true, subtree: true };
@@ -28,7 +30,7 @@ export default function BookmarkedArticle({ headline, summary, date, linkToArtic
     // To make the animation a bit simpler and the dom cleaner
     // we're detecting when the dom is updated.
     // Then we're listening for the animation to complete.
-    const observer = new MutationObserver(callback);
+    observer = new MutationObserver(callback);
     setEnableDelete(true);
 
     if (articleRef.current) {
@@ -46,8 +48,8 @@ export default function BookmarkedArticle({ headline, summary, date, linkToArtic
   function handleCompleteDelete() {
     const deleteOverlay = articleRef.current!.querySelector('.delete_overlay');
     deleteOverlay?.classList.add('remove');
-    articleRef.current?.classList.add('remove_top');
-    articleRef.current?.addEventListener('animationend', deleteCallback, { once: true });
+    deleteOverlay?.addEventListener('animationend'  , () => deleteCallback(id), { once: true });
+    observer.disconnect();
   }
 
   return (
@@ -57,11 +59,16 @@ export default function BookmarkedArticle({ headline, summary, date, linkToArtic
         <MainButtonHTML label="Undo Remove" linkCallback={handleStopDelete} undoIcon />
         <div ref={countdownBarRef} className="countdown_bar" />
       </div>}
-      <div className="bookmarked_article--text_content">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          window.open(linkToArticle, "_blank", "noopener noreferrer");
+        }}
+        className="bookmarked_article--text_content">
         <p className="date">{date}</p>
         <h2>{headline}</h2>
         <p>{summary}</p>
-      </div>
+      </button>
       <div className="bookmarked_article--control">
         <button onClick={handleDeleteCall}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

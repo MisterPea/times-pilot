@@ -9,9 +9,9 @@ const meta: Meta<typeof ArticleButtonMobile> = {
   parameters: {
     viewport: {
       viewports: INITIAL_VIEWPORTS,
-      defaultViewport:'iphone12'
+      defaultViewport: 'iphone12'
     },
-    layout:'fullscreen'
+    layout: 'fullscreen'
   }
 };
 
@@ -24,6 +24,7 @@ export const Primary: Story = {
     headline: "Lorem ipsum dolor sit amet consectetur. Quis ut enim pharetra quisque id.",
     summary: "Lorem ipsum dolor sit amet consectetur. Tincidunt ac pharetra quisque id. Id sem faucibus nec imperdiet convallis.",
     bookmarked: false,
+    addTopicsCallback: () => { }
   }
 }
 

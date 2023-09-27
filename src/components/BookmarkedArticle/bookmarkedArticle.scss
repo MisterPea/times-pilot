@@ -5,10 +5,10 @@
   margin: 0.5rem 1rem;
   position: relative;
   transform-origin: top;
-  &.remove_top {
-    animation: minimizeArticle 200ms ease-in forwards;
-    animation-delay: 190ms;
-  }
+  // &.remove_top {
+  // animation: minimizeArticle 300ms ease-in forwards;
+  // animation-delay: 190ms;
+  // }
   .delete_overlay {
     background-color: rgb(255, 255, 255);
     position: absolute;
@@ -30,14 +30,14 @@
     height: 100%;
     width: 100%;
     background-color: rgba(255, 255, 255, 0.7);
-    animation: undoFadeIn 200ms ease;
+    animation: undoFadeIn 600ms ease;
     display: flex;
     align-items: center;
     justify-content: space-around;
     z-index: 1;
     &.stop {
       opacity: 0;
-      animation: undoFadeOut 600ms ease;
+      animation: undoFadeOut 200ms ease-in;
     }
   }
   .countdown_bar {
@@ -55,6 +55,9 @@
     }
   }
   &--text_content {
+    text-align: left;
+    margin-right: 0.2rem;
+    background: none;
     h2 {
       @include headline-text;
       color: var(--main-dark);
@@ -124,9 +127,11 @@
 
 @keyframes minimizeArticle {
   0% {
-    transform: scaleY(1);
+    max-height: 400px;
+    margin: 2px 0;
   }
   100% {
-    transform: scaleY(0);
+    max-height: 0px;
+    margin: -10px 0;
   }
 }

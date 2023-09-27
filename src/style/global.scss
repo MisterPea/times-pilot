@@ -13,8 +13,11 @@
 @import "../components/ArticleButton/articleButtonGroup.scss";
 @import "../components/SettingsHeader/settingsHeader.scss";
 @import "../components/Label/label.scss";
-@import "../components/SubmitCancelGroup/submitCancelGroup.scss";
+@import "../components/PrimarySecondaryButtons/primarySecondaryButtons.scss";
 @import "../components/BookmarkedArticle/bookmarkedArticle.scss";
+@import "../components/BookmarkedArticleGroup/bookmarkedArticleGroup.scss";
+@import "../components/Modals/modalBlank.scss";
+@import "../components/Modals/modalBaseStyle.scss";
 @import "./mixins.scss";
 
 :root {
@@ -31,7 +34,7 @@
   --error-disabled-content: #ecacad;
   --main-dark: #3d3d3d;
   --white: #ffffff;
-  --icon-border:#dfdfdf;
+  --icon-border: #dfdfdf;
   --white-two: #f3f2ef;
   --white-three: #e6e6e6;
   --disabled-match: #ceccc8;
@@ -65,7 +68,8 @@ button {
   cursor: pointer;
 }
 
-ul,li {
+ul,
+li {
   list-style: none;
 }
 

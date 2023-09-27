@@ -1,5 +1,8 @@
 @import "../../style/mixins.scss";
 
+button.text_button_base{
+  background: none;
+}
 .text_button {
   // body
   &_base {
@@ -8,7 +11,7 @@
     border-radius: 0.5rem;
     transition: all 150ms ease-in-out;
   }
-
+  
   // label
   &_content {
     line-height: normal;
