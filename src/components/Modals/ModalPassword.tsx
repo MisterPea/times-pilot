@@ -4,13 +4,13 @@ import PrimarySecondaryButtonsHTML from "../PrimarySecondaryButtonsHTML/PrimaryS
 import TextInput from "../TextInput/TextInput";
 import ModalBlank from "./ModalBlank";
 import TextButtonHTML from "../TextButtonHTML/TextButtonHTML";
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function ModalPassword() {
   const [validEmail, setValidEmail] = useState<boolean>(false);
-  const topFrameRef = useRef<HTMLDivElement | null>(null);
   const [submit, setSubmit] = useState<boolean>(false);
   const clickRef = useRef<HTMLButtonElement | null>(null);
-
+  const [initialLabelHeight, setInitialLabelHeight] = useState(0);
   const text = {
     headline: {
       initial: "Can't Recall Your Password?",
@@ -21,6 +21,15 @@ export default function ModalPassword() {
       submit: "Check your inbox for info on resetting your password."
     }
   };
+
+  useEffect(() => {
+    // Calculate the initial height of the initial-label
+    const initialLabelElement = document.querySelector('.headline_wrap--initial');
+    if (initialLabelElement) {
+      setInitialLabelHeight(initialLabelElement.clientHeight);
+    }
+  }, []);
+
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeydown);
@@ -49,33 +58,62 @@ export default function ModalPassword() {
 
   return (
     <ModalBlank closeDestination={handleReturnToSignIn}>
-      <div className={`modal_password_wrap${submit ? " submit" : ""}`}>
-        <div className="top_frame" ref={topFrameRef}>
-          <div className="headline_wrap">
-            <Label label={text.headline[submit ? "submit" : "initial"]} size="md" />
-          </div>
-          <Label label={text.body[submit ? "submit" : "initial"]} size="sm" />
-        </div>
-        <div className="button_on_submit">
-          <TextButtonHTML label="Back to sign in" link={handleReturnToSignIn} />
-        </div>
-        <div className="bottom_frame">
-          <TextInput label="Email" regexTest="email" validInputCallback={setValidEmail} />
-          <div className="bottom_frame-inner">
-            <PrimarySecondaryButtonsHTML
-              primaryLabel="Submit"
-              secondaryLabel="Sign In"
-              primaryLink={handleEmailSubmit}
-              secondaryLink={handleReturnToSignIn}
-              fullWidth={false}
-              disabled={!validEmail}
-              primaryOutsideClickRef={clickRef}
-            />
-            <button className="create_acct_button">
-              <p>Don&apos;t have an account? <span>Create an account</span></p>
-            </button>
-          </div>
-        </div>
+      <div className="headline_wrap">
+        <AnimatePresence mode="wait" initial={false}>
+          {submit ? (
+            <motion.div
+              key="submit-label"
+              layout
+              initial={{ opacity: 0, height: initialLabelHeight }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: initialLabelHeight }}
+              transition={{
+                duration: 0.3,
+                ease: [.6, .36, .11, .97],
+              }}
+              className="headline_wrap--submit">
+              <Label label={text.headline.submit} size="md" />
+              <div className="headline_wrap-cta_text">
+                <Label label={text.body.submit} size="sm" />
+              </div>
+              <div className="headline_wrap-back_btn">
+                <TextButtonHTML label="Back to sign in" link={handleReturnToSignIn} />
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="initial-label"
+              layout
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "fit-content" }}
+              exit={{ opacity: 0, height: initialLabelHeight }}
+              transition={{
+                duration: 0.3,
+                ease: [.6, .36, .11, .97],
+              }}
+              className="headline_wrap--initial"
+            >
+              <Label label={text.headline.initial} size="md" />
+              <div className="headline_wrap-cta_text">
+                <Label label={text.body.initial} size="sm" />
+
+              </div>
+              <TextInput label="Email" regexTest="email" validInputCallback={setValidEmail} />
+              <PrimarySecondaryButtonsHTML
+                primaryLabel="Submit"
+                secondaryLabel="Sign In"
+                primaryLink={handleEmailSubmit}
+                secondaryLink={handleReturnToSignIn}
+                fullWidth={false}
+                disabled={!validEmail}
+                primaryOutsideClickRef={clickRef}
+              />
+              <button className="create_acct_button">
+                <p>Don&apos;t have an account? <span>Create an account</span></p>
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </ModalBlank>
   );
