@@ -10,7 +10,7 @@ interface TextButtonProps {
 
 export default function TextButtonHTML({ label, link, align }: TextButtonProps) {
   return (
-    <button className='text_button_base' onClick={link}>
+    <button className='text_button_base' tabIndex={0} onClick={link}>
       <span className={`text_button_content${align === "left" ? " left" : ""}`}>{label}</span>
     </button>
   );

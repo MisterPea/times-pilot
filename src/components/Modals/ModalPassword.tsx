@@ -99,15 +99,17 @@ export default function ModalPassword() {
 
               </div>
               <TextInput label="Email" regexTest="email" validInputCallback={setValidEmail} />
-              <PrimarySecondaryButtonsHTML
-                primaryLabel="Submit"
-                secondaryLabel="Sign In"
-                primaryLink={handleEmailSubmit}
-                secondaryLink={handleReturnToSignIn}
-                fullWidth={false}
-                disabled={!validEmail}
-                primaryOutsideClickRef={clickRef}
-              />
+              <div className="headline_wrap-submit_btn">
+                <PrimarySecondaryButtonsHTML
+                  primaryLabel="Submit"
+                  secondaryLabel="Sign In"
+                  primaryLink={handleEmailSubmit}
+                  secondaryLink={handleReturnToSignIn}
+                  fullWidth={false}
+                  disabled={!validEmail}
+                  primaryOutsideClickRef={clickRef}
+                />
+              </div>
               <button className="create_acct_button">
                 <p>Don&apos;t have an account? <span>Create an account</span></p>
               </button>

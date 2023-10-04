@@ -13,9 +13,7 @@ export default function ModalNewAcctOne() {
 
   useEffect(() => {
     function handleEnterToCreateAcct(e: KeyboardEvent) {
-
       if (e.key === "Enter") {
-        console.log("Enter Hit", disableButton, document.activeElement?.tagName);
         if (disableButton === false && document.activeElement?.tagName === "INPUT") {
           handleSubmit();
         }
@@ -37,8 +35,6 @@ export default function ModalNewAcctOne() {
       setDisableButton(true);
     }
   }
-
-
 
   function handleSubmit() {
     console.log("SUBMITTED");
