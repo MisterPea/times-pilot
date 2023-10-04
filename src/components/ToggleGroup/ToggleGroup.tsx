@@ -1,6 +1,5 @@
-import { useState, forwardRef, useImperativeHandle, Ref } from "react";
+import { useState, forwardRef, useImperativeHandle, Ref, useEffect } from "react";
 import ToggleSelector from "../ToggleSelector/ToggleSelector";
-import { JsxElement } from "typescript";
 
 interface ToggleGroupProps {
   previousSelections: string[];
@@ -25,7 +24,15 @@ const ToggleGroup = forwardRef(({ potentialSelections, previousSelections, autoS
   useImperativeHandle(ref, () => ({
     getValue: () => updatedSelections
   }));
+  // We have to listen to changes from outside the component and perform the update inside the component
+  useEffect(() => {
+    setUpdatedSelections([...previousSelections]);
+  }, [previousSelections]);
 
+  // We have to wait for a state update then we can call the autosaveCallback—else,the callback will fire before the state updates
+  useEffect(() => {
+    autoSaveCallback !== undefined && autoSaveCallback();
+  }, [updatedSelections, autoSaveCallback]);
   /**
    * Function to handle the updating of the local state: updatedSelections
    * @param {string} newLabel String of the toggle being called back
@@ -33,12 +40,11 @@ const ToggleGroup = forwardRef(({ potentialSelections, previousSelections, autoS
    */
   function handleToggle(newLabel: string) {
     const index = updatedSelections.indexOf(newLabel);
-    if (index >= 0) {
+    if (index > -1) {
       setUpdatedSelections((s) => s.filter((elem) => elem != newLabel));
     } else {
       setUpdatedSelections((s) => [...s, newLabel]);
     }
-    autoSaveCallback && autoSaveCallback();
   }
 
   return (
