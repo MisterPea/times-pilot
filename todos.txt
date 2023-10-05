@@ -1,0 +1,5 @@
+* regex for password alternates between true and false once true is 
+triggered and numbers are added at the end.
+
+* (Only on mobile) When a toggleSelector is pressed/de-pressed there is a slight flicker. 
+It must be something in the action/down state style conflicting with the selected style.
