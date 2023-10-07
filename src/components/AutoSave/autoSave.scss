@@ -3,29 +3,48 @@
 .auto_save {
   &_base {
     @include body-text;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     letter-spacing: var(--body-letter-spacing);
+    text-align: right;
+    display: inline-block;
+    position: relative;
   }
   &_inner {
-    height: 1.125rem;
-    // background-color: bisque;
-    position: relative;
     overflow: hidden;
-    &_wrapper {
-      position: absolute;
-      transition: top 300ms ease-in-out;
-      .is-saved {
+    height: 0.9rem;
+    width: fit-content;
+    position: relative;
+  }
+  &_inner_wrapper {
+    transition: transform 200ms ease;
+    &.saved {
+      transform: translateY(0);
+    }
+    &.is_saving {
+      transform: translateY(-1.9rem);
+    }
+    &.error {
+      transform: translateY(-3.85rem);
+    }
+    .condition {
+      opacity: 0;
+      margin-bottom: 1rem;
+      transform-origin: center, right;
+      transform: scale(0.8);
+      transition: opacity 500ms ease-in-out, transform 200ms ease, scale 500ms ease-in-out;
+      &.saved {
         color: var(--green-text);
-        transition: opacity 600ms ease-in-out;
       }
-      .saving {
+      &.is_saving {
         color: var(--accent-blue);
-        transition: opacity 600ms ease-in-out;
-        margin: 20px 0;
       }
-      .error {
+      &.error {
         color: var(--error);
-        transition: opacity 600ms ease-in-out;
+      }
+
+      &.active {
+        opacity: 1;
+        transform: scale(1);
       }
     }
   }
