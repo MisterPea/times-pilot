@@ -1,4 +1,5 @@
-import { useState, forwardRef, useImperativeHandle, Ref, useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, forwardRef, useImperativeHandle, Ref, useEffect, useRef, memo } from "react";
 import ToggleSelector from "../ToggleSelector/ToggleSelector";
 
 interface ToggleGroupProps {
@@ -17,13 +18,15 @@ interface ToggleGroupProps {
  * @param {Object} props.ref Reference to the imperativeHandle handling the date between components.
  * @returns {JsxElement}
  */
-const ToggleGroup = forwardRef(({ potentialSelections, previousSelections, autoSaveCallback }: ToggleGroupProps, ref) => {
+const ToggleGroupBase = forwardRef(({ potentialSelections, previousSelections, autoSaveCallback }: ToggleGroupProps, ref) => {
   const [updatedSelections, setUpdatedSelections] = useState([...previousSelections]);
+  const oneClickRef = useRef<boolean>(false);
 
   // Expose updateSelections
   useImperativeHandle(ref, () => ({
     getValue: () => updatedSelections
   }));
+
   // We have to listen to changes from outside the component and perform the update inside the component
   useEffect(() => {
     setUpdatedSelections([...previousSelections]);
@@ -31,14 +34,18 @@ const ToggleGroup = forwardRef(({ potentialSelections, previousSelections, autoS
 
   // We have to wait for a state update then we can call the autosaveCallback—else,the callback will fire before the state updates
   useEffect(() => {
-    autoSaveCallback !== undefined && autoSaveCallback();
-  }, [updatedSelections, autoSaveCallback]);
+    if (oneClickRef.current === true) {
+      autoSaveCallback !== undefined && autoSaveCallback();
+    }
+  }, [updatedSelections]);
+
   /**
    * Function to handle the updating of the local state: updatedSelections
    * @param {string} newLabel String of the toggle being called back
    * @return void
    */
   function handleToggle(newLabel: string) {
+    oneClickRef.current = true;
     const index = updatedSelections.indexOf(newLabel);
     if (index > -1) {
       setUpdatedSelections((s) => s.filter((elem) => elem != newLabel));
@@ -60,6 +67,6 @@ const ToggleGroup = forwardRef(({ potentialSelections, previousSelections, autoS
   );
 });
 
-ToggleGroup.displayName = 'ToggleGroup';
-
+ToggleGroupBase.displayName = 'ToggleGroup';
+const ToggleGroup = memo(ToggleGroupBase);
 export default ToggleGroup;
