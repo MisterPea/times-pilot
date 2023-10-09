@@ -1,0 +1,79 @@
+@import "../../style/mixins.scss";
+
+.toggle_switch {
+  &-base {
+    height: 1rem;
+    width: 1.75rem;
+    position: relative;
+    border: 2px solid var(--main-dark);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    transition: border-color 300ms ease-in-out;
+    &.--paused {
+      border-color: #a9a9a9;
+    }
+    &.--active {
+      border-color: var(--main-dark);
+    }
+  }
+  &-button {
+    height: 0.5rem;
+    width: 0.5rem;
+    border-radius: 50%;
+    margin: 0 0.125rem;
+    transition: transform 400ms cubic-bezier(0.5, 0.9, 0, 1.35);
+    &.--paused {
+      transform: translateX(0.05rem);
+      background-color: #979797;
+    }
+    &.--active {
+      transform: translateX(0.7rem);
+      background-color: var(--green-text);
+    }
+  }
+}
+
+.pause_email_button {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 0.5px solid var(--lightest-text);
+  border-radius: .5rem;
+  width: fit-content;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  background-color: #f3f2ef82;
+  &-text_wrap {
+    @include body-text;
+    letter-spacing: var(--body-letter-spacing);
+    font-size: 1rem;
+    position: relative;
+    flex-shrink: 0;
+    width: 12rem;
+    height: 1rem;
+    margin-bottom: 2px;
+  }
+
+  &-text--active {
+    color: var(--green-text);
+    position: absolute;
+    opacity: 1;
+    transition: opacity 400ms ease;
+    &:not(.active) {
+      opacity: 0;
+    }
+  }
+
+  &-text--paused {
+    color: var(--lightest-text);
+    position: absolute;
+    opacity: 1;
+    transition: opacity 400ms ease;
+    &:not(.active){
+      opacity: 0;
+    }
+  }
+}
