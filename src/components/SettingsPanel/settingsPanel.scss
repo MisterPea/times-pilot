@@ -1,0 +1,42 @@
+@import "../../style/mixins.scss";
+
+.settings_panel {
+  &-close_button-wrap {
+    display: flex;
+    justify-content: flex-end;
+  
+  }
+  .close_button {
+    margin-right: -2.75rem; // tablet
+    margin-bottom: -0.5rem;
+    margin-top: 0.25rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    background: none;
+    &:hover {
+      svg {
+        color: var(--next-main-dark);
+      }
+    }
+    svg {
+      height: 100%;
+      width: 100%;
+      color: var(--main-dark);
+      transition: color 200ms ease;
+    }
+  }
+  > * {
+    margin: 1.5rem 0;
+  }
+  > :first-child {
+    margin: 0;
+  }
+  > :last-child {
+    margin-top: 4rem;
+  }
+  background-color: var(--white);
+  @include small--768px-and-up {
+    max-width: 34rem;
+    padding:0 3rem 3rem;
+  }
+}
