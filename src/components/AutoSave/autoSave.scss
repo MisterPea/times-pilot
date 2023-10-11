@@ -4,8 +4,7 @@
   &_base {
     @include body-text;
     font-size: 0.75rem;
-    letter-spacing: var(--body-letter-spacing);
-    text-align: right;
+    text-align: center;
     display: inline-block;
     position: relative;
   }
@@ -16,7 +15,7 @@
     position: relative;
   }
   &_inner_wrapper {
-    transition: transform 200ms ease;
+    transition: transform 500ms ease;
     &.saved {
       transform: translateY(0);
     }
@@ -29,9 +28,9 @@
     .condition {
       opacity: 0;
       margin-bottom: 1rem;
-      transform-origin: center, right;
+      transform-origin: center,left;
       transform: scale(0.8);
-      transition: opacity 500ms ease-in-out, transform 200ms ease, scale 500ms ease-in-out;
+      transition: opacity 500ms ease-out, transform 500ms ease-out, scale 500ms ease-out;
       &.saved {
         color: var(--green-text);
       }

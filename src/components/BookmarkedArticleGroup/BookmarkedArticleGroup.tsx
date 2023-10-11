@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import BookmarkedArticle from "../BookmarkedArticle/BookmarkedArticle";
 import Label from "../Label/Label";
 
-type Bookmark = {
+export type Bookmark = {
   id: string,
   date: string,
   title: string,

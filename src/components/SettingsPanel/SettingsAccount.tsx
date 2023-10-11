@@ -20,7 +20,7 @@ interface SettingsElementProps {
 function SettingsElement({ label, content, onClickAction }: SettingsElementProps) {
   return (
     <button onClick={onClickAction} className="settings_block-sections-input_button-element">
-      <h5>{label}</h5>
+      <h4>{label}</h4>
       <div className="settings_block-sections-input_button-mock_input">
         <p className="settings_block-sections-input_button-text">{content}</p>
         <p className="settings_block-sections-input_button-edit">Edit</p>

@@ -4,22 +4,22 @@ import TextButtonHTML from "../TextButtonHTML/TextButtonHTML";
 import ToggleGroup from "../ToggleGroup/ToggleGroup";
 import ModalBlank from "./ModalBlank";
 import MainButtonHTML from "../MainButtonHTML/MainButtonHTML";
+import potentialSections from "../../helpers/newsSections"; // sections list
 
 interface ModalNewAcctTwoProps {
   userName: string;
 }
 export default function ModalNewAcctTwo({ userName }: ModalNewAcctTwoProps) {
   const sectionRef = useRef<{ getValue: () => string[]; } | null>(null);
-  const potentialSections = ["Arts", "Automobiles", "Books", "Business", "Climate", "Cooking", "Education", "Fashion", "Food", "Health", "Home", "Jobs", "Magazine", "Movies", "National", "NY Region", "Obituaries", "Opinion", "Politics", "Real Estate", "Science", "Sports", "Sunday Review", "Technology", "Theater", "T-Mag", "Travel", "Upshot", "US", "World"];
   const [showSelectAll, setShowSelectAll] = useState<boolean>(true);
   const [prevSelectionsTemp, setPrevSelectionsTemp] = useState<string[]>([]);
+  const chosenSections = () => sectionRef.current?.getValue() ?? [];
 
   function getSectionValues() {
-    const chosenSections = sectionRef.current?.getValue() ?? [];
-    if (chosenSections?.length > 0) {
+    if (chosenSections().length > 0) {
       setShowSelectAll(false);
     } else {
-      setShowSelectAll(true)
+      setShowSelectAll(true);
     }
   }
 
@@ -34,8 +34,13 @@ export default function ModalNewAcctTwo({ userName }: ModalNewAcctTwoProps) {
     setShowSelectAll((s) => !s);
   }
 
+  function handleSubmit() {
+    console.log(chosenSections());
+  }
+
   return (
-    <ModalBlank closeDestination={getSectionValues}>
+    // we should automatically submit upon close, if nothing is chosen, we should selectAll
+    <ModalBlank closeDestination={handleSubmit}>
       <div className="modal_main_new_acct">
         <div className="modal_main_new_acct-headline_wrap">
           <Label label={`Everything Checks Out, ${userName}`} size="md" />
@@ -56,7 +61,7 @@ export default function ModalNewAcctTwo({ userName }: ModalNewAcctTwoProps) {
           </div>
         </div>
         <div className="modal_main_new_acct-submit_button_wrap">
-          <MainButtonHTML label="Make it so!" linkCallback={() => {}} disabled={showSelectAll}/>
+          <MainButtonHTML label="Make it so!" linkCallback={handleSubmit} disabled={showSelectAll} />
         </div>
       </div>
     </ModalBlank>

@@ -53,7 +53,6 @@
   // label
   &_content {
     line-height: normal;
-    letter-spacing: var(--body-letter-spacing);
     font-size: 1.25rem;
     color: var(--white);
     @include body-text;

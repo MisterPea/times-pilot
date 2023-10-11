@@ -1,5 +1,3 @@
-import { useEffect, useRef } from "react";
-
 interface AutoSaveProps {
   saving: boolean;
   error: boolean;
@@ -7,9 +5,10 @@ interface AutoSaveProps {
 
 export default function AutoSave({ saving, error }: AutoSaveProps) {
 
+  // Convenience function to render classNames
   function combineClass() {
     const baseClass = ['auto_save_inner_wrapper'];
-    if (saving) {
+    if (saving && !error) {
       baseClass.push('is_saving');
     }
     else if (error) {
@@ -19,7 +18,7 @@ export default function AutoSave({ saving, error }: AutoSaveProps) {
       baseClass.push('saved');
     }
     return baseClass.join(' ');
-  } 
+  }
 
   return (
     <div className="auto_save_base">
@@ -27,7 +26,7 @@ export default function AutoSave({ saving, error }: AutoSaveProps) {
         <ul
           className={combineClass()}>
           <li className={`condition saved ${!saving && !error ? "active" : ""}`}>• All Changes Saved</li>
-          <li className={`condition is_saving ${saving ? "active" : ""}`}>• Saving...</li>
+          <li className={`condition is_saving ${saving && !error ? "active" : ""}`}>• Saving...</li>
           <li className={`condition error ${error ? "active" : ""}`}>• Changes Not Saved!</li>
         </ul>
       </div>

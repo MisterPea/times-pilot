@@ -2,13 +2,9 @@
 
 .bookmarked_article {
   display: flex;
-  margin: 0.5rem 1rem;
+  margin: 0.5rem 0;
   position: relative;
   transform-origin: top;
-  // &.remove_top {
-  // animation: minimizeArticle 300ms ease-in forwards;
-  // animation-delay: 190ms;
-  // }
   .delete_overlay {
     background-color: rgb(255, 255, 255);
     position: absolute;
@@ -62,13 +58,14 @@
       @include headline-text;
       color: var(--main-dark);
       font-size: 1.05rem;
+      line-height: 1.25rem;
       margin: 4px 0;
     }
     p {
       @include body-text;
-      letter-spacing: var(--body-letter-spacing);
       color: var(--lightest-text);
       font-size: 0.925rem;
+      line-height: 1.15rem;
     }
     p.date {
       font-size: 0.6rem;
@@ -83,7 +80,11 @@
       height: 2rem;
       background-color: var(--error);
       border-radius: 1rem;
+      svg{
+        margin-top: 0.115rem;
+      }
     }
+  
   }
 }
 

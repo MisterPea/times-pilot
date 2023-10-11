@@ -101,7 +101,6 @@
       @include body-text;
       font-size: 1rem;
       line-height: 1.3125rem; /* 131.25% */
-      letter-spacing: var(--body-letter-spacing);
       color: var(--next-main-dark);
     }
     .icon_wrap {
@@ -165,9 +164,7 @@
       @include body-text;
       font-size: 1rem;
       line-height: 1.3125rem; /* 131.25% */
-      letter-spacing: var(--body-letter-spacing);
       color: var(--next-main-dark);
-
     }
   }
   &_content--bottom {

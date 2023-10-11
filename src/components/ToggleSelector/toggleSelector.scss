@@ -14,7 +14,6 @@
     font-size: 1.05rem;
     padding: 0.3rem 0.6rem;
     @include body-text;
-    letter-spacing: var(--body-letter-spacing);
     transition: all 200ms ease-in;
   }
   &.selected {

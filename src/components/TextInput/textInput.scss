@@ -46,7 +46,6 @@
 
   label {
     @include body-text;
-    letter-spacing: var(--body-letter-spacing);
     position: absolute;
     color: var(--lightest-text);
     font-size: 1.25rem;
@@ -59,7 +58,6 @@
   }
   input {
     @include body-text;
-    letter-spacing: var(--body-letter-spacing);
     color: var(--main-dark);
     border: none;
     width: 100%;
@@ -95,7 +93,6 @@
   .error-text {
     color: var(--error);
     @include body-text;
-    letter-spacing: var(--body-letter-spacing);
     font-size: 0.7rem;
     padding-left: 0.55rem;
     padding-top: 0.25rem;

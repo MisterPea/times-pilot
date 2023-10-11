@@ -8,7 +8,6 @@
   overflow: hidden;
   p {
     @include body-text;
-    letter-spacing: var(--body-letter-spacing);
     color: var(--white);
     font-size: 1rem;
     padding: 0 1.25rem;

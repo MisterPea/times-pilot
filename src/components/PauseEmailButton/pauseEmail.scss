@@ -48,11 +48,10 @@
   background-color: #f3f2ef82;
   &-text_wrap {
     @include body-text;
-    letter-spacing: var(--body-letter-spacing);
     font-size: 1rem;
     position: relative;
     flex-shrink: 0;
-    width: 12rem;
+    width: 12.25rem;
     height: 1rem;
     margin-bottom: 2px;
   }

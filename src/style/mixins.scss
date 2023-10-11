@@ -2,27 +2,49 @@
   font-family: museo-slab-rounded, sans-serif;
   font-weight: 500;
   font-style: normal;
+  letter-spacing: 0.025rem;
 }
 
 @mixin body-text {
-  font-family: forma-djr-display, sans-serif;
-  font-weight: 500;
+  // font-family: forma-djr-display, sans-serif;
+  // font-weight: 500;
+  // font-style: normal;
+  font-family: "forma-djr-micro";
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.025rem;
+}
+
+@mixin headline-text-black {
+  // font-family: forma-djr-display, sans-serif;
+  // font-weight: 900;
+  // font-style: normal;
+  font-family: "forma-djr-micro", sans-serif;
+  font-weight: 900;
   font-style: normal;
 }
 
 // media queries
 @mixin small--768px-and-up {
-  @media (min-width: 768px) { @content; }
+  @media (min-width: 768px) {
+    @content;
+  }
 }
 
 @mixin med--960px-and-up {
-@media (min-width: 960px) { @content; }
+  @media (min-width: 960px) {
+    @content;
+  }
 }
 
 @mixin lg--1280px-and-up {
-@media (min-width: 1280px) { @content; }
+  @media (min-width: 1280px) {
+    @content;
+  }
 }
 
 @mixin xl--1920px-and-up {
-@media (min-width: 1920px) { @content; }
+  @media (min-width: 1920px) {
+    @content;
+  }
 }

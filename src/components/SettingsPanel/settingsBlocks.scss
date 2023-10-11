@@ -19,6 +19,9 @@
       position: relative;
     }
   }
+  &-center_button {
+    margin: 0 auto;
+  }
 }
 
 .settings_block-sections-input_button {
@@ -31,10 +34,16 @@
   &-element {
     width: 100%;
     @include body-text;
-    letter-spacing: var(--body-letter-spacing);
     color:var(--lightest-text);
     background: none;
     text-align: left;
+    h4 {
+      font-size: 0.9rem;
+    }
+  }
+  &-element.minimal {
+    margin-left: 0.5rem;
+    margin-bottom: 1.5rem;
   }
   &-mock_input {
     display: flex;
@@ -43,17 +52,42 @@
     justify-content: space-between;
     border-bottom: 1px solid var(--lightest-text);
     padding: 0.25rem 0;
-
+    &.minimal {
+      border: none;
+    }
     p[class$="-text"]{
       padding-left: 0.75rem;
       color: var(--main-dark);
-      font-size: 1.125rem;
+      font-size: 1.25rem;
+    }
+    p[class$="-text--lighter"]{
+      padding-left: 0.75rem;
+      color: var(--lightest-text);
+      font-size: 1.25rem;
     }
     p[class$="-edit"]{
       color: var(--next-main-dark);
       background-color:#dcdcdc;
       padding: 0.125rem 0.5rem;
       border-radius: 0.25rem;
+      font-size: 1rem;
+      align-self:center;
+    }
+  }
+}
+
+.settings_portal{
+  &-button_wrap {
+    margin-top: 2rem;
+  }
+  &-delete_cta {
+    @include body-text;
+    color: var(--lightest-text);
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+    >span {
+      color: var(--error);
+      font-style: italic;
     }
   }
 }

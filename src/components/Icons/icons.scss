@@ -16,6 +16,7 @@
       }
     }
     svg {
+      margin-top: 0.125rem;
       height: 1.1rem;
       width: 1.1rem;
     }
@@ -35,7 +36,7 @@
       }
     }
     &_bottom {
-      color: var(--error);
+      color: var(--lightest-text);
     }
   }
 }

@@ -3,7 +3,6 @@
 .settings_header {
   h1 {
     @include body-text;
-    letter-spacing: var(--body-letter-spacing);
     font-size: 1.8rem;
     color: var(--main-dark);
     margin: 1.88rem 0;

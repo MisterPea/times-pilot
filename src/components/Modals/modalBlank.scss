@@ -12,6 +12,7 @@
   align-items: center;
   .modal_middle {
     background-color: var(--white);
+    z-index: 1;
     width: 95%;
     border-radius: 0.3rem;
     padding: 1.75rem;
@@ -24,6 +25,7 @@
     }
     .close_button {
       position: absolute;
+      z-index: 2;
       right: 0.2rem;
       top: 0.2rem;
       height: 1.5rem;
@@ -40,6 +42,54 @@
         color: var(--main-dark);
         transition: color 200ms ease;
       }
+    }
+  }
+}
+
+// Headline version
+.modal_headline {
+  background-color: var(--darkest);
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  padding: 1.5rem 0;
+  border-top-right-radius: 0.3rem;
+  border-top-left-radius: 0.3rem;
+  h1 {
+    font-size: 1.875rem;
+    text-align: center;
+    @include headline-text-black;
+  }
+  h6 {
+    @include body-text;
+    color: rgb(179, 179, 179);
+    letter-spacing: 0.1875rem;
+    text-align: center;
+    font-size: 0.625rem;
+    margin-top: -0.125rem;
+    text-transform: uppercase;
+  }
+  &-text_white {
+    color:var(--white);
+  }
+  &-text_yellow {
+    color:var(--accent-yellow);
+  }
+}
+
+
+.modal_middle.headline {
+  padding: 0;
+  border-radius: 0.3rem;
+  .close_button {
+    svg {
+      color: var(--white);
+    }
+  }
+  .close_button:hover {
+    svg {
+      color:var(--white-three);
     }
   }
 }
