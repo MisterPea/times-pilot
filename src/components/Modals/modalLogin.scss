@@ -1,0 +1,84 @@
+@import "../../style/mixins.scss";
+
+.modal_login {
+  padding: 1rem 1rem 0;
+  position: relative;
+  z-index: -200;
+  @include small--768px-and-up {
+    padding: 2rem 2rem 0;
+  }
+  header {
+    text-align: center;
+  }
+  &-inputs {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  &-forgot_password {
+    background: none;
+    @include body-text;
+    color: var(--lightest-text);
+    float: right;
+    padding-top: 0.25rem;
+    padding-right: 0.25rem;
+    text-decoration: underline;
+    text-decoration-color: rgba(193, 193, 193, 0);
+    transition: text-decoration-color 400ms ease;
+    &:hover {
+      text-decoration-color: rgba(193, 193, 193, 0.9);
+    }
+  }
+  &-lower_group {
+    margin: 4rem 0 1rem;
+    @include small--768px-and-up {
+      margin: 3rem 0 1rem;
+    }
+  }
+  &-create_acct {
+    background: none;
+    @include body-text;
+    color: var(--lightest-text);
+    font-size: 1rem;
+    width: 100%;
+    margin-bottom: 2em;
+    span {
+      font-style: italic;
+      text-decoration: underline;
+      text-decoration-color: rgb(193, 193, 193);
+    }
+  }
+  &-error_wrap {
+    @include body-text;
+    background-color: var(--warning);
+    color:var(--white);
+    width: fit-content;
+    margin: 1rem auto -1rem;
+    max-height: 0px;
+    transform-origin: center;
+    transition: max-height 500ms ease;
+    border-radius: 0.3rem;
+    &.error {
+      max-height: 5rem;
+    }
+    p {
+      overflow: hidden;
+      padding: 1rem 2rem;
+    }
+  }
+}
+
+// login modal action
+// .modal_actions {
+//   height: 100%;
+//   width: 100%;
+//   background-color: rgba(255, 255, 255, 0.376);
+//   position: absolute;
+//   z-index: -1;
+//   border-radius: 0.3rem;
+//   top:0;
+//   backdrop-filter: blur(4px);
+//   // opacity: 0;
+//   // pointer-events: none;
+// }
