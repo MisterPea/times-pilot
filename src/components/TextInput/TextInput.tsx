@@ -72,6 +72,11 @@ export default function TextInput({
   function testInput() {
     let appliedRegex = regex[regexTest] || new RegExp(regexTest!);
 
+    /*  This is resetting where we're searching from.
+    When we get a true from .test it sets lastIndex to that index thats true.
+    Subsequent entries will then alternate between true and false because 
+    it's not testing from index 0  */
+    appliedRegex.lastIndex = 0;
     const isValid = appliedRegex.test(localInputVal);
     setHasValidInput(isValid);
     if (validInputCallback) {

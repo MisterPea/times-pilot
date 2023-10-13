@@ -7,7 +7,6 @@ export default function InputWrap() {
 
   return (
     <>
-      {/* <div>{topLevel}</div> */}
       <TextInput type="password" label="My Input" parentSetState={setTopLevel} regexTest="password" />
     </>
   );

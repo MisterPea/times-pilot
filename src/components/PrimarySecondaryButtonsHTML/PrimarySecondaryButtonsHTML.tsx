@@ -11,6 +11,7 @@ interface PrimarySecondaryButtonsProps {
   fullWidth?: boolean;
   disabled?: boolean;
 }
+
 export default function PrimarySecondaryButtonsHTML({
   primaryLabel = "Submit",
   primaryLink,

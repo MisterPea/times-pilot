@@ -52,32 +52,45 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1;
-  padding: 1.5rem 0;
+  z-index: 10;
+  padding: 0.25rem 0 0.75rem;
   border-top-right-radius: 0.3rem;
   border-top-left-radius: 0.3rem;
+  @include small--768px-and-up {
+    padding: 0.85rem 0 1.5rem;
+  }
   h1 {
-    font-size: 1.875rem;
-    text-align: center;
     @include headline-text-black;
+    font-size: 1.5rem;
+    padding-left: 2rem;
+    @include small--768px-and-up {
+      padding: 0;
+      font-size: 1.875rem;
+      text-align: center;
+    }
   }
   h6 {
     @include body-text;
     color: rgb(179, 179, 179);
-    letter-spacing: 0.1875rem;
-    text-align: center;
-    font-size: 0.625rem;
-    margin-top: -0.125rem;
     text-transform: uppercase;
+    padding-left: 2rem;
+    font-size: 0.55rem;
+    letter-spacing: 0.125rem;
+    @include small--768px-and-up {
+      padding: 0;
+      letter-spacing: 0.1875rem;
+      text-align: center;
+      font-size: 0.625rem;
+      margin-top: -0.125rem;
+    }
   }
   &-text_white {
-    color:var(--white);
+    color: var(--white);
   }
   &-text_yellow {
-    color:var(--accent-yellow);
+    color: var(--accent-yellow);
   }
 }
-
 
 .modal_middle.headline {
   padding: 0;
@@ -89,7 +102,10 @@
   }
   .close_button:hover {
     svg {
-      color:var(--white-three);
+      color: var(--white-three);
     }
+  }
+  .text_button_base {
+    width: unset;
   }
 }
