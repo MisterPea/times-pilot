@@ -17,7 +17,7 @@ export default function SettingsPortalEmail({ username }: SettingsPortalEmailPro
   return (
     <SettingsPortalBlank headline={`Sorry to See You Go, ${username}!`} backCallback={() => { }}>
       <p className="settings_portal-delete_cta">To ensure this in not in error, type out <span>Delete My Account</span> below.</p>
-      <TextInput label="Delete My Account" type="email" regexTest="Delete My Account" validInputCallback={setValidInput} />
+      <TextInput label="Delete My Account" type="email" regexTest={/^Delete My Account$/} validInputCallback={setValidInput} />
       <div className="settings_portal-button_wrap">
         <PrimarySecondaryButtonsHTML
           primaryLink={handleSubmitNewUsername}

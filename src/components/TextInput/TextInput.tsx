@@ -5,7 +5,7 @@ import { BiShowAlt, BiHide } from 'react-icons/bi';
 interface TextInputProps {
   type?: "email" | "text" | "password";
   label: string;
-  regexTest?: "email" | "password" | string;
+  regexTest?: "email" | "password" | string | RegExp;
   parentSetState?: (newValue: string) => void;
   foundError?: boolean;
   errorText?: string;
@@ -87,7 +87,7 @@ export default function TextInput({
   return (
     <div className="text_input">
       <label className={`${localInputVal.length ? 'has-input' : ''}${localError ? 'error' : ''}`}>{label}</label>
-      {type === 'password' && <button onClick={() => setShowPassword((s) => !s)} className='show-password'>
+      {type === 'password' && <button tabIndex={-1} onClick={() => setShowPassword((s) => !s)} className='show-password'>
         {showPassword ? <BiHide /> : <BiShowAlt />}
       </button>}
       <input
