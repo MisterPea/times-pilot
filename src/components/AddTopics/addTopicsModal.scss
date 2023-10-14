@@ -1,0 +1,43 @@
+@import "../../style/mixins.scss";
+
+.modal_add_topics {
+  &-header {
+    h1 {
+      @include headline-text;
+      color: var(--main-dark);
+      font-size: 1.5rem;
+      margin: 1rem 0 1.5rem;
+    }
+    p {
+      @include body-text;
+      color: var(--lightest-text);
+      size: 1rem;
+      text-align: center;
+      max-width: unset;
+      margin: 0 auto;
+      @include small--768px-and-up {
+        max-width: 70%;
+      }
+    }
+  }
+  &-toggle_wrap {
+    margin: 2rem 0;
+  }
+  &-button_wrap {
+    margin: 0 auto 1rem;
+    width: fit-content;
+    &:has(p){
+      margin-bottom: 0;
+    }
+    button {
+      margin: 0 auto
+    }
+    p {
+      @include body-text;
+      text-align: center;
+      padding-top: 1.5rem;
+      color: var(--error);
+      font-size: 1rem;
+    }
+  }
+}
