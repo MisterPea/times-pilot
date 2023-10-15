@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ArticleButtonMobile from "./ArticleButtonMobile";
 import ArticleButtonNonMobile from "./ArticleButtonNonMobile";
 
-type Article = {
+export type Article = {
   section: string;
   subsection: string;
   title: string;
@@ -54,9 +54,7 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
   const [rankedArticles, setRankedArticles] = useState<Article[]>([]);
   const [isOpen, setIsOpen] = useState<string | null>(null); // current swipes that are open
 
-  function handleOpenSwipe(id: string) {
-
-  }
+  function handleOpenSwipe(id: string) { }
   function handleClosedSwipe() { }
 
   useEffect(() => {
@@ -73,7 +71,7 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
       seenArticles.push([i, titleVal + summaryVal]);
     }
     // Sort longest title/summary to shortest
-    seenArticles.sort(([a, b], [c, d]) => d - b);
+    seenArticles.sort(([i_a, b], [i_c, d]) => d - b);
 
     // Get the top 4 longest articles
     const truncated = seenArticles.slice(0, 4).map((elem) => elem[0]);
@@ -99,6 +97,7 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
     for (let i = 0; i < truncated.length; i += 1) {
       articles[truncated[i]].addClass = toAddToClass[i].join(' ');
     }
+
     setRankedArticles(articles);
   }, [articles]);
 
@@ -117,8 +116,6 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
     }
     return { url: smallestObject.url, alt: smallestObject.alt };
   }
-
-
 
   return (
     <>

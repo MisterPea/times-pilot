@@ -1,22 +1,26 @@
 import { useEffect, useRef, useState } from "react";
 import SectionButton from "../SectionButton/SectionButton";
+import { useRouter } from "next/router";
 
 interface SectionGroupProps {
   sections: string[],
   startingSection: string;
 }
-export default function SectionGroup({ sections, startingSection='us' }: SectionGroupProps) {
+export default function SectionGroup({ sections, startingSection = 'us' }: SectionGroupProps) {
   const [currentSection, setCurrentSection] = useState<string>(startingSection);
   const ulRef = useRef<HTMLUListElement | null>(null);
+  const router = useRouter();
 
   function selectSection(label: string) {
     setCurrentSection(label.toLowerCase());
+    router.push(label.toLowerCase())
+
   }
 
   useEffect(() => {
-    if(ulRef.current){
-      const activeSection = ulRef.current.querySelector('.selected')
-      activeSection!.scrollIntoView({ behavior: "smooth", inline: "nearest" })
+    if (ulRef.current) {
+      const activeSection = ulRef.current.querySelector('.selected');
+      activeSection!.scrollIntoView({ behavior: "smooth", inline: "nearest", block: "end" });
     }
   }, [currentSection]);
 

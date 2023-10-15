@@ -2,8 +2,11 @@
 
 .section_group_base {
   height: fit-content;
-  overflow-y: hidden;
+  // overflow-y: hidden;
   overflow-x: scroll;
+  top:0;
+  position: sticky;
+  z-index: 10;
   border-bottom: 1px solid #000000;
  
   &::-webkit-scrollbar {
