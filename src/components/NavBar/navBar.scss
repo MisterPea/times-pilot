@@ -1,0 +1,81 @@
+@import "../../style/mixins.scss";
+
+.site_header {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--darkest);
+  &-banner {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    @include small--768px-and-up {
+      padding: 0 1rem;
+    }
+  }
+  &-text_wrap {
+    @include small--768px-and-up {
+      margin: 0.125rem auto;
+    }
+    h1 {
+      @include headline-text-black;
+      font-size: 1.125rem;
+      padding-left: 2rem;
+      margin-top: -0.15rem;
+      @include small--768px-and-up {
+        font-size: 1.5rem;
+        text-align: center;
+        margin-top: -0.5rem;
+      }
+    }
+    h6 {
+      @include body-text;
+      color: rgb(179, 179, 179);
+      text-transform: uppercase;
+      padding-left: 2rem;
+      font-size: 0.425rem;
+      letter-spacing: 0.125rem;
+      margin-bottom: 0.15rem;
+      @include small--768px-and-up {
+
+        letter-spacing: 0.1875rem;
+        text-align: center;
+        font-size: 0.45rem;
+        margin-top: -0.125rem;
+      }
+    }
+    .-text_white {
+      color: var(--white);
+    }
+    .-text_yellow {
+      color: var(--accent-yellow);
+    }
+  }
+  &-user_icon {
+    // margin-right: 1rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    border: 1px solid var(--accent-yellow);
+    border-radius: 50%;
+    position: absolute;
+    z-index: 2;
+    right: 1rem;
+    background: none;
+
+    svg {
+      height: 90%;
+      width: 90%;
+      transform: translate(0.005rem, 0.07rem);
+      fill: #000;
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      background-color: var(--accent-yellow);
+      border-radius: 50%;
+      height: 90%;
+      width: 90%;
+      z-index: -1;
+      top: 0.075rem;
+    }
+  }
+}
