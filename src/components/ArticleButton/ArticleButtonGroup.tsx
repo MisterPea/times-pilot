@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ArticleButtonMobile from "./ArticleButtonMobile";
 import ArticleButtonNonMobile from "./ArticleButtonNonMobile";
+import AddTopicsOverlay from "./AddTopicsOverlay";
 
 export type Article = {
   section: string;
@@ -119,39 +120,41 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
 
   return (
     <>
-      <div className="article_group--base">
-        <ul className="article_group--ul">
-          {rankedArticles.map(({ title, abstract, url, multimedia, addClass, short_url }, index) => (
-            <>
-              <li key={`${index}-mobile`} className="article_group-mobile">
-                <ArticleButtonMobile
-                  headline={title}
-                  summary={abstract}
-                  imageURL={thumbnail(multimedia).url}
-                  url={url}
-                  bookmarked={false}
-                  toggleBookmarkCallback={() => { }}
-                  addTopicsCallback={() => { }}
-                  id={`${index}-${short_url}`}
-                  currentSwipe={isOpen}
-                  onSwipeOpen={setIsOpen}
-                />
-              </li>
-              <li key={`${index}-tablet`} className={`article_group-tablet${addClass ? ' ' + addClass : ''}`}>
-                <ArticleButtonNonMobile
-                  headline={title}
-                  summary={abstract}
-                  imageURL={thumbnail(multimedia).url}
-                  url={url}
-                  bookmarked={false}
-                  toggleBookmarkCallback={() => { }}
-                  addTopicsCallback={() => { }}
-                />
-              </li>
-            </>
-          ))}
-        </ul>
-      </div>
+      <AddTopicsOverlay>
+        <div className="article_group--base">
+          <ul className="article_group--ul">
+            {rankedArticles.map(({ title, abstract, url, multimedia, addClass, short_url }, index) => (
+              <>
+                <li key={`${index}-mobile`} className="article_group-mobile">
+                  <ArticleButtonMobile
+                    headline={title}
+                    summary={abstract}
+                    imageURL={thumbnail(multimedia).url}
+                    url={url}
+                    bookmarked={false}
+                    toggleBookmarkCallback={() => { }}
+                    addTopicsCallback={() => { }}
+                    id={`${index}-${short_url}`}
+                    currentSwipe={isOpen}
+                    onSwipeOpen={setIsOpen}
+                  />
+                </li>
+                <li key={`${index}-tablet`} className={`article_group-tablet${addClass ? ' ' + addClass : ''}`}>
+                  <ArticleButtonNonMobile
+                    headline={title}
+                    summary={abstract}
+                    imageURL={thumbnail(multimedia).url}
+                    url={url}
+                    bookmarked={false}
+                    toggleBookmarkCallback={() => { }}
+                    addTopicsCallback={() => { }}
+                  />
+                </li>
+              </>
+            ))}
+          </ul>
+        </div>
+      </AddTopicsOverlay>
     </>
   );
 };

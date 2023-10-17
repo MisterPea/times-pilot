@@ -1,4 +1,4 @@
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next/types';
 import ArticleButtonGroup, { Article } from '../src/components/ArticleButton/ArticleButtonGroup';
 import Navbar from '../src/components/NavBar/NavBar';
@@ -16,19 +16,20 @@ type SectionDataType = {
 
 interface SectionPageProps {
   data: SectionDataType;
+  route: string;
 }
 
-export default function SectionPage({ data }: SectionPageProps) {
+export default function SectionPage({ data, route }: SectionPageProps) {
+  const router = useRouter();
   // Filter out articles without a title or summary
   let articlesFiltered: Article[] = [];
-  console.log(data);
   if (data) {
     articlesFiltered = data.results.filter(({ title, abstract }) => title.length > 0 && abstract.length > 0);
   }
   return (
     <>
       <Navbar />
-      <SectionGroup sections={newsSections} startingSection="us" />
+      <SectionGroup sections={newsSections} startingSection={route}/>
       {data.results ? <ArticleButtonGroup articles={articlesFiltered} /> : <p>LOADING</p>}
     </>
   );
@@ -40,7 +41,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const data = await result.json();
   return {
     props: {
-      data
+      data,
+      route: context.query.section
     }
   };
 }

@@ -13,14 +13,15 @@ export default function SectionGroup({ sections, startingSection = 'us' }: Secti
 
   function selectSection(label: string) {
     setCurrentSection(label.toLowerCase());
-    router.push(label.toLowerCase())
-
+    router.push(label.toLowerCase());
   }
 
   useEffect(() => {
     if (ulRef.current) {
       const activeSection = ulRef.current.querySelector('.selected');
-      activeSection!.scrollIntoView({ behavior: "smooth", inline: "nearest", block: "end" });
+      window.setTimeout(() => {
+        activeSection!.scrollIntoView({ behavior: "smooth", inline: "start", block: "end" });
+      }, 0);
     }
   }, [currentSection]);
 
