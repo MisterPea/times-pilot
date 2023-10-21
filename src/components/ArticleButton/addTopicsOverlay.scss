@@ -1,0 +1,70 @@
+@import "../../style/mixins.scss";
+
+.add_topics_overlay {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  backdrop-filter: blur(0px);
+  background-color: #26262600;
+  overflow: auto;
+  &.show {
+    animation: showModalBackground 500ms ease forwards;
+  }
+  &.hide {
+    animation:hideModalBackground 400ms ease forwards;
+  }
+  &.show [class*="-inner"] {
+    animation: showModal 500ms ease forwards;
+  }
+  &.hide [class*="-inner"] {
+    animation: hideModal 400ms ease forwards;
+  }
+  &-inner {
+    opacity: 0;
+  }
+}
+body:has(.add_topics_overlay) {
+  overflow: hidden;
+}
+
+@keyframes showModalBackground {
+  0% {
+    background-color: #26262600;
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    background-color: #2626268a;
+    backdrop-filter: blur(3px);
+  }
+}
+
+@keyframes hideModalBackground {
+  0% {
+    background-color: #2626268a;
+    backdrop-filter: blur(3px);
+  }
+  100% {
+    background-color: #26262600;
+    backdrop-filter: blur(0px);
+  }
+}
+
+@keyframes showModal {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes hideModal {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
