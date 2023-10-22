@@ -1,31 +1,45 @@
 @import "../../style/mixins.scss";
 
+.add_topics_overlay-outer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+}
+.add_topics_overlay-inner {
+  position: relative;
+  z-index: 1000;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: scroll;
+  &.show {
+    animation: showModal 500ms ease forwards;
+  }
+  &.hide {
+    animation: hideModal 400ms ease forwards;
+  }
+}
+
 .add_topics_overlay {
   position: fixed;
-  z-index: 1000;
+  z-index: 100;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   backdrop-filter: blur(0px);
-  background-color: #26262600;
-  overflow: auto;
   &.show {
     animation: showModalBackground 500ms ease forwards;
   }
   &.hide {
-    animation:hideModalBackground 400ms ease forwards;
-  }
-  &.show [class*="-inner"] {
-    animation: showModal 500ms ease forwards;
-  }
-  &.hide [class*="-inner"] {
-    animation: hideModal 400ms ease forwards;
-  }
-  &-inner {
-    opacity: 0;
+    animation: hideModalBackground 400ms ease forwards;
   }
 }
+
 body:has(.add_topics_overlay) {
   overflow: hidden;
 }

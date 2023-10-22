@@ -11,11 +11,13 @@ interface ArticleButtonMobileProps {
   summary: string;
   url: string;
   bookmarked: boolean;
-  addTopicsCallback: () => void;
+  addTopicsCallback: (value: { title: string, topics: string[]; }) => void;
   toggleBookmarkCallback: () => void;
   onSwipeOpen: any;
   currentSwipe: string | null;
   id: string;
+  byline: string;
+  topics: (string[])[];
 }
 
 export default function ArticleButtonMobile({
@@ -28,7 +30,9 @@ export default function ArticleButtonMobile({
   toggleBookmarkCallback,
   onSwipeOpen,
   currentSwipe,
-  id
+  id,
+  byline,
+  topics,
 }: ArticleButtonMobileProps) {
 
   const mainArticleRef = useRef<HTMLElement | null>(null);
@@ -82,6 +86,19 @@ export default function ArticleButtonMobile({
     scrollTimeoutRef.current = setTimeout(() => {
       scrolling = false;
     }, 300);
+  }
+
+  const regexPattern = /(?:By|,|and)\s+/gi;
+  const allTopics = byline.split(regexPattern).filter(Boolean);
+  allTopics.push(...topics.flat());
+
+  function handleShowTopics() {
+    const articleTopics = {
+      title: headline,
+      topics: allTopics,
+    };
+    // Calling back on button click
+    addTopicsCallback(articleTopics);
   }
 
   function getTranslateX(element: HTMLElement) {
@@ -221,7 +238,7 @@ export default function ArticleButtonMobile({
         </div>
         <div className="article_mobile_content-right">
           <div className="article_mobile_content-right--icon_button">
-            <EditClipboardIcon callback={addTopicsCallback} />
+            <EditClipboardIcon callback={handleShowTopics} />
           </div>
         </div>
       </div>

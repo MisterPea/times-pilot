@@ -50,13 +50,10 @@ interface ArticleButtonGroupProps {
   setBookmark?: (newValue: Bookmark) => void;
 }
 
-
 export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps) {
   const [rankedArticles, setRankedArticles] = useState<Article[]>([]);
   const [isOpen, setIsOpen] = useState<string | null>(null); // current swipes that are open
-
-  function handleOpenSwipe(id: string) { }
-  function handleClosedSwipe() { }
+  const [titleAndTopics, setTitleAndTopics] = useState<{ title: string, topics: string[]; } | null>(null);
 
   useEffect(() => {
     // ONLY FOR 768px AND UP //
@@ -98,7 +95,6 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
     for (let i = 0; i < truncated.length; i += 1) {
       articles[truncated[i]].addClass = toAddToClass[i].join(' ');
     }
-
     setRankedArticles(articles);
   }, [articles]);
 
@@ -118,12 +114,28 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
     return { url: smallestObject.url, alt: smallestObject.alt };
   }
 
+  function handleHideTopics() {
+    setTitleAndTopics(null);
+  }
+
+  function handleShowTopics({ title, topics }: { title: string, topics: string[]; }) {
+    setTitleAndTopics({ title, topics });
+    console.log("title:", title, "topics:", topics);
+  }
+
   return (
     <>
-      <AddTopicsOverlay>
+      <AddTopicsOverlay
+        showModal={!!titleAndTopics?.topics.length}
+        title={titleAndTopics?.title || ''}
+        topics={titleAndTopics?.topics || []}
+        closeOverlay={handleHideTopics}
+
+      >
         <div className="article_group--base">
           <ul className="article_group--ul">
-            {rankedArticles.map(({ title, abstract, url, multimedia, addClass, short_url }, index) => (
+            {rankedArticles.map(({
+              title, abstract, url, multimedia, addClass, short_url, byline, des_facet, org_facet, per_facet, geo_facet }, index) => (
               <>
                 <li key={`${index}-mobile`} className="article_group-mobile">
                   <ArticleButtonMobile
@@ -133,10 +145,12 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
                     url={url}
                     bookmarked={false}
                     toggleBookmarkCallback={() => { }}
-                    addTopicsCallback={() => { }}
+                    addTopicsCallback={handleShowTopics}
                     id={`${index}-${short_url}`}
                     currentSwipe={isOpen}
                     onSwipeOpen={setIsOpen}
+                    byline={byline}
+                    topics={[des_facet, org_facet, per_facet, geo_facet]}
                   />
                 </li>
                 <li key={`${index}-tablet`} className={`article_group-tablet${addClass ? ' ' + addClass : ''}`}>
@@ -147,7 +161,9 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
                     url={url}
                     bookmarked={false}
                     toggleBookmarkCallback={() => { }}
-                    addTopicsCallback={() => { }}
+                    addTopicsCallback={handleShowTopics}
+                    byline={byline}
+                    topics={[des_facet, org_facet, per_facet, geo_facet]}
                   />
                 </li>
               </>

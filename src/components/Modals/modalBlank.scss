@@ -1,18 +1,15 @@
 @import "../../style/mixins.scss";
 
 .modal_base {
-  top: 0;
-  left: 0px;
-  right: 0;
-  bottom: 0;
   position: absolute;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  transform: translateY(-50%);
+  top: 50%;
+  max-height: 100%;
   .modal_middle {
+    flex: 1;
     background-color: var(--white);
     z-index: 1;
-    width: 95%;
+    margin: 0 2%;
     border-radius: 0.3rem;
     padding: 1.75rem;
     position: relative;

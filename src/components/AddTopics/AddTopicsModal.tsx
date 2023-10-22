@@ -9,9 +9,10 @@ interface AddTopicsModalProps {
   currentTopics: string[];
   savedTopics: string[];
   emailActive: boolean;
+  closeModal?: () => void;
 }
 
-export default function AddTopicsModal({ title, currentTopics, savedTopics, emailActive }: AddTopicsModalProps) {
+export default function AddTopicsModal({ title, currentTopics, savedTopics, emailActive, closeModal }: AddTopicsModalProps) {
   const [validInput, setValidInput] = useState<boolean>(false);
   const toggleGroupRef = useRef<{ getValue: () => string[]; } | null>(null);
   const toggleValues = () => toggleGroupRef.current?.getValue() || [];
@@ -28,8 +29,12 @@ export default function AddTopicsModal({ title, currentTopics, savedTopics, emai
 
   function handleAddTopic() { }
 
+  function handleCloseDestination() {
+    closeModal && closeModal();
+  }
+
   return (
-    <ModalBlank closeDestination={() => { }}>
+    <ModalBlank closeDestination={handleCloseDestination}>
       <header className="modal_add_topics-header">
         <Label label="Topics Related to:" size="sm" />
         <h1>{title}</h1>

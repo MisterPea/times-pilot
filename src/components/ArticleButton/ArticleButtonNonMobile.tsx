@@ -8,11 +8,25 @@ interface ArticleButtonMobileProps {
   summary: string;
   url: string;
   bookmarked: boolean;
-  addTopicsCallback: () => void;
+  addTopicsCallback: (value: { title: string, topics: string[]; }) => void;
   toggleBookmarkCallback: () => void;
+  byline: string;
+  topics: (string[])[];
 }
 
-export default function ArticleButtonNonMobile({ imageURL, headline, summary, url, bookmarked, addTopicsCallback, toggleBookmarkCallback }: ArticleButtonMobileProps) {
+export default function ArticleButtonNonMobile({ imageURL, headline, summary, url, bookmarked, addTopicsCallback, toggleBookmarkCallback, topics, byline }: ArticleButtonMobileProps) {
+  const regexPattern = /(?:By|,|and)\s+/gi;
+  const allTopics = byline.split(regexPattern).filter(Boolean);
+  allTopics.push(...topics.flat());
+
+  function handleShowTopics() {
+    const articleTopics = {
+      title: headline,
+      topics: allTopics,
+    };
+    // Calling back on button click
+    addTopicsCallback(articleTopics);
+  }
 
   return (
     <article
@@ -38,7 +52,7 @@ export default function ArticleButtonNonMobile({ imageURL, headline, summary, ur
       </div>
       <div className="article_tablet_content--bottom">
         <div className="icon_wrap">
-          <EditClipboardIcon callback={() => { }} />
+          <EditClipboardIcon callback={handleShowTopics} />
           <BookmarkIcon callback={() => { }} selected={bookmarked} />
         </div>
       </div>
