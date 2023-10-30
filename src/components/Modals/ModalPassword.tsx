@@ -6,7 +6,12 @@ import ModalBlank from "./ModalBlank";
 import TextButtonHTML from "../TextButtonHTML/TextButtonHTML";
 import { AnimatePresence, motion } from 'framer-motion';
 
-export default function ModalPassword() {
+interface ModalPasswordProps {
+  returnToSignIn: () => void;
+  createAccount: () => void;
+}
+
+export default function ModalPassword({ returnToSignIn, createAccount }: ModalPasswordProps) {
   const [validEmail, setValidEmail] = useState<boolean>(false);
   const [submit, setSubmit] = useState<boolean>(false);
   const clickRef = useRef<HTMLButtonElement | null>(null);
@@ -49,11 +54,14 @@ export default function ModalPassword() {
   function handleEmailSubmit() {
     console.log("HANDLE EMAIL SUBMIT:",);
     setSubmit(true);
-
   }
 
   function handleReturnToSignIn() {
-    console.log('RETURN TO SIGN IN');
+    returnToSignIn();
+  }
+
+  function handleCreateAccount() {
+    createAccount();
   }
 
   return (
@@ -110,7 +118,9 @@ export default function ModalPassword() {
                   primaryOutsideClickRef={clickRef}
                 />
               </div>
-              <button className="create_acct_button">
+              <button
+                onClick={handleCreateAccount}
+                className="create_acct_button">
                 <p>Don&apos;t have an account? <span>Create an account</span></p>
               </button>
             </motion.div>

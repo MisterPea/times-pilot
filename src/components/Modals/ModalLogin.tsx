@@ -1,21 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import Label from "../Label/Label";
 import PrimarySecondaryButtonsHTML from "../PrimarySecondaryButtonsHTML/PrimarySecondaryButtonsHTML";
 import TextInput from "../TextInput/TextInput";
 import ModalBlankHeadline from "./ModalBlankHeadline";
+import { AuthContext } from '../../db/Auth';
+import { Auth, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 interface ModalLoginProps {
   hasLoginError: boolean;
+  closeModal: () => void;
+  forgotPasswordCallback: () => void;
+  createAccount: () => void;
 }
 
-export default function ModalLogin({ hasLoginError }: ModalLoginProps) {
+/**
+ * Modal Login
+ * @param {Function} props.closeModal Function to be called from inside modal to close overlay and modal
+ * @param {boolean} props.hasLoginError Boolean passed back in if auth returns an error related to username/password
+ * 
+ * @returns 
+ */
+export default function ModalLogin({ closeModal, hasLoginError, forgotPasswordCallback, createAccount }: ModalLoginProps) {
   const [validEmail, setValidEmail] = useState<boolean>(false);
   const [validPassword, setValidPassword] = useState<boolean>(false);
   const [emailValue, setEmailValue] = useState<string>('');
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [localLoginError, setLocalLoginError] = useState<boolean>(false);
   const submitButtonRef = useRef<HTMLButtonElement | null>(null);
+  const auth = useContext(AuthContext);
 
   useEffect(() => {
     document.addEventListener('keydown', handleEnterClick);
@@ -35,7 +48,6 @@ export default function ModalLogin({ hasLoginError }: ModalLoginProps) {
   }, [emailValue, passwordValue]);
 
   function handleEnterClick(e: KeyboardEvent) {
-    console.log(emailValue, passwordValue);
     if (e.key === "Enter" && document.activeElement?.tagName === "INPUT") {
       if (!submitButtonRef.current?.classList.contains("disabled")) {
         /* We have to perform the click because of the scoping of this function.
@@ -44,12 +56,30 @@ export default function ModalLogin({ hasLoginError }: ModalLoginProps) {
       }
     }
   }
-  function handleSubmit() {
-    console.log(emailValue, passwordValue);
+  async function handleSubmit() {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, emailValue, passwordValue);
+      closeModal();
+    } catch (error) {
+      //TODO: capture via logs: error.code, error.message
+      setLocalLoginError(true);
+    }
+  }
+
+  function handleForgotPassword() {
+    forgotPasswordCallback();
+  }
+
+  function handleCreateAccount() {
+    createAccount();
+  }
+
+  function handleCloseModal() {
+    closeModal();
   }
 
   return (
-    <ModalBlankHeadline closeDestination={() => { }}>
+    <ModalBlankHeadline closeDestination={handleCloseModal}>
       <div className="modal_login">
         <header>
           <Label
@@ -64,17 +94,16 @@ export default function ModalLogin({ hasLoginError }: ModalLoginProps) {
           <TextInput type="email" regexTest="email" label="Email" validInputCallback={setValidEmail} parentSetState={(f) => setEmailValue(f)} />
           <TextInput type="password" regexTest="password" label="Password" validInputCallback={setValidPassword} parentSetState={setPasswordValue} />
         </div>
-        <button className="modal_login-forgot_password">Forgot Password?</button>
+        <button onClick={handleForgotPassword} className="modal_login-forgot_password">Forgot Password?</button>
         <div className="modal_login-lower_group">
-          <button className="modal_login-create_acct">Don&apos;t have an account? <span>Create an account</span></button>
+          <button onClick={handleCreateAccount} className="modal_login-create_acct">Don&apos;t have an account? <span>Create an account</span></button>
           <PrimarySecondaryButtonsHTML
             primaryLabel="Let's Go!"
             primaryLink={handleSubmit}
-            secondaryLink={() => { }}
+            secondaryLink={handleCloseModal}
             secondaryLabel="I just want to browse around"
             disabled={!(validEmail && validPassword)}
             primaryOutsideClickRef={submitButtonRef}
-
           />
         </div>
       </div>

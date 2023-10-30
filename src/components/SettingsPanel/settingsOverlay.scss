@@ -48,6 +48,13 @@ body:has(.settings_overlay) {
   }
 }
 
+.settings_overlay-panel {
+  width: 100%;
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+}
+
 
 // @keyframes showModalBackground {
 //   0% {

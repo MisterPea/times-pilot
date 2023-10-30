@@ -28,7 +28,7 @@
     &_top {
       color: var(--error);
       position: absolute;
-      margin: 0 0.35rem;
+      margin-left: 1px;
       opacity: 0;
       transition: opacity 120ms ease-in;
       &.selected {
@@ -36,6 +36,7 @@
       }
     }
     &_bottom {
+      margin-left: 1px;
       color: var(--lightest-text);
     }
   }

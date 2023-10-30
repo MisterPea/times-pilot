@@ -27,7 +27,6 @@ export default function AddTopicsOverlay({ children, showModal, title, topics, c
   }, []);
 
   useEffect(() => {
-    console.log(documentRef.current, tempDivRef.current, showModal);
     if (overlayRef.current && innerDivRef.current && showModal) {
       overlayRef.current.classList.remove('hide');
       innerDivRef.current.classList.remove('hide');

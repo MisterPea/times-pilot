@@ -4,12 +4,17 @@
   position: absolute;
   transform: translateY(-50%);
   top: 50%;
-  max-height: 100%;
+  // max-height: 100%;
+  width: 100%;
+  left: 0;
   .modal_middle {
-    flex: 1;
+    max-width: 30rem;
+    width: 95%;
+    // flex: 1;
     background-color: var(--white);
     z-index: 1;
-    margin: 0 2%;
+    // margin: 0 2%;
+    margin: 0 auto;
     border-radius: 0.3rem;
     padding: 1.75rem;
     position: relative;
@@ -17,7 +22,8 @@
       rgba(0, 0, 0, 0.16) 0px 3px 6px,
       rgba(0, 0, 0, 0.23) 0px 3px 6px;
     @include small--768px-and-up {
-      max-width: 30rem;
+      // min-width: 30rem;
+      // max-width: 90%;
     }
     .close_button {
       position: absolute;

@@ -1,13 +1,21 @@
 @import "../../style/mixins.scss";
 
 .settings_panel {
+  background-color: var(--white);
+  position: absolute;
+  min-height: 100%;
+  padding: 0 2rem 0;
+  margin: 0 4px;
+
   &-close_button-wrap {
     display: flex;
     justify-content: flex-end;
-  
   }
   .close_button {
-    margin-right: -2.75rem; // tablet
+    // margin-right: -2.75rem; // tablet
+    position: absolute;
+    right: 0.5rem;
+    top:0.25rem;
     margin-bottom: -0.5rem;
     margin-top: 0.25rem;
     height: 1.5rem;
@@ -34,9 +42,9 @@
   > :last-child {
     margin-top: 4rem;
   }
-  background-color: var(--white);
+
   @include small--768px-and-up {
     max-width: 34rem;
-    padding:0 3rem 3rem;
+    padding: 1rem 3rem 3rem;
   }
 }

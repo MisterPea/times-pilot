@@ -8,8 +8,10 @@ import potentialSections from "../../helpers/newsSections"; // sections list
 
 interface ModalNewAcctTwoProps {
   userName: string;
+  closeModal: () => void;
+  closeModalToNext: () => void;
 }
-export default function ModalNewAcctTwo({ userName }: ModalNewAcctTwoProps) {
+export default function ModalNewAcctTwo({ userName, closeModal, closeModalToNext }: ModalNewAcctTwoProps) {
   const sectionRef = useRef<{ getValue: () => string[]; } | null>(null);
   const [showSelectAll, setShowSelectAll] = useState<boolean>(true);
   const [prevSelectionsTemp, setPrevSelectionsTemp] = useState<string[]>([]);
@@ -34,13 +36,19 @@ export default function ModalNewAcctTwo({ userName }: ModalNewAcctTwoProps) {
     setShowSelectAll((s) => !s);
   }
 
+  function handleSubmitClose() {
+    console.log(chosenSections());
+    closeModal();
+  }
+
   function handleSubmit() {
     console.log(chosenSections());
+    closeModalToNext();
   }
 
   return (
     // we should automatically submit upon close, if nothing is chosen, we should selectAll
-    <ModalBlank closeDestination={handleSubmit}>
+    <ModalBlank closeDestination={handleSubmitClose}>
       <div className="modal_main_new_acct">
         <div className="modal_main_new_acct-headline_wrap">
           <Label label={`Everything Checks Out, ${userName}`} size="md" />

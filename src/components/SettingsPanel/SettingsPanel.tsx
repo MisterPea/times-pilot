@@ -17,7 +17,7 @@ interface SettingsPanelProps {
   emailSubscriptions: string[];
   emailActive: boolean;
   accountInfo: AccountInfo;
-  closeAction: () => {};
+  closeAction: () => void;
 }
 
 export default function SettingsPanel({ sectionsSelected, emailSubscriptions, emailActive, accountInfo, closeAction }: SettingsPanelProps) {

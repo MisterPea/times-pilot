@@ -102,7 +102,7 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
   function thumbnail(multimediaArray: Multimedia[]) {
     let smallestWidth = Infinity;
     let smallestObject = { url: '', alt: '' };
-    if (multimediaArray.length) {
+    if (multimediaArray && multimediaArray.length) {
       for (const image of multimediaArray) {
         if (image.width < smallestWidth && image.type === 'image') {
           smallestObject.url = image.url;
@@ -110,6 +110,8 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
           smallestWidth = image.width;
         }
       }
+    } else {
+      // TODO: Add Default image.
     }
     return { url: smallestObject.url, alt: smallestObject.alt };
   }
@@ -136,8 +138,8 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
           <ul className="article_group--ul">
             {rankedArticles.map(({
               title, abstract, url, multimedia, addClass, short_url, byline, des_facet, org_facet, per_facet, geo_facet }, index) => (
-              <>
-                <li key={`${index}-mobile`} className="article_group-mobile">
+              <div style={{ display: 'contents', position: 'inherit' }} key={`${index}-mobile`}>
+                <li className="article_group-mobile">
                   <ArticleButtonMobile
                     headline={title}
                     summary={abstract}
@@ -153,7 +155,7 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
                     topics={[des_facet, org_facet, per_facet, geo_facet]}
                   />
                 </li>
-                <li key={`${index}-tablet`} className={`article_group-tablet${addClass ? ' ' + addClass : ''}`}>
+                <li className={`article_group-tablet${addClass ? ' ' + addClass : ''}`}>
                   <ArticleButtonNonMobile
                     headline={title}
                     summary={abstract}
@@ -166,11 +168,11 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
                     topics={[des_facet, org_facet, per_facet, geo_facet]}
                   />
                 </li>
-              </>
+              </div >
             ))}
           </ul>
         </div>
-      </AddTopicsOverlay>
+      </AddTopicsOverlay >
     </>
   );
 };

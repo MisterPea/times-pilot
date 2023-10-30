@@ -2,10 +2,11 @@
 import { initializeApp, FirebaseOptions, FirebaseApp } from 'firebase/app';
 import { Auth as AuthProps, getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection } from 'firebase/firestore';
-import { createContext, useEffect, useRef, useState } from 'react';
+import { Dispatch, createContext, useEffect, useRef, useState } from 'react';
 
 interface AuthComponentProps {
   children: React.ReactNode;
+  setUidState: Dispatch<string | undefined>;
 }
 
 type AuthContextType = {
@@ -16,7 +17,7 @@ type AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType>({ auth: null, uid: undefined, credentials: null });
 
-export default function Auth({ children }: AuthComponentProps) {
+export default function Auth({ children, setUidState }: AuthComponentProps) {
   const [user, setUser] = useState<string | null>(null);
   const [authState, setAuthState] = useState<AuthProps | null>(null);
   const credentialsRef = useRef<FirebaseApp | null>(null);
@@ -39,8 +40,10 @@ export default function Auth({ children }: AuthComponentProps) {
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
         setUser(authUser.uid);
+        setUidState(authUser.uid);
       } else {
         setUser(null);
+        setUidState(undefined);
       }
     });
 

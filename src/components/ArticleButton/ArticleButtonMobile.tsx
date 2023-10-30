@@ -226,8 +226,7 @@ export default function ArticleButtonMobile({
                 src={imageURL}
                 alt={headline}
                 unoptimized
-                layout="fill"
-                objectFit="cover"
+                fill
               />
             </div>
             <h2>{headline}</h2>

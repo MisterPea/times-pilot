@@ -1,7 +1,8 @@
 @import "../../style/mixins.scss";
 
-.add_topics_overlay-outer {
-  position: absolute;
+.add_topics_overlay-outer,
+.settings_overlay-outer {
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;

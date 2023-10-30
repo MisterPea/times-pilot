@@ -8,23 +8,31 @@ import ModalPassword from "../Modals/ModalPassword";
 import ModalNewAcctOne from "../Modals/ModalNewAcct_One";
 import ModalNewAcctTwo from "../Modals/ModalNewAcct_Two";
 import ModalNewAcct_Last from "../Modals/ModalNewAcct_Last";
+import SettingsPanel from "./SettingsPanel";
+
+type AccountType = {
+  userName: string,
+  email: string,
+  password: string,
+};
 
 interface SettingsOverlayProps {
   children: any;
-  showModal: boolean;
+  showModal: 'login' | 'settings' | null;
   closeOverlay: any;
-  setShowModal: Dispatch<boolean>;
+  setShowModal: Dispatch<'login' | 'settings' | null>;
+  acctInfo: AccountType;
 }
 
-
-export default function LoginSettingsOverlay({ children, showModal, setShowModal, closeOverlay }: SettingsOverlayProps) {
+export default function LoginSettingsOverlay({ children, showModal, setShowModal, closeOverlay, acctInfo }: SettingsOverlayProps) {
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const innerDivRef = useRef<HTMLDivElement | null>(null);
   const listenerRef = useRef<EventListener | null>(null);
   const documentRef = useRef<Document | null>(null);
   const tempDivRef = useRef<HTMLDivElement | undefined>(undefined);
   const [deployModal, setDeployModal] = useState<boolean>(false);
-  // const [localShowModal, setLocalShowModal] = useState<boolean>(showModal);
+  const whichModalRef = useRef<string | null>(null);
+
   const [currentModal, setCurrentModal] = useState<'login' | 'password' | 'createAccountOne' | 'createAccountTwo' | 'createAccountFinal'>('login');
   const { uid } = useContext(AuthContext);
   const username = useRef<string>(''); // to be set by new account one component
@@ -51,15 +59,28 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
     };
   };
 
+  const settingsVariants = {
+    initial: {
+      translateX: '-100%',
+    },
+    animate: {
+      opacity: 1,
+      translateX: '0%',
+      transition: {
+        duration: 0.3,
+        ease: [.6, .36, .11, .97],
+      }
+    },
+    exit: {
+      translateX: '-100%',
+    }
+  };
+
   const leftToRight = createAnimation('-2%', '2%');
   const rightToLeft = createAnimation('2%', '-2%');
   const topToBottom = createAnimation('-2%', '2%');
 
   useEffect(() => {
-    // Check to see if we're already logged in on mount.
-    if (!uid) {
-      setShowModal(true);
-    }
     documentRef.current = document;
     document.addEventListener('keydown', handleEscapeKey);
     return () => {
@@ -68,6 +89,9 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
   }, []);
 
   useEffect(() => {
+    if (whichModalRef.current === null && showModal === 'settings') {
+      whichModalRef.current = 'settings';
+    }
     if (overlayRef.current && innerDivRef.current && showModal) {
       overlayRef.current.classList.remove('hide');
       innerDivRef.current.classList.remove('hide');
@@ -88,7 +112,11 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
 
   function handleEscapeKey(e: KeyboardEvent) {
     if (e.key === 'Escape') {
-      handleCloseModal();
+      if (whichModalRef.current === 'settings') {
+        setShowModal(null);
+      } else {
+        handleCloseModal();
+      }
     }
   }
 
@@ -100,7 +128,8 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
           tempDivRef.current && tempDivRef.current.remove();
           tempDivRef.current = undefined;
           setDeployModal(false);
-          setShowModal(false);
+          setShowModal(null);
+          setCurrentModal('login'); // Reset for stalled sign up
         }, { once: true });
         overlayRef.current.classList.add('hide');
         innerDivRef.current.classList.add('hide');
@@ -113,8 +142,11 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
       {(deployModal && tempDivRef.current) && createPortal(
         <>
           <div ref={innerDivRef} className="settings_overlay-inner show">
-            <AnimatePresence mode="wait">
-              {currentModal === 'login' && <motion.div key={'login'} {...leftToRight} style={{ width: '100%' }}>
+            <AnimatePresence
+              mode="wait"
+              onExitComplete={() => { whichModalRef?.current === 'settings' && handleCloseModal.call(null); }}
+            >
+              {(showModal === 'login' && currentModal === 'login') && <motion.div key={'login'} {...leftToRight} style={{ width: '100%' }}>
                 <ModalLogin
                   hasLoginError={false}
                   closeModal={handleCloseModal}
@@ -122,13 +154,13 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
                   createAccount={setCurrentModal.bind(null, 'createAccountOne')}
                 />
               </motion.div>}
-              {currentModal === 'password' && <motion.div key={'password'} {...rightToLeft} style={{ width: '100%' }}>
+              {(showModal === 'login' && currentModal === 'password') && <motion.div key={'password'} {...rightToLeft} style={{ width: '100%' }}>
                 <ModalPassword
                   returnToSignIn={setCurrentModal.bind(null, 'login')}
                   createAccount={setCurrentModal.bind(null, 'createAccountOne')}
                 />
               </motion.div>}
-              {currentModal === 'createAccountOne' && <motion.div key={'create_account_one'} {...topToBottom} style={{ width: '100%' }}>
+              {(showModal === 'login' && currentModal === 'createAccountOne') && <motion.div key={'create_account_one'} {...topToBottom} style={{ width: '100%' }}>
                 <ModalNewAcctOne
                   closeModalToBrowse={handleCloseModal}
                   returnToSignIn={setCurrentModal.bind(null, 'login')}
@@ -136,19 +168,32 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
                   userNameRef={username}
                 />
               </motion.div>}
-              {currentModal === 'createAccountTwo' && <motion.div key={'create_account_two'} {...topToBottom} style={{ width: '100%' }}>
+              {(showModal === 'login' && currentModal === 'createAccountTwo') && <motion.div key={'create_account_two'} {...topToBottom} style={{ width: '100%' }}>
                 <ModalNewAcctTwo
                   userName={username.current}
                   closeModal={handleCloseModal}
                   closeModalToNext={setCurrentModal.bind(null, 'createAccountFinal')}
                 />
               </motion.div>}
-              {currentModal === 'createAccountFinal' && <motion.div key={'create_account_final'} {...topToBottom} style={{ width: '100%' }}>
+              {(showModal === 'login' && currentModal === 'createAccountFinal') && <motion.div key={'create_account_final'} {...topToBottom} style={{ width: '100%' }}>
                 <ModalNewAcct_Last
                   userName={username.current}
                   closeModal={handleCloseModal}
                 />
               </motion.div>}
+              {showModal === 'settings' && (
+                <motion.div
+                  key="settings" {...settingsVariants}
+                  className="settings_overlay-panel"
+                >
+                  <SettingsPanel
+                    sectionsSelected={[]}
+                    emailSubscriptions={[]}
+                    emailActive={true}
+                    accountInfo={acctInfo}
+                    closeAction={setShowModal.bind(null, null)}
+                  />
+                </motion.div>)}
             </AnimatePresence>
           </div>
           <div ref={overlayRef} className="settings_overlay show" />

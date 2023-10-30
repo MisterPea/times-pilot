@@ -18,13 +18,13 @@ export default function AddTopicsModal({ title, currentTopics, savedTopics, emai
   const toggleValues = () => toggleGroupRef.current?.getValue() || [];
 
   function handleTopicsUpdate() {
-    const sortedToggleValues = JSON.stringify(toggleValues().sort((a, b) => a.localeCompare(b)));
-    const sortedSavedTopic = JSON.stringify(savedTopics.sort((a, b) => a.localeCompare(b)));
-    if (sortedSavedTopic !== sortedToggleValues) {
-      setValidInput(true);
-    } else {
-      setValidInput(false);
-    }
+    // const sortedToggleValues = JSON.stringify(toggleValues().sort((a, b) => a.localeCompare(b)));
+    // const sortedSavedTopic = JSON.stringify(savedTopics.sort((a, b) => a.localeCompare(b)));
+    // if (sortedSavedTopic !== sortedToggleValues) {
+      // setValidInput(true);
+    // } else {
+      // setValidInput(false);
+    // }
   }
 
   function handleAddTopic() { }

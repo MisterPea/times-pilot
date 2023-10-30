@@ -42,8 +42,7 @@ export default function ArticleButtonNonMobile({ imageURL, headline, summary, ur
               src={imageURL}
               alt={headline}
               unoptimized
-              layout="fill"
-              objectFit="cover"
+              fill
             />
           </div>
           <h2>{headline}</h2>

@@ -1,11 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import Label from "../Label/Label";
 import PrimarySecondaryButtonsHTML from "../PrimarySecondaryButtonsHTML/PrimarySecondaryButtonsHTML";
 import TextButtonHTML from "../TextButtonHTML/TextButtonHTML";
 import TextInput from "../TextInput/TextInput";
 import ModalBlank from "./ModalBlank";
 
-export default function ModalNewAcctOne() {
+interface ModalNewAcct_OneProps {
+  returnToSignIn: () => void;
+  closeModalToBrowse: () => void;
+  userNameRef: MutableRefObject<string>;
+  closeModalToNext: () => void;
+}
+
+export default function ModalNewAcctOne({ returnToSignIn, closeModalToBrowse, userNameRef, closeModalToNext }: ModalNewAcct_OneProps) {
   const [userName, setUserName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -38,18 +45,20 @@ export default function ModalNewAcctOne() {
 
   function handleSubmit() {
     console.log("SUBMITTED");
+    userNameRef.current = userName;
+    closeModalToNext();
   }
 
   function handleBackToSignIn() {
-    console.log("BACK TO SIGN IN");
+    returnToSignIn();
   }
 
   function handleBrowse() {
-    console.log("BROWSE");
+    closeModalToBrowse();
   }
 
   return (
-    <ModalBlank closeDestination={() => { }}>
+    <ModalBlank closeDestination={handleBackToSignIn}>
       <div className="modal_main_new_acct">
         <div className="modal_main_new_acct-headline_wrap">
           <Label label="Let's Try A New Account on for Size." size="md" />
