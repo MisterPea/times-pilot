@@ -27,6 +27,7 @@
   bottom: 0;
   right: 0;
   backdrop-filter: blur(0px);
+  overflow: hidden;
   &.show {
     animation: showModalBackground 500ms ease forwards;
   }

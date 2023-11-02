@@ -21,10 +21,9 @@ interface SettingsOverlayProps {
   showModal: 'login' | 'settings' | null;
   closeOverlay: any;
   setShowModal: Dispatch<'login' | 'settings' | null>;
-  acctInfo: AccountType;
 }
 
-export default function LoginSettingsOverlay({ children, showModal, setShowModal, closeOverlay, acctInfo }: SettingsOverlayProps) {
+export default function LoginSettingsOverlay({ children, showModal, setShowModal, closeOverlay }: SettingsOverlayProps) {
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const innerDivRef = useRef<HTMLDivElement | null>(null);
   const listenerRef = useRef<EventListener | null>(null);
@@ -34,7 +33,8 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
   const whichModalRef = useRef<string | null>(null);
 
   const [currentModal, setCurrentModal] = useState<'login' | 'password' | 'createAccountOne' | 'createAccountTwo' | 'createAccountFinal'>('login');
-  const { uid } = useContext(AuthContext);
+  const { uid, userName, email, subscriptions, emailActive, toggleEmailActive, fetchUserInfo } = useContext(AuthContext);
+  const acctInfo = { uid, userName, email };
   const username = useRef<string>(''); // to be set by new account one component
 
   let motionProps = {};
@@ -97,11 +97,15 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
       innerDivRef.current.classList.remove('hide');
     }
     if (documentRef.current && showModal) {
+      const existingOverlay = (documentRef.current.querySelector('.settings_overlay-outer') as HTMLDivElement) || undefined;
+      console.log(existingOverlay);
+      if (existingOverlay) {
+        tempDivRef.current = existingOverlay;
+      }
       if (!tempDivRef.current) {
         tempDivRef.current = documentRef.current.createElement('div');
         tempDivRef.current.classList.add('settings_overlay-outer');
       }
-
       const body = documentRef.current.getElementById('__next');
       if (body) {
         body.insertBefore(tempDivRef.current, body.firstChild);
@@ -133,6 +137,7 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
         }, { once: true });
         overlayRef.current.classList.add('hide');
         innerDivRef.current.classList.add('hide');
+        fetchUserInfo && fetchUserInfo();
       }
     }
   }
@@ -188,10 +193,11 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
                 >
                   <SettingsPanel
                     sectionsSelected={[]}
-                    emailSubscriptions={[]}
-                    emailActive={true}
+                    emailSubscriptions={subscriptions}
+                    emailActive={emailActive}
                     accountInfo={acctInfo}
                     closeAction={setShowModal.bind(null, null)}
+                    toggleEmailActive={toggleEmailActive}
                   />
                 </motion.div>)}
             </AnimatePresence>

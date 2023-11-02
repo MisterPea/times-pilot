@@ -20,7 +20,8 @@ interface MakeToastProps {
  * @param {(updateValue:boolean) => void} props.endDeploy Reference to setState used to deploy toast. Will allow auto reset of state.
  * @returns {JsxElement}
  */
-export default function MakeToast({ data, deploy, viewLength = 5000, isError=false, endDeploy }: MakeToastProps) {
+export default function MakeToast({ data, deploy, viewLength = 5000, isError = false, endDeploy }: MakeToastProps) {
+
   const documentRef = useRef<Document | null>(null);
   const toastRef = useRef<HTMLDivElement | null>(null);
   const timeoutRef = useRef<number | null>(null);
@@ -47,15 +48,17 @@ export default function MakeToast({ data, deploy, viewLength = 5000, isError=fal
 
   // Setup and deploy toast
   function createTempDiv() {
-    const body = documentRef.current!.body;
 
-    toastRef.current = documentRef.current!.createElement('div');
-    toastRef.current.classList.add('toaster_base');
-    body.insertBefore(toastRef.current, null);
+    const body = documentRef.current!.querySelector('.article_group--base');
+    if (body) {
+      toastRef.current = documentRef.current!.createElement('div');
+      toastRef.current.classList.add('toaster_base');
+      body.insertBefore(toastRef.current,body.firstChild);
 
-    setShowToast(true);
-    // We don't start timer on 0, as it turns off timer
-    if (viewLength > 0) startTimer();
+      setShowToast(true);
+      // We don't start timer on 0, as it turns off timer
+      if (viewLength > 0) startTimer();
+    }
   }
 
   // Closing/cleanup sequence

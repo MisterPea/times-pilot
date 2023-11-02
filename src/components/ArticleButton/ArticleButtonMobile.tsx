@@ -4,6 +4,7 @@ import BookmarkFlag from "../Icons/BookmarkFlag";
 import { BsBookmarkPlus, BsBookmarkDash } from 'react-icons/bs';
 import EditClipboardIcon from "../Icons/EditClipboardIcon";
 import { useEffect, useRef } from "react";
+import { Bookmark } from "../types";
 
 interface ArticleButtonMobileProps {
   imageURL: string;
@@ -12,12 +13,13 @@ interface ArticleButtonMobileProps {
   url: string;
   bookmarked: boolean;
   addTopicsCallback: (value: { title: string, topics: string[]; }) => void;
-  toggleBookmarkCallback: () => void;
+  toggleBookmarkCallback: (value: Bookmark) => void;
   onSwipeOpen: any;
   currentSwipe: string | null;
   id: string;
   byline: string;
   topics: (string[])[];
+  bookmarkInfo: Bookmark;
 }
 
 export default function ArticleButtonMobile({
@@ -33,6 +35,7 @@ export default function ArticleButtonMobile({
   id,
   byline,
   topics,
+  bookmarkInfo
 }: ArticleButtonMobileProps) {
 
   const mainArticleRef = useRef<HTMLElement | null>(null);
@@ -71,7 +74,6 @@ export default function ArticleButtonMobile({
   useEffect(() => {
     document.addEventListener('scroll', () => {
       scrolling = true;
-      // handleForceClose();
       handleScrollEnd();
     });
     return () => {
@@ -86,6 +88,10 @@ export default function ArticleButtonMobile({
     scrollTimeoutRef.current = setTimeout(() => {
       scrolling = false;
     }, 300);
+  }
+
+  function handleToggleBookmark() {
+    toggleBookmarkCallback(bookmarkInfo);
   }
 
   const regexPattern = /(?:By|,|and)\s+/gi;
@@ -198,10 +204,10 @@ export default function ArticleButtonMobile({
     }
   }
 
-  function handleBookmarkToggle() {
+  function handleBookmarkToggleTap() {
     handleForceClose();
     topLevelRef.current!.addEventListener('transitionend', () => {
-      toggleBookmarkCallback();
+      handleToggleBookmark();
     }, { once: true });
   }
 
@@ -244,7 +250,7 @@ export default function ArticleButtonMobile({
       <button
         onClick={(e) => {
           e.stopPropagation();
-          handleBookmarkToggle();
+          handleBookmarkToggleTap();
         }}
         ref={underButtonRef} className={`under_button${bookmarked ? " bookmarked" : ""}`}
       >

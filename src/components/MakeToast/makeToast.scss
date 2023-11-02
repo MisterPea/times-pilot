@@ -8,7 +8,7 @@
     position: fixed;
     transform: translateY(-5px);
     animation: 300ms ease-in-out slideIn;
-
+    z-index: 100;
     &.close {
       transform: translateY(100px);
       animation: 300ms ease-in-out slideOut;

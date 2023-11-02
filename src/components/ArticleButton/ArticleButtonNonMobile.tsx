@@ -1,6 +1,7 @@
 import Image from "next/image";
 import EditClipboardIcon from "../Icons/EditClipboardIcon";
 import BookmarkIcon from "../Icons/BookmarkIcon";
+import { Bookmark } from "../types";
 
 interface ArticleButtonMobileProps {
   imageURL: string;
@@ -9,12 +10,13 @@ interface ArticleButtonMobileProps {
   url: string;
   bookmarked: boolean;
   addTopicsCallback: (value: { title: string, topics: string[]; }) => void;
-  toggleBookmarkCallback: () => void;
+  toggleBookmarkCallback: (value:Bookmark) => void;
   byline: string;
   topics: (string[])[];
+  bookmarkInfo: Bookmark;
 }
 
-export default function ArticleButtonNonMobile({ imageURL, headline, summary, url, bookmarked, addTopicsCallback, toggleBookmarkCallback, topics, byline }: ArticleButtonMobileProps) {
+export default function ArticleButtonNonMobile({ imageURL, headline, summary, url, bookmarked, addTopicsCallback, toggleBookmarkCallback, topics, byline, bookmarkInfo }: ArticleButtonMobileProps) {
   const regexPattern = /(?:By|,|and)\s+/gi;
   const allTopics = byline.split(regexPattern).filter(Boolean);
   allTopics.push(...topics.flat());
@@ -26,6 +28,10 @@ export default function ArticleButtonNonMobile({ imageURL, headline, summary, ur
     };
     // Calling back on button click
     addTopicsCallback(articleTopics);
+  }
+
+  function handleBookmark() {
+    toggleBookmarkCallback(bookmarkInfo)
   }
 
   return (
@@ -52,10 +58,9 @@ export default function ArticleButtonNonMobile({ imageURL, headline, summary, ur
       <div className="article_tablet_content--bottom">
         <div className="icon_wrap">
           <EditClipboardIcon callback={handleShowTopics} />
-          <BookmarkIcon callback={() => { }} selected={bookmarked} />
+          <BookmarkIcon callback={handleBookmark} selected={bookmarked} />
         </div>
       </div>
-
     </article>
   );
 }

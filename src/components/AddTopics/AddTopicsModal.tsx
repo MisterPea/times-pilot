@@ -10,24 +10,29 @@ interface AddTopicsModalProps {
   savedTopics: string[];
   emailActive: boolean;
   closeModal?: () => void;
+  updateEmailTopics: (values: string[]) => void;
 }
 
-export default function AddTopicsModal({ title, currentTopics, savedTopics, emailActive, closeModal }: AddTopicsModalProps) {
+export default function AddTopicsModal({ title, currentTopics, savedTopics, emailActive, closeModal, updateEmailTopics }: AddTopicsModalProps) {
   const [validInput, setValidInput] = useState<boolean>(false);
   const toggleGroupRef = useRef<{ getValue: () => string[]; } | null>(null);
   const toggleValues = () => toggleGroupRef.current?.getValue() || [];
 
   function handleTopicsUpdate() {
-    // const sortedToggleValues = JSON.stringify(toggleValues().sort((a, b) => a.localeCompare(b)));
-    // const sortedSavedTopic = JSON.stringify(savedTopics.sort((a, b) => a.localeCompare(b)));
-    // if (sortedSavedTopic !== sortedToggleValues) {
-      // setValidInput(true);
-    // } else {
-      // setValidInput(false);
-    // }
+    const sortedToggleValues = JSON.stringify(toggleValues().sort((a, b) => a.localeCompare(b)));
+    const sortedSavedTopic = JSON.stringify(savedTopics.sort((a, b) => a.localeCompare(b)));
+    if (sortedSavedTopic !== sortedToggleValues) {
+      setValidInput(true);
+    } else {
+      setValidInput(false);
+    }
   }
 
-  function handleAddTopic() { }
+  function handleAddTopic() {
+    const updatedValues = toggleValues();
+    updateEmailTopics(updatedValues)
+    handleCloseDestination();
+  }
 
   function handleCloseDestination() {
     closeModal && closeModal();
@@ -46,7 +51,6 @@ export default function AddTopicsModal({ title, currentTopics, savedTopics, emai
           previousSelections={savedTopics}
           ref={toggleGroupRef}
           autoSaveCallback={handleTopicsUpdate}
-
         />
       </div>
       <div className="modal_add_topics-button_wrap">

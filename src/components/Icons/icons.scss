@@ -23,20 +23,19 @@
   }
   &_inner {
     color: var(--lightest-text);
-
     // Bookmark style
     &_top {
+      width: 2rem;
       color: var(--error);
       position: absolute;
-      margin-left: 1px;
+      padding-right: 2px;
       opacity: 0;
-      transition: opacity 120ms ease-in;
+      transition: opacity 200ms ease-in;
       &.selected {
         opacity: 1;
       }
     }
     &_bottom {
-      margin-left: 1px;
       color: var(--lightest-text);
     }
   }

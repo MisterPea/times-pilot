@@ -1,24 +1,22 @@
-import { useState } from "react";
-import PrimarySecondaryButtonsHTML from "../PrimarySecondaryButtonsHTML/PrimarySecondaryButtonsHTML";
-import TextInput from "../TextInput/TextInput";
-import TextInputStaticMock from "./SettingsInputLabel";
 import SettingsPortalBlank from "./SettingsPortalBlank";
-import BookmarkedArticleGroup, { Bookmark } from "../BookmarkedArticleGroup/BookmarkedArticleGroup";
+import BookmarkedArticleGroup from "../BookmarkedArticleGroup/BookmarkedArticleGroup";
+import { Bookmark } from "../types";
 
 interface SettingsPortalBookmarksProps {
   bookmarks: Bookmark[];
+  backCallback: () => void;
 }
 
-export default function SettingsPortalBookmarks({ bookmarks }: SettingsPortalBookmarksProps) {
-  const [validInput, setValidInput] = useState<boolean>(false);
+export default function SettingsPortalBookmarks({ bookmarks, backCallback }: SettingsPortalBookmarksProps) {
 
-  function handleSubmitNewUsername() { }
-  function handleBackNav() { }
+  function handleBackButton(){
+    backCallback()
+  }
 
   return (
-    <SettingsPortalBlank headline="These Are Your Bookmarked Articles." backCallback={() => { }}>
+    <SettingsPortalBlank headline="These Are Your Bookmarked Articles." backCallback={handleBackButton}>
       <div className="settings_portal-bookmark_wrap">
-        <BookmarkedArticleGroup bookmarks={bookmarks}/>
+        <BookmarkedArticleGroup bookmarks={bookmarks} />
       </div>
     </SettingsPortalBlank>
   );

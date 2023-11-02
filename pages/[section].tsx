@@ -25,13 +25,6 @@ interface SectionPageProps {
   route: string;
 }
 
-/// ******************* TESTING ONLY ******************* ///
-const acctInfo = {
-  userName: 'Mr. Finchley',
-  email: 'i.am.finchley@gmail.com',
-  password: 'ABC123abc',
-};
-
 export default function SectionPage({ data, route }: SectionPageProps) {
   const [showModal, setShowModal] = useState<'login' | 'settings' | null>(null);
   const [uid, setUid] = useState<string | undefined | null>(null);
@@ -57,7 +50,6 @@ export default function SectionPage({ data, route }: SectionPageProps) {
           showModal={showModal}
           setShowModal={setShowModal}
           closeOverlay={setShowModal.bind(null, null)}
-          acctInfo={acctInfo}
         >
           <Navbar
             openLogin={setShowModal.bind(null, 'login')}

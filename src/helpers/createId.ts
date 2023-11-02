@@ -1,3 +1,3 @@
 export default function createId(): string {
-  return Math.random().toString(36).replace(/[^a-z]+/g, '').substring(0, 6);
+  return Math.random().toString(36).replace(/[^a-z]+/g, '').substring(0, 9);
 }

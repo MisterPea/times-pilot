@@ -1,47 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ArticleButtonMobile from "./ArticleButtonMobile";
 import ArticleButtonNonMobile from "./ArticleButtonNonMobile";
 import AddTopicsOverlay from "./AddTopicsOverlay";
-
-export type Article = {
-  section: string;
-  subsection: string;
-  title: string;
-  abstract: string;
-  url: string;
-  uri: string;
-  byline: string;
-  item_type: string;
-  updated_date: string;
-  created_date: string;
-  published_date: string;
-  material_type_facet: string;
-  kicker: string;
-  des_facet: string[];
-  org_facet: string[];
-  per_facet: string[];
-  geo_facet: string[];
-  multimedia: Multimedia[];
-  short_url: string;
-  addClass: string | undefined;
-};
-
-type Multimedia = {
-  url: string;
-  format: string;
-  height: number;
-  width: number;
-  type: string;
-  subtype: string;
-  caption: string;
-  copyright: string;
-};
-
-type Bookmark = {
-  id: Article["short_url"],
-  title: Article["title"],
-  summary: Article["abstract"],
-};
+import { AuthContext } from "../../db/Auth";
+import { Bookmark, Article, Multimedia } from "../types";
+import createId from "../../helpers/createId";
 
 interface ArticleButtonGroupProps {
   articles: Article[];
@@ -54,6 +17,7 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
   const [rankedArticles, setRankedArticles] = useState<Article[]>([]);
   const [isOpen, setIsOpen] = useState<string | null>(null); // current swipes that are open
   const [titleAndTopics, setTitleAndTopics] = useState<{ title: string, topics: string[]; } | null>(null);
+  const { updateSections, subscriptions, emailActive, updateBookmarks, bookmarks } = useContext(AuthContext);
 
   useEffect(() => {
     // ONLY FOR 768px AND UP //
@@ -122,8 +86,21 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
 
   function handleShowTopics({ title, topics }: { title: string, topics: string[]; }) {
     setTitleAndTopics({ title, topics });
-    console.log("title:", title, "topics:", topics);
   }
+
+  function handleBookmarkToggle(bookmarkInfo: Bookmark) {
+    updateBookmarks && updateBookmarks(bookmarkInfo);
+  }
+
+  function isBookmarked(url: string) {
+    for (let i = 0; i < bookmarks.length; i += 1) {
+      if (bookmarks[i].url === url) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 
   return (
     <>
@@ -132,44 +109,51 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
         title={titleAndTopics?.title || ''}
         topics={titleAndTopics?.topics || []}
         closeOverlay={handleHideTopics}
-
+        subscriptions={subscriptions}
+        updateSections={updateSections}
+        emailActive={emailActive}
       >
         <div className="article_group--base">
           <ul className="article_group--ul">
             {rankedArticles.map(({
-              title, abstract, url, multimedia, addClass, short_url, byline, des_facet, org_facet, per_facet, geo_facet }, index) => (
-              <div style={{ display: 'contents', position: 'inherit' }} key={`${index}-mobile`}>
-                <li className="article_group-mobile">
-                  <ArticleButtonMobile
-                    headline={title}
-                    summary={abstract}
-                    imageURL={thumbnail(multimedia).url}
-                    url={url}
-                    bookmarked={false}
-                    toggleBookmarkCallback={() => { }}
-                    addTopicsCallback={handleShowTopics}
-                    id={`${index}-${short_url}`}
-                    currentSwipe={isOpen}
-                    onSwipeOpen={setIsOpen}
-                    byline={byline}
-                    topics={[des_facet, org_facet, per_facet, geo_facet]}
-                  />
-                </li>
-                <li className={`article_group-tablet${addClass ? ' ' + addClass : ''}`}>
-                  <ArticleButtonNonMobile
-                    headline={title}
-                    summary={abstract}
-                    imageURL={thumbnail(multimedia).url}
-                    url={url}
-                    bookmarked={false}
-                    toggleBookmarkCallback={() => { }}
-                    addTopicsCallback={handleShowTopics}
-                    byline={byline}
-                    topics={[des_facet, org_facet, per_facet, geo_facet]}
-                  />
-                </li>
-              </div >
-            ))}
+              title, abstract, url, multimedia, addClass, short_url, published_date, byline, des_facet, org_facet, per_facet, geo_facet }, index) => {
+              const id = createId();
+              return (
+                <div style={{ display: 'contents', position: 'inherit' }} key={`${index}-mobile`}>
+                  <li className="article_group-mobile">
+                    <ArticleButtonMobile
+                      bookmarkInfo={{ id, url: url, date: published_date, title, summary: abstract }}
+                      headline={title}
+                      summary={abstract}
+                      imageURL={thumbnail(multimedia).url}
+                      url={url}
+                      bookmarked={isBookmarked(url)}
+                      toggleBookmarkCallback={handleBookmarkToggle}
+                      addTopicsCallback={handleShowTopics}
+                      id={`${index}-${short_url}`}
+                      currentSwipe={isOpen}
+                      onSwipeOpen={setIsOpen}
+                      byline={byline}
+                      topics={[des_facet, org_facet, per_facet, geo_facet]}
+                    />
+                  </li>
+                  <li className={`article_group-tablet${addClass ? ' ' + addClass : ''}`}>
+                    <ArticleButtonNonMobile
+                      bookmarkInfo={{ id, url: url, date: published_date, title, summary: abstract }}
+                      headline={title}
+                      summary={abstract}
+                      imageURL={thumbnail(multimedia).url}
+                      url={url}
+                      bookmarked={isBookmarked(url)}
+                      toggleBookmarkCallback={handleBookmarkToggle}
+                      addTopicsCallback={handleShowTopics}
+                      byline={byline}
+                      topics={[des_facet, org_facet, per_facet, geo_facet]}
+                    />
+                  </li>
+                </div >
+              );
+            })}
           </ul>
         </div>
       </AddTopicsOverlay >
