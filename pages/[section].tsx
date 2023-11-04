@@ -28,6 +28,7 @@ interface SectionPageProps {
 export default function SectionPage({ data, route }: SectionPageProps) {
   const [showModal, setShowModal] = useState<'login' | 'settings' | null>(null);
   const [uid, setUid] = useState<string | undefined | null>(null);
+  const [rootSections, setRootSections] = useState<string[]>([])
 
   // Check if we're logged in onload. This info is supplied by Auth component
   useEffect(() => {
@@ -35,7 +36,6 @@ export default function SectionPage({ data, route }: SectionPageProps) {
       setShowModal('login');
     }
   }, [uid]);
-
 
   // Filter out articles without a title or summary
   let articlesFiltered: Article[] = [];
@@ -45,7 +45,7 @@ export default function SectionPage({ data, route }: SectionPageProps) {
 
   return (
     <>
-      <Auth setUidState={setUid}>
+      <Auth setUidState={setUid} setRootSectionsTopLevel={setRootSections}>
         <SettingsOverlay
           showModal={showModal}
           setShowModal={setShowModal}
@@ -56,7 +56,7 @@ export default function SectionPage({ data, route }: SectionPageProps) {
             openSettings={setShowModal.bind(null, 'settings')}
           />
         </SettingsOverlay>
-        <SectionGroup sections={newsSections} startingSection={route} />
+        <SectionGroup sections={rootSections} startingSection={route} />
         {data.results ? <ArticleButtonGroup articles={articlesFiltered} /> : <p>LOADING</p>}
       </Auth>
     </>
