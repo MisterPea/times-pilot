@@ -1,0 +1,20 @@
+@import "../../style/mixins.scss";
+
+.modal-error_wrap {
+  @include body-text;
+  background-color: var(--warning);
+  color:var(--white);
+  width: fit-content;
+  margin: -1rem auto 1rem;
+  max-height: 0px;
+  transform-origin: center;
+  transition: max-height 500ms ease;
+  border-radius: 0.3rem;
+  &.error {
+    max-height: 5rem;
+  }
+  p {
+    overflow: hidden;
+    padding: 1rem 2rem;
+  }
+}
