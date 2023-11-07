@@ -147,6 +147,7 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
           tempDivRef.current = undefined;
           setDeployModal(false);
           setShowModal(null);
+          whichModalRef.current = null;
           setCurrentModal('login'); // Reset for stalled sign up
         }, { once: true });
         overlayRef.current.classList.add('hide');
