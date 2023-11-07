@@ -34,7 +34,7 @@ export default function SettingsEmailSelect({ sectionsSelected, potentialSelecti
     setIsSaving(false);
   }
 
-  function handleSectionSave() {
+  function handleSectionSave() { 
     setIsSaving(true);
     setErrorSaving(false);
     updateSections && updateSections(chosenSections(), isSaved, true);

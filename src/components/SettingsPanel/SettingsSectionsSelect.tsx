@@ -2,7 +2,8 @@ import AutoSave from "../AutoSave/AutoSave";
 import Label from "../Label/Label";
 import ToggleGroup from "../ToggleGroup/ToggleGroup";
 import potentialSections from "../../helpers/newsSections";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
+import { AuthContext } from "../../db/Auth";
 
 interface SettingsSelectionsSelectProps {
   sectionsSelected: string[];
@@ -14,20 +15,24 @@ export default function SettingsSelectionsSelect({ sectionsSelected }: SettingsS
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const sectionRef = useRef<{ getValue: () => string[] | null; }>(null);
   const chosenSections = () => sectionRef.current?.getValue() ?? [];
+  const { updateRootSections } = useContext(AuthContext);
 
   function handleAutoSaveTimeout() {
     clearTimeout(timeoutRef.current ?? undefined);
     timeoutRef.current = setTimeout(handleSectionSave, 2000);
   }
 
-  function handleSectionSave() {
-    ////////////////// Temporary //////////////////
-    setIsSaving(true);                             
-    console.log("SAVE CALLED", chosenSections());
+  function isSaved(success: boolean) {
+    if (!success) {
+      setErrorSaving(true);
+    }
+    setIsSaving(false);
+  }
 
-    let id = setTimeout(() => {
-      setIsSaving(false);
-    }, 1000);
+  function handleSectionSave() {
+    setIsSaving(true);
+    setErrorSaving(false);
+    updateRootSections && updateRootSections(chosenSections(),isSaved)
   }
 
   return (

@@ -13,3 +13,11 @@ It must be something in the action/down state style conflicting with the selecte
 * News Sections Bar should have click and drag.
 
 * Gradual load of images (stories) upon load/change page.
+
+* Eye position on (show) password. It's set left because of autofill icon. Maybe we can detect that.
+
+* Email regex test returns true before '.'
+
+* Modal Portal - innards too wide and causing horizontal scroll Bar
+
+* Storybook - add password reset

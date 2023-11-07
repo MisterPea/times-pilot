@@ -3,11 +3,12 @@
 .settings_panel {
   background-color: var(--white);
   position: absolute;
-  top:0;
+  top: 0;
   left: 0;
-  // min-height: 100%;
   padding: 0 2rem 0;
   margin: 0 4px;
+  z-index: 0;
+
   @include small--768px-and-up {
     margin: 0;
   }
@@ -17,12 +18,9 @@
     justify-content: flex-end;
   }
   .close_button {
-    // margin-right: -2.75rem; // tablet
-    position: absolute;
-    right: 0.5rem;
-    top:0.25rem;
+    margin-right: -2rem;
+    margin-top: -1.5rem;
     margin-bottom: -0.5rem;
-    margin-top: 0.25rem;
     height: 1.5rem;
     width: 1.5rem;
     background: none;
@@ -43,6 +41,9 @@
   }
   > :first-child {
     margin: 0;
+  }
+  >:nth-last-child(2){
+    margin-top: 4rem;
   }
   > :last-child {
     margin-top: 4rem;

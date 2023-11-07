@@ -10,12 +10,13 @@ export default function Navbar({ openLogin, openSettings }: NavBarProps) {
   const { uid } = useContext(AuthContext);
 
   function handleUserButtonClick() {
-    if (uid) {
-      console.log("UID")
-      openSettings();
-    } else {
-      console.log("NO UID")
+    console.log('>>>NAV BAR', uid);
+    if (!uid) {
       openLogin();
+      console.log("NO UID");
+    } else {
+      console.log("UID*");
+      openSettings();
     }
   }
 

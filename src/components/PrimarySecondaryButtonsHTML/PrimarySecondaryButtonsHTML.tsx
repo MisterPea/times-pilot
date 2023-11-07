@@ -9,6 +9,8 @@ interface PrimarySecondaryButtonsProps {
   secondaryLabel?: string;
   secondaryLink: () => void;
   fullWidth?: boolean;
+  isWorking?: boolean;
+  spinner?: boolean;
   disabled?: boolean;
 }
 
@@ -20,6 +22,8 @@ export default function PrimarySecondaryButtonsHTML({
   secondaryLink,
   fullWidth,
   primaryOutsideClickRef,
+  spinner,
+  isWorking,
   disabled }: PrimarySecondaryButtonsProps) {
   return (
     <div className={`primary_secondary_group${fullWidth ? " full_width" : ""}`}>
@@ -32,6 +36,8 @@ export default function PrimarySecondaryButtonsHTML({
           destructive={primaryState === "destructive"}
           disabled={disabled}
           outsideClickRef={primaryOutsideClickRef}
+          isWorking={isWorking}
+          spinner={spinner}
         />
       </div>
       <div className="secondary">

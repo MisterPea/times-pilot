@@ -5,9 +5,14 @@ import SettingsBookmark from "./SettingsBookmarked";
 import SettingsEmailSelect from "./SettingsEmailSelect";
 import SettingsPortalBookmarks from "./SettingsPortalBookmarks";
 import SettingsSelectionsSelect from "./SettingsSectionsSelect";
+import SettingsPortalDeleteAcct from "./SettingsPortalDeleteAcct";
 import { MdClose } from 'react-icons/md';
 import { AuthContext } from "../../db/Auth";
 import { useContext, useState } from "react";
+import SettingsPortalUsername from "./SettingsPortalUsername";
+import SettingsPortalEmail from "./SettingsPortalEmail";
+import SettingsPortalPassword from "./SettingsPortalPassword";
+import { AnimatePresence, motion } from "framer-motion";
 
 export type AccountInfo = {
   userName: string,
@@ -24,7 +29,7 @@ interface SettingsPanelProps {
   toggleEmailActive: any;
 }
 
-type SettingsOverlays = null | 'bookmarks';
+type SettingsOverlays = null | 'bookmarks' | 'username' | 'password' | 'email' | 'deleteAcct';
 
 export default function SettingsPanel({
   sectionsSelected,
@@ -34,8 +39,14 @@ export default function SettingsPanel({
   closeAction,
   toggleEmailActive }: SettingsPanelProps) {
 
-  const { bookmarks } = useContext(AuthContext);
+  const { bookmarks, rootSections, logoutUser } = useContext(AuthContext);
   const [settingsOverlay, setSettingsOverlay] = useState<SettingsOverlays>(null);
+  const [logoutBusy, setLogoutBusy] = useState<boolean>(false);
+  const portalVariant = {
+    initial: { opacity: 0, zIndex: 100 },
+    animate: { opacity: 1, zIndex: 100 },
+    exit: { opacity: 0, zIndex: 100 },
+  };
 
   function handleCloseOverlay() {
     setSettingsOverlay(null);
@@ -45,10 +56,29 @@ export default function SettingsPanel({
     setSettingsOverlay(value);
   }
 
+  async function handleLogout() {
+    if (!logoutUser) {
+      return;
+    }
+    setLogoutBusy(true);
+    const { loggedOut } = await logoutUser();
+    if (loggedOut) {
+      setLogoutBusy(false);
+    }
+  }
+
   return (
     <>
       <div className="settings_panel">
-        {settingsOverlay === 'bookmarks' && <SettingsPortalBookmarks bookmarks={bookmarks} backCallback={handleCloseOverlay} />}
+        <div>
+          <AnimatePresence>
+            {settingsOverlay === 'bookmarks' && <motion.div {...portalVariant}><SettingsPortalBookmarks bookmarks={bookmarks} backCallback={handleCloseOverlay} /></motion.div>}
+            {settingsOverlay === 'username' && <motion.div {...portalVariant}><SettingsPortalUsername currentUsername={accountInfo.userName} backCallback={handleCloseOverlay} /></motion.div>}
+            {settingsOverlay === 'email' && <motion.div {...portalVariant}><SettingsPortalEmail currentEmail={accountInfo.email} backCallback={handleCloseOverlay} /></motion.div>}
+            {settingsOverlay === 'password' && <motion.div {...portalVariant}><SettingsPortalPassword backCallback={handleCloseOverlay} /></motion.div>}
+            {settingsOverlay === 'deleteAcct' && <motion.div {...portalVariant}><SettingsPortalDeleteAcct username={accountInfo.userName} backCallback={handleCloseOverlay} /></motion.div>}
+          </AnimatePresence>
+        </div>
         <div className="settings_panel-close_button-wrap">
           <button
             className='close_button'
@@ -59,7 +89,7 @@ export default function SettingsPanel({
         </div>
         <Label label={`${accountInfo.userName}'s Settings`} />
         <SettingsBookmark buttonClickAction={handleOpenOverlay.bind(null, 'bookmarks')} />
-        <SettingsSelectionsSelect sectionsSelected={sectionsSelected} />
+        <SettingsSelectionsSelect sectionsSelected={rootSections} />
         <SettingsEmailSelect
           sectionsSelected={emailSubscriptions}
           potentialSelections={emailSubscriptions}
@@ -69,11 +99,12 @@ export default function SettingsPanel({
         <SettingsAccount
           name={accountInfo.userName}
           email={accountInfo.email}
-          passwordCallback={() => { }}
-          usernameCallback={() => { }}
-          emailCallback={() => { }}
+          passwordCallback={handleOpenOverlay.bind(null, 'password')}
+          usernameCallback={handleOpenOverlay.bind(null, 'username')}
+          emailCallback={handleOpenOverlay.bind(null, 'email')}
         />
-        <MainButtonHTML label="Delete Account" linkCallback={() => { }} danger fullWidth />
+        <MainButtonHTML label="Logout of the.times.pilot" linkCallback={handleLogout} spinner isWorking={logoutBusy} fullWidth />
+        <MainButtonHTML label="Delete Account" linkCallback={setSettingsOverlay.bind(null, 'deleteAcct')} danger fullWidth />
       </div>
     </>
   );

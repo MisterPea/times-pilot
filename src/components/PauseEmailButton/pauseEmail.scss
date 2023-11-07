@@ -46,6 +46,7 @@
   padding-bottom: 0.5rem;
   padding-left: 0.75rem;
   background-color: #f3f2ef82;
+  z-index: -1;
   &-text_wrap {
     @include body-text;
     font-size: 1rem;

@@ -4,7 +4,7 @@
   width: 100%;
   left: 0;
   top: 0;
-  z-index: 2;
+  // z-index: 1;
   background-color: rgba(229, 229, 229, 0.861);
   backdrop-filter: blur(1px);
   display: flex;
@@ -20,13 +20,13 @@
     height: fit-content;
     border-radius: 0.3rem;
     padding: 1.75rem;
-    box-shadow:
+    box-shadow: 
       rgba(0, 0, 0, 0.16) 0px 3px 6px,
       rgba(0, 0, 0, 0.23) 0px 3px 6px;
   }
 }
 .settings_portal-wrap {
-  z-index: 2;
+  // z-index: 2;
   display: flex;
   position:absolute;
   left:0;
@@ -34,7 +34,21 @@
   height: 100vh;
 }
 
+.settings_portal--input_wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
 .settings_overlay-inner:has(.settings_portal-base) {
   overflow: hidden;
+}
 
+
+.settings_portal-input_bottom_wrap {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  gap: 1rem;
 }

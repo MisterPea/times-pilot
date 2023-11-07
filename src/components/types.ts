@@ -39,3 +39,39 @@ export type Bookmark = {
   summary?: Article["abstract"],
   url?: Article["url"],
 };
+
+type HexColor = `#${'0123456789abcdef' | 'ABCDEF'}{6}`;
+type HexColorAlpha = `#${'0123456789abcdef' | 'ABCDEF'}{6}${'0123456789'}{2}`;
+type RGBColor = `rgb(${number},${number},${number})`;
+type RGBAColor = `rgba(${number},${number},${number},${number})`;
+type HSLColor = `hsl(${number}, ${string}, ${string})`;
+
+export type ColorType = string | HexColor | HexColorAlpha | RGBColor | RGBAColor | HSLColor;
+
+export type PathLimits = {
+  min: number,
+  max: number,
+};
+
+export interface MaterialSpinnerProps {
+  /** Radius of spinner @default 18 */
+  radius?: number;
+  /** Width of the stroke for track and path @default 4 */
+  strokeWidth?: number;
+  /** Duration of 1 rotation - in milliseconds @default 800 */
+  rotationDuration?: number;
+  /** Duration of the animation for the path - in milliseconds @default 4000 */
+  pathAnimationDuration?: number;
+  /** Path limits - how big and how small the path should animate in percent 0-1 @default {min: 0.02, max:0.98} */
+  pathLimits?: PathLimits;
+  /** Setting whether the path is static or not @default false */
+  staticPath?: boolean;
+  /** When employing a static path - what is the length in percent 0-1 @default 0.5 (50%) */
+  staticPathLength?: number;
+  /** Determine whether to show the track or not @default true */
+  showTrack?: boolean;
+  /** Determine the track color @default lightgrey */
+  trackColor?: ColorType;
+  /** Determine the path color @default black */
+  pathColor?: ColorType;
+}

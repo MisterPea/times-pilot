@@ -71,6 +71,34 @@
     }
   }
 
+
+  &-spinner {
+    height: 20px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 auto;
+  }
+
+  &_content--wrap:has(.main_button-spinner){
+    position: relative;
+    .main_button-content {
+      transition: 200ms opacity ease ;
+      opacity: 1;
+      &.show_spinner {
+        opacity: 0;
+      }
+    }
+   
+    .main_button-spinner {
+      transition: 300ms opacity ease ;
+      opacity: 0;
+      &.show_spinner {
+        opacity: 1;
+      }
+    }
+  }
+
   // hovers - excludes touch
   @media (hover: hover) {
     // base

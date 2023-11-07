@@ -28,12 +28,15 @@ interface SectionPageProps {
 export default function SectionPage({ data, route }: SectionPageProps) {
   const [showModal, setShowModal] = useState<'login' | 'settings' | null>(null);
   const [uid, setUid] = useState<string | undefined | null>(null);
-  const [rootSections, setRootSections] = useState<string[]>([])
+  const [rootSections, setRootSections] = useState<string[]>([]);
 
   // Check if we're logged in onload. This info is supplied by Auth component
   useEffect(() => {
     if (uid === undefined) {
       setShowModal('login');
+    }
+    if (uid === null) {
+      setShowModal(null);
     }
   }, [uid]);
 

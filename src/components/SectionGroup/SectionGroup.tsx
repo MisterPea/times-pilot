@@ -18,10 +18,10 @@ export default function SectionGroup({ sections, startingSection = 'us' }: Secti
 
   useEffect(() => {
     if (ulRef.current) {
-      const activeSection = ulRef.current.querySelector('.selected');
-      window.setTimeout(() => {
-        activeSection!.scrollIntoView({ behavior: "smooth", inline: "start", block: "end" });
-      }, 0);
+      // const activeSection = ulRef.current.querySelector('.selected');
+      // window.setTimeout(() => {
+      //   activeSection!.scrollIntoView({ behavior: "smooth", inline: "start", block: "end" });
+      // }, 0);
     }
   }, [currentSection]);
 

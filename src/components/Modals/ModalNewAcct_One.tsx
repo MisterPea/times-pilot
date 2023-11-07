@@ -1,9 +1,12 @@
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { MutableRefObject, useContext, useEffect, useRef, useState } from "react";
 import Label from "../Label/Label";
 import PrimarySecondaryButtonsHTML from "../PrimarySecondaryButtonsHTML/PrimarySecondaryButtonsHTML";
 import TextButtonHTML from "../TextButtonHTML/TextButtonHTML";
 import TextInput from "../TextInput/TextInput";
 import ModalBlank from "./ModalBlank";
+import { AuthContext } from "../../db/Auth";
+import ErrorWarn from "../ErrorWarn/ErrorWarn";
 
 interface ModalNewAcct_OneProps {
   returnToSignIn: () => void;
@@ -17,6 +20,10 @@ export default function ModalNewAcctOne({ returnToSignIn, closeModalToBrowse, us
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [disableButton, setDisableButton] = useState<boolean>(true);
+  const [isBusy, setIsBusy] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string>('');
+  const { createUser } = useContext(AuthContext);
 
   useEffect(() => {
     function handleEnterToCreateAcct(e: KeyboardEvent) {
@@ -43,10 +50,28 @@ export default function ModalNewAcctOne({ returnToSignIn, closeModalToBrowse, us
     }
   }
 
-  function handleSubmit() {
+  const createErrorMsg = (message: string) => {
+    if (message === 'auth/email-already-in-use') {
+      return 'Email is Already in Use';
+    }
+    return 'There Was An Issue Creating Your Account';
+  };
+
+  async function handleSubmit() {
     console.log("SUBMITTED");
-    userNameRef.current = userName;
-    closeModalToNext();
+    if (!createUser) {
+      return;
+    }
+    try {
+      setIsBusy(true);
+      userNameRef.current = userName;
+      await createUser(email, password, userName);
+      closeModalToNext();
+    } catch (error: any | { code: string; }) {
+      setErrorMsg(error.code);
+      setIsBusy(false);
+      setIsError(true);
+    }
   }
 
   function handleBackToSignIn() {
@@ -63,6 +88,7 @@ export default function ModalNewAcctOne({ returnToSignIn, closeModalToBrowse, us
         <div className="modal_main_new_acct-headline_wrap">
           <Label label="Let's Try A New Account on for Size." size="md" />
         </div>
+        <ErrorWarn errorMsg={createErrorMsg.call(null, errorMsg)} isError={isError} watchArray={[userName, email, password]} />
         <div className="modal_main_new_acct-input_wrap">
           <div className="modal_main_new_acct-input_wrap-inputs">
             <TextInput label="Username" type="text" regexTest="(.){3}" parentSetState={setUserName} validInputCallback={(bool) => allInputsValid.call(null, 0, bool)} />
@@ -83,6 +109,8 @@ export default function ModalNewAcctOne({ returnToSignIn, closeModalToBrowse, us
             secondaryLabel="Back to Sign In"
             secondaryLink={handleBackToSignIn}
             disabled={disableButton}
+            spinner
+            isWorking={isBusy}
           />
           <TextButtonHTML label="I just want to browse around" link={handleBrowse} />
         </div>

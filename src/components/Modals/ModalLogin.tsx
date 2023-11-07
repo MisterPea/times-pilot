@@ -5,7 +5,8 @@ import PrimarySecondaryButtonsHTML from "../PrimarySecondaryButtonsHTML/PrimaryS
 import TextInput from "../TextInput/TextInput";
 import ModalBlankHeadline from "./ModalBlankHeadline";
 import { AuthContext } from '../../db/Auth';
-import { Auth, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import ErrorWarn from "../ErrorWarn/ErrorWarn";
 
 interface ModalLoginProps {
   hasLoginError: boolean;
@@ -28,7 +29,8 @@ export default function ModalLogin({ closeModal, hasLoginError, forgotPasswordCa
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [localLoginError, setLocalLoginError] = useState<boolean>(false);
   const submitButtonRef = useRef<HTMLButtonElement | null>(null);
-  const auth = useContext(AuthContext);
+  const [loginBusy, setLoginBusy] = useState<boolean>(false);
+  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
     document.addEventListener('keydown', handleEnterClick);
@@ -57,13 +59,18 @@ export default function ModalLogin({ closeModal, hasLoginError, forgotPasswordCa
     }
   }
   async function handleSubmit() {
+    if (!auth) {
+      return;
+    }
     try {
+      setLoginBusy(true);
       const userCredential = await signInWithEmailAndPassword(auth, emailValue, passwordValue);
       closeModal();
     } catch (error) {
       //TODO: capture via logs: error.code, error.message
       setLocalLoginError(true);
     }
+    setLoginBusy(false);
   }
 
   function handleForgotPassword() {
@@ -87,10 +94,9 @@ export default function ModalLogin({ closeModal, hasLoginError, forgotPasswordCa
             size="xSm"
           />
         </header>
-        <div className={`modal_login-error_wrap${localLoginError ? " error" : ""}`}>
-          <p>Incorrect Username or Password</p>
-        </div>
+
         <div className="modal_login-inputs">
+          <ErrorWarn isError={localLoginError} errorMsg="Incorrect Username or Password" />
           <TextInput type="email" regexTest="email" label="Email" validInputCallback={setValidEmail} parentSetState={(f) => setEmailValue(f)} />
           <TextInput type="password" regexTest="password" label="Password" validInputCallback={setValidPassword} parentSetState={setPasswordValue} />
         </div>
@@ -104,6 +110,8 @@ export default function ModalLogin({ closeModal, hasLoginError, forgotPasswordCa
             secondaryLabel="I just want to browse around"
             disabled={!(validEmail && validPassword)}
             primaryOutsideClickRef={submitButtonRef}
+            spinner
+            isWorking={loginBusy}
           />
         </div>
       </div>
