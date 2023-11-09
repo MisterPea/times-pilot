@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { initializeApp, FirebaseApp } from 'firebase/app';
-import { Auth as AuthProps, getAuth, onAuthStateChanged, updateProfile, updateEmail, reauthenticateWithCredential, EmailAuthProvider, updatePassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { getFirestore, doc, getDoc, Firestore, updateDoc, setDoc } from 'firebase/firestore';
+import { Auth as AuthProps, getAuth, onAuthStateChanged, updateProfile, updateEmail, reauthenticateWithCredential, EmailAuthProvider, updatePassword, createUserWithEmailAndPassword, deleteUser } from 'firebase/auth';
+import { getFirestore, doc, getDoc, Firestore, updateDoc, setDoc, deleteField } from 'firebase/firestore';
 import { Dispatch, createContext, useEffect, useRef, useState } from 'react';
 import { Bookmark } from '../components/types';
 import baseNewsSections from '../helpers/newsSections';
+import { useRouter } from 'next/router';
 
 interface AuthComponentProps {
   children: React.ReactNode;
@@ -23,6 +24,7 @@ type AuthContextType = {
   updateUserEmail: ((newEmail: string, reAuthPassword: string) => Promise<AuthStatus>) | undefined;
   updateUserPassword: ((newPassword: string, reAuthPassword: string) => Promise<AuthStatus>) | undefined;
   createUser: ((email: string, password: string, userName: string) => Promise<AuthStatus>) | undefined,
+  deleteAccount: ((reAuthPassword: string) => Promise<AuthStatus>) | undefined,
   emailActive: boolean,
   userName: string | null | undefined,
   updateUserName: ((newName: string) => void) | undefined;
@@ -31,7 +33,7 @@ type AuthContextType = {
   bookmarks: Bookmark[],
   updateBookmarks: ((value: Bookmark) => void) | undefined;
   rootSections: string[],
-  updateRootSections: ((value: string[], completeCallback: (value: boolean) => void) => void) | undefined;
+  updateRootSections: ((rootSections: string[]) => Promise<{ success: boolean, message?: string; }>) | undefined;
   toggleEmailActive: any;
   updateSections: ((sections: string[], completeCallback: (value: boolean) => void, settingsPage?: boolean) => void) | undefined;
   credentials: FirebaseApp | null;
@@ -46,6 +48,7 @@ export const AuthContext = createContext<AuthContextType>({
   updateUserName: undefined,
   updateUserPassword: undefined,
   createUser: undefined,
+  deleteAccount: undefined,
   email: undefined,
   updateUserEmail: undefined,
   emailActive: true,
@@ -72,6 +75,7 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
   const [rootSections, setRootSections] = useState<string[]>([]);
   const credentialsRef = useRef<FirebaseApp | null>(null);
   const dbRef = useRef<Firestore | null>(null);
+  const { replace } = useRouter();
 
   // Initial load
   useEffect(() => {
@@ -121,6 +125,8 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
    * @returns void;
    */
   async function fetchUserInfo(scopedUid?: string) {
+    console.log("SCOPED UID", scopedUid);
+    console.log("UID>", uid);
     const userId: string | undefined = uid ?? scopedUid;
     if (dbRef.current && userId) {
       const userRef = doc(dbRef.current, "users", userId);
@@ -186,19 +192,20 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
  * @param {string[]} rootSections Array of strings for the selections to be written. This is not a mutation; it's a complete rewrite
  * @param completeCallback Upon upload success / failure this function is called with success (true) or error (false) arg
  */
-  async function updateRootSections(rootSections: string[], completeCallback: (newValue: boolean) => void) {
-    if (dbRef.current && uid) {
+  async function updateRootSections(rootSections: string[]): Promise<{ success: boolean, message?: string; }> {
+    if (!(dbRef.current && uid)) {
+      return { success: false, message: 'No UID or Database Reference' };
+    }
+    try {
       const rootSectionsSorted = rootSections.sort((a, b) => a.localeCompare(b, 'en', { ignorePunctuation: true }));
-      try {
-        const userRef = doc(dbRef.current, "users", uid);
-        await updateDoc(userRef, {
-          rootSections
-        });
-        completeCallback(true);
-        setRootSectionsTopLevel(rootSections);
-      } catch (error) {
-        completeCallback(false);
-      }
+      const userRef = doc(dbRef.current, "users", uid);
+      await updateDoc(userRef, {
+        rootSections: rootSectionsSorted
+      });
+      setRootSectionsTopLevel(rootSectionsSorted);
+      return { success: true };
+    } catch (error) {
+      return { success: false, message: `${error}` };
     }
   }
 
@@ -334,7 +341,8 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
       await updateUserName(userName);
       setUid(user.uid);
       setEmail(email);
-      await allocateUserResources();
+      const allocate = await allocateUserResources(user.uid);
+      console.log('ALLOCATE', allocate);
       return { success: true };
     } catch (error: any | { code: string; }) {
       return { success: false, message: error.code };
@@ -345,15 +353,12 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
    * Helper function to allocate user and empty database object.
    * @returns {Promise}
    */
-  async function allocateUserResources(): Promise<AuthStatus> {
+  async function allocateUserResources(uidArg: string): Promise<AuthStatus> {
     if (!dbRef.current) {
       return { success: false, message: 'Database Unavailable' };
     }
-    if (!uid) {
-      return { success: false, message: 'UID not populated' };
-    }
     try {
-      await setDoc(doc(dbRef.current, 'users', uid), {
+      await setDoc(doc(dbRef.current, 'users', uidArg), {
         active: true,
         bookmarks: [],
         rootSections: [],
@@ -365,36 +370,85 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
     }
   }
 
+  /**
+   * Function to log out current user
+   * @returns {Promise} {loggedOut:boolean}
+   */
   async function logoutUser(): Promise<{ loggedOut: boolean; }> {
     if (!authState) {
       return { loggedOut: false };
     }
     try {
       await authState.signOut();
-      clearUserInfo()
+      clearUserInfo();
       return { loggedOut: true };
     } catch (err) {
       return { loggedOut: false };
     }
   }
 
- function clearUserInfo() {
+  /**
+   * Convenience function to reset local user data
+   */
+  function clearUserInfo() {
     setUidState(null);
     setUid(null);
     setUserName('');
     setEmail('');
-    setSubscriptions([])
-    setBookmarks([])
-    setRootSections(baseNewsSections)
+    setSubscriptions([]);
+    setBookmarks([]);
+    setRootSections(baseNewsSections);
   }
 
-  return (  
+  /**
+   * Function to delete the current user
+   * @param {string} reAuthPassword Current password
+   * @returns {Promise} Returns a promise in the shape of `{success: boolean, message?: string}`
+   */
+  async function deleteAccount(reAuthPassword: string): Promise<AuthStatus> {
+    if (!authState?.currentUser) {
+      return { success: false, message: 'No current user.' };
+    }
+    const isReAuthed = await reauthorize(reAuthPassword);
+    if (!isReAuthed.success) {
+      return { success: false, message: isReAuthed.message };
+    }
+    try {
+      await deallocateDatabase();
+      await deleteUser(authState.currentUser);
+      return { success: true };
+    } catch (error: any | { code: string; }) {
+      return { success: false, message: error.code || 'Failed Delete Account' };
+    }
+  }
+
+  async function deallocateDatabase(): Promise<{ success: boolean; }> {
+    if (!(dbRef.current && uid)) {
+      return { success: false };
+    }
+    try {
+      const userRef = doc(dbRef.current, "users", uid);
+      await updateDoc(userRef, {
+        active: deleteField(),
+        bookmarks: deleteField(),
+        rootSections: deleteField(),
+        selections: deleteField(),
+      });
+      return { success: true };
+    }
+    catch (error) {
+      return { success: false };
+    }
+  }
+
+  return (
     <AuthContext.Provider value={{
       uid,
       userName,
       updateUserName,
       updateUserPassword,
       createUser,
+      deleteAccount,
       auth: authState,
       email,
       updateUserEmail,

@@ -1,15 +1,14 @@
 // import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next/types';
-import ArticleButtonGroup, { Article } from '../src/components/ArticleButton/ArticleButtonGroup';
+import ArticleButtonGroup from '../src/components/ArticleButton/ArticleButtonGroup';
 import Navbar from '../src/components/NavBar/NavBar';
 import SectionGroup from '../src/components/SectionGroup/SectionGroup';
 import newsSections from '../src/helpers/newsSections';
 import SettingsOverlay from '../src/components/SettingsPanel/SettingsOverlay';
 import { useEffect, useState } from 'react';
 import Auth from '../src/db/Auth';
-import SettingsPanel from '@/components/SettingsPanel/SettingsPanel';
 import axios from 'axios';
-import { set } from 'lodash';
+import { Article } from '../src/components/types';
 
 type SectionDataType = {
   status: string,

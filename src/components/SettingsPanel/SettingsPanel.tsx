@@ -15,9 +15,9 @@ import SettingsPortalPassword from "./SettingsPortalPassword";
 import { AnimatePresence, motion } from "framer-motion";
 
 export type AccountInfo = {
-  userName: string,
-  email: string,
-  password?: string,
+  uid: string | undefined | null,
+  userName: string | undefined | null,
+  email: string | undefined | null,
 };
 
 interface SettingsPanelProps {
@@ -73,10 +73,10 @@ export default function SettingsPanel({
         <div>
           <AnimatePresence>
             {settingsOverlay === 'bookmarks' && <motion.div {...portalVariant}><SettingsPortalBookmarks bookmarks={bookmarks} backCallback={handleCloseOverlay} /></motion.div>}
-            {settingsOverlay === 'username' && <motion.div {...portalVariant}><SettingsPortalUsername currentUsername={accountInfo.userName} backCallback={handleCloseOverlay} /></motion.div>}
-            {settingsOverlay === 'email' && <motion.div {...portalVariant}><SettingsPortalEmail currentEmail={accountInfo.email} backCallback={handleCloseOverlay} /></motion.div>}
+            {settingsOverlay === 'username' && <motion.div {...portalVariant}><SettingsPortalUsername currentUsername={accountInfo.userName!} backCallback={handleCloseOverlay} /></motion.div>}
+            {settingsOverlay === 'email' && <motion.div {...portalVariant}><SettingsPortalEmail currentEmail={accountInfo.email!} backCallback={handleCloseOverlay} /></motion.div>}
             {settingsOverlay === 'password' && <motion.div {...portalVariant}><SettingsPortalPassword backCallback={handleCloseOverlay} /></motion.div>}
-            {settingsOverlay === 'deleteAcct' && <motion.div {...portalVariant}><SettingsPortalDeleteAcct username={accountInfo.userName} backCallback={handleCloseOverlay} /></motion.div>}
+            {settingsOverlay === 'deleteAcct' && <motion.div {...portalVariant}><SettingsPortalDeleteAcct username={accountInfo.userName!} backCallback={handleCloseOverlay} /></motion.div>}
           </AnimatePresence>
         </div>
         <div className="settings_panel-close_button-wrap">

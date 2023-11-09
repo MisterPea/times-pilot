@@ -37,20 +37,6 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
   const acctInfo = { uid, userName, email };
   const username = useRef<string>(''); // to be set by new account one component
 
-  console.log({
-    showModal,
-    overlayRef: overlayRef.current,
-    innerDivRef: innerDivRef.current,
-    listenerRef: listenerRef.current,
-    documentRef: documentRef.current,
-    tempDivRef: tempDivRef.current,
-    deployModal: deployModal,
-    whichModalRef: whichModalRef.current,
-    currentModal: currentModal,
-    uid, userName,
-
-  });
-
   let motionProps = {};
   const createAnimation = (from: string, to: string) => {
     return {

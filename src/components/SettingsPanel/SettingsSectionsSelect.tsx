@@ -29,10 +29,18 @@ export default function SettingsSelectionsSelect({ sectionsSelected }: SettingsS
     setIsSaving(false);
   }
 
-  function handleSectionSave() {
+  async function handleSectionSave() {
+    if (!updateRootSections) {
+      return;
+    }
     setIsSaving(true);
     setErrorSaving(false);
-    updateRootSections && updateRootSections(chosenSections(),isSaved)
+    try {
+      await updateRootSections(chosenSections());
+      isSaved(true);
+    } catch (error) {
+      isSaved(false);
+    }
   }
 
   return (
