@@ -214,18 +214,18 @@ export default function ArticleButtonMobile({
   return (
     <article
       ref={mainArticleRef} className="article_mobile_base">
-      <div
-        onPointerUp={(e) => {
-          if (topLevelRef.current) {
-            if (getTranslateX(topLevelRef.current) === 0) {
-              e.stopPropagation();
-              window.open(url, "_blank", "noopener noreferrer");
-            }
-          }
-        }}
-        ref={topLevelRef} className="top_level_wrapper">
+      <div ref={topLevelRef} className="top_level_wrapper">
         <div className="bookmark_flag_wrap"><BookmarkFlag selected={bookmarked} /></div>
-        <div className="article_mobile_content-left">
+        <div
+          onPointerUp={(e) => {
+            if (topLevelRef.current) {
+              if (getTranslateX(topLevelRef.current) === 0) {
+                e.stopPropagation();
+                window.open(url, "_blank", "noopener noreferrer");
+              }
+            }
+          }}
+          className="article_mobile_content-left">
           <div className="article_mobile_content-left--top">
             <div className="image_wrap">
               <Image
