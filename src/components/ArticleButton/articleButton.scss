@@ -54,7 +54,6 @@
   background-color: var(--white);
   transform: translateX(0);
   will-change: transform;
-  // height: 120px;
   z-index: 10;
   &:has(.icon_wrap) {
     // for non-mobile

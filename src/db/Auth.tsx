@@ -203,6 +203,8 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
         rootSections: rootSectionsSorted
       });
       setRootSectionsTopLevel(rootSectionsSorted);
+      const firstRoute = rootSectionsSorted[0].toLowerCase();
+      replace(`/${firstRoute}`);
       return { success: true };
     } catch (error) {
       return { success: false, message: `${error}` };
