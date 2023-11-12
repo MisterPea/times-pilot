@@ -3,7 +3,6 @@ import { GetServerSidePropsContext } from 'next/types';
 import ArticleButtonGroup from '../src/components/ArticleButton/ArticleButtonGroup';
 import Navbar from '../src/components/NavBar/NavBar';
 import SectionGroup from '../src/components/SectionGroup/SectionGroup';
-import newsSections from '../src/helpers/newsSections';
 import SettingsOverlay from '../src/components/SettingsPanel/SettingsOverlay';
 import { useEffect, useState } from 'react';
 import Auth from '../src/db/Auth';
@@ -72,6 +71,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       notFound: true,
     };
   }
+  context.res.setHeader('Cache-Control','public, s-maxage=200, stale-while-revalidate=300')
   const topStoriesUrl = `https://api.nytimes.com/svc/topstories/v2/${context.query.section}.json?api-key=${process.env.NYT_API_KEY}`;
   const response = await axios.get(topStoriesUrl);
   const data = response.data;

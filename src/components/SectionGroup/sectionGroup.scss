@@ -1,8 +1,8 @@
 @import "../../style/mixins.scss";
 
 .section_group_base {
-  height: fit-content;
-  // overflow-y: hidden;
+  // height: fit-content;
+  overflow-y: hidden;
   overflow-x: scroll;
   top:0;
   position: sticky;
@@ -15,9 +15,16 @@
     display: flex;
     flex-direction: row;
     scroll-behavior: smooth;
-    justify-content: space-between;
+    justify-content: safe center;
+    height: 2.375rem;
+    width: fit-content;
+    &::-webkit-scrollbar {
+      height:  0;
+    }
   }
   li {
     flex-shrink: 0;
+    display: inline;
+    margin: auto;
   }
 } 

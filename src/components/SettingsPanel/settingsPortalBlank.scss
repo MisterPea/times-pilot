@@ -10,7 +10,8 @@
   display: flex;
   align-items: center;
   .modal_middle {
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x:hidden;
     position: relative;
     max-width: 30rem;
     max-height: 100%;
@@ -26,7 +27,6 @@
   }
 }
 .settings_portal-wrap {
-  // z-index: 2;
   display: flex;
   position:absolute;
   left:0;

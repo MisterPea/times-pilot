@@ -2,6 +2,11 @@
 
 .modal_add_topics {
   &-header {
+    z-index: 0;
+    position: relative;
+    &-cta.no_account {
+      opacity: 0.15;
+    }
     h1 {
       @include headline-text;
       color: var(--main-dark);
@@ -22,15 +27,22 @@
   }
   &-toggle_wrap {
     margin: 2rem 0;
+    &.no_account {
+      opacity: 0.06;
+      pointer-events: none;
+    }
   }
   &-button_wrap {
     margin: 0 auto 1rem;
     width: fit-content;
-    &:has(p){
+    &.no_account {
+      opacity: 0.1;
+    }
+    &:has(p) {
       margin-bottom: 0;
     }
     button {
-      margin: 0 auto
+      margin: 0 auto;
     }
     p {
       @include body-text;
@@ -38,6 +50,42 @@
       padding-top: 1.5rem;
       color: var(--error);
       font-size: 1rem;
+    }
+  }
+}
+.no_account_cta {
+  color: var(--main-dark);
+  position: absolute;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  left: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  @include body-text;
+  font-size: 1.15rem;
+  line-height: 1.6rem;
+  border-radius: 0.3rem;
+
+  &-wrap {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 0.4rem;
+    border: 0.1px solid rgba(0,0,0,0.2);
+    padding: 1rem;
+    position: relative;
+    display: block;
+    h5 {
+      @include headline-text;
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
     }
   }
 }

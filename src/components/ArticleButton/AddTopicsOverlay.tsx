@@ -13,8 +13,19 @@ interface AddTopicsOverlayProps {
   subscriptions: string[];
   updateSections: ((sections: string[], completeCallback: (value: boolean) => void) => void) | undefined;
   emailActive: boolean;
+  uid: string | null | undefined;
 }
-export default function AddTopicsOverlay({ children, showModal, title, topics, closeOverlay, subscriptions, updateSections, emailActive }: AddTopicsOverlayProps) {
+export default function AddTopicsOverlay({
+  children,
+  showModal,
+  title,
+  topics,
+  closeOverlay,
+  subscriptions,
+  updateSections,
+  emailActive,
+  uid
+}: AddTopicsOverlayProps) {
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const innerDivRef = useRef<HTMLDivElement | null>(null);
   const listenerRef = useRef<EventListener | null>(null);
@@ -129,6 +140,7 @@ export default function AddTopicsOverlay({ children, showModal, title, topics, c
               emailActive={emailActive}
               closeModal={handleCloseModal}
               updateEmailTopics={handleUpdateAndReportTopics}
+              uid={uid}
             />
           </div>
           <div ref={overlayRef} className="add_topics_overlay show" />

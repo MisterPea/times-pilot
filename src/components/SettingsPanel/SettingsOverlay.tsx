@@ -143,8 +143,6 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
     }
   }
 
-  console.log('SHOW_MODAL', showModal, " ", "CURRENT_MODAL", currentModal);
-
   return (
     <>
       {(deployModal && tempDivRef.current) && createPortal(

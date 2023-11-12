@@ -17,7 +17,7 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
   const [rankedArticles, setRankedArticles] = useState<Article[]>([]);
   const [isOpen, setIsOpen] = useState<string | null>(null); // current swipes that are open
   const [titleAndTopics, setTitleAndTopics] = useState<{ title: string, topics: string[]; } | null>(null);
-  const { updateSections, subscriptions, emailActive, updateBookmarks, bookmarks } = useContext(AuthContext);
+  const { updateSections, subscriptions, emailActive, updateBookmarks, bookmarks, uid } = useContext(AuthContext);
 
   useEffect(() => {
     // ONLY FOR 768px AND UP //
@@ -93,6 +93,9 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
   }
 
   function isBookmarked(url: string) {
+    if (!bookmarks) {
+      return false;
+    }
     for (let i = 0; i < bookmarks.length; i += 1) {
       if (bookmarks[i].url === url) {
         return true;
@@ -112,6 +115,7 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
         subscriptions={subscriptions}
         updateSections={updateSections}
         emailActive={emailActive}
+        uid={uid}
       >
         <div className="article_group--base">
           <ul className="article_group--ul">
@@ -135,6 +139,7 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
                       onSwipeOpen={setIsOpen}
                       byline={byline}
                       topics={[des_facet, org_facet, per_facet, geo_facet]}
+                      uid={uid}
                     />
                   </li>
                   <li className={`article_group-tablet${addClass ? ' ' + addClass : ''}`}>
@@ -149,6 +154,7 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
                       addTopicsCallback={handleShowTopics}
                       byline={byline}
                       topics={[des_facet, org_facet, per_facet, geo_facet]}
+                      uid={uid}
                     />
                   </li>
                 </div >

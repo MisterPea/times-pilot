@@ -75,3 +75,7 @@ export interface MaterialSpinnerProps {
   /** Determine the path color @default black */
   pathColor?: ColorType;
 }
+
+export type NewsCategoryMap = {
+  [key: string]: string; 
+};

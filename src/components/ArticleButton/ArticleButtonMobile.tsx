@@ -20,6 +20,7 @@ interface ArticleButtonMobileProps {
   byline: string;
   topics: (string[])[];
   bookmarkInfo: Bookmark;
+  uid: string | null | undefined;
 }
 
 export default function ArticleButtonMobile({
@@ -35,9 +36,9 @@ export default function ArticleButtonMobile({
   id,
   byline,
   topics,
-  bookmarkInfo
+  bookmarkInfo,
+  uid
 }: ArticleButtonMobileProps) {
-
   const mainArticleRef = useRef<HTMLElement | null>(null);
   const topLevelRef = useRef<HTMLDivElement | null>(null);
   const underButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -59,17 +60,19 @@ export default function ArticleButtonMobile({
   }, [currentSwipe, id, topLevelRef]);
 
   useEffect(() => {
-    if (mainArticleRef.current) {
-      mainArticleRef.current.addEventListener("touchstart", handleMouseDown);
-      mainArticleRef.current.addEventListener("mousedown", handleMouseDown);
-    }
-    return () => {
+    if (uid) {
       if (mainArticleRef.current) {
-        mainArticleRef.current.removeEventListener("touchstart", handleMouseDown);
-        mainArticleRef.current.removeEventListener("mousedown", handleMouseDown);
+        mainArticleRef.current.addEventListener("touchstart", handleMouseDown);
+        mainArticleRef.current.addEventListener("mousedown", handleMouseDown);
       }
-    };
-  }, [mainArticleRef]);
+      return () => {
+        if (mainArticleRef.current) {
+          mainArticleRef.current.removeEventListener("touchstart", handleMouseDown);
+          mainArticleRef.current.removeEventListener("mousedown", handleMouseDown);
+        }
+      };
+    }
+  }, [mainArticleRef, uid]);
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
@@ -233,6 +236,7 @@ export default function ArticleButtonMobile({
                 alt={headline}
                 unoptimized
                 fill
+                priority
               />
             </div>
             <h2>{headline}</h2>

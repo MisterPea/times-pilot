@@ -10,6 +10,7 @@
     display: flex;
     align-items: center;
     transition: border-color 300ms ease-in-out;
+    z-index: -1;
     &.--paused {
       border-color: #a9a9a9;
     }
@@ -45,8 +46,6 @@
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   padding-left: 0.75rem;
-  background-color: #f3f2ef82;
-  z-index: -1;
   &-text_wrap {
     @include body-text;
     font-size: 1rem;
@@ -55,6 +54,7 @@
     width: 12.25rem;
     height: 1rem;
     margin-bottom: 2px;
+    z-index: -1;
   }
 
   &-text--active {

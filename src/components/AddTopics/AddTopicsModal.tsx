@@ -11,9 +11,10 @@ interface AddTopicsModalProps {
   emailActive: boolean;
   closeModal?: () => void;
   updateEmailTopics: (values: string[]) => void;
+  uid: string | null | undefined;
 }
 
-export default function AddTopicsModal({ title, currentTopics, savedTopics, emailActive, closeModal, updateEmailTopics }: AddTopicsModalProps) {
+export default function AddTopicsModal({ title, currentTopics, savedTopics, emailActive, closeModal, updateEmailTopics, uid }: AddTopicsModalProps) {
   const [validInput, setValidInput] = useState<boolean>(false);
   const toggleGroupRef = useRef<{ getValue: () => string[]; } | null>(null);
   const toggleValues = () => toggleGroupRef.current?.getValue() || [];
@@ -30,7 +31,7 @@ export default function AddTopicsModal({ title, currentTopics, savedTopics, emai
 
   function handleAddTopic() {
     const updatedValues = toggleValues();
-    updateEmailTopics(updatedValues)
+    updateEmailTopics(updatedValues);
     handleCloseDestination();
   }
 
@@ -40,12 +41,19 @@ export default function AddTopicsModal({ title, currentTopics, savedTopics, emai
 
   return (
     <ModalBlank closeDestination={handleCloseDestination}>
+      {!uid && (<div className="no_account_cta">
+        <div className="no_account_cta-wrap">
+          <h5>Get the most out of Times Pilot by signing up!</h5>
+          <p>Register now to personalize your topics, save your favorites, and get a daily digest of your chosen content delivered straight to your inbox. Start your tailored experience today.</p>
+        </div>
+      </div>)}
       <header className="modal_add_topics-header">
         <Label label="Topics Related to:" size="sm" />
         <h1>{title}</h1>
-        <p className="modal_add_topics-header-cta">Would you like to add some topics to your daily email subscription?</p>
+        <p className='modal_add_topics-header-cta'>Would you like to add some topics to your daily email subscription?</p>
       </header>
-      <div className="modal_add_topics-toggle_wrap">
+
+      <div className='modal_add_topics-toggle_wrap'>
         <ToggleGroup
           potentialSelections={currentTopics}
           previousSelections={savedTopics}
@@ -53,13 +61,14 @@ export default function AddTopicsModal({ title, currentTopics, savedTopics, emai
           autoSaveCallback={handleTopicsUpdate}
         />
       </div>
-      <div className="modal_add_topics-button_wrap">
+      <div className='modal_add_topics-button_wrap'>
         <MainButtonHTML
           label="Update Email Topics"
           linkCallback={handleAddTopic}
           disabled={!validInput}
         />
-        {!emailActive && <p>Your emails are currently paused!</p>}
+        {!emailActive && uid && <p>Your emails are currently paused!</p>}
+
       </div>
     </ModalBlank>
   );

@@ -8,7 +8,7 @@ interface BookmarkGroupProps {
   bookmarks: Bookmark[];
 }
 export default function BookmarkedArticleGroup({ bookmarks }: BookmarkGroupProps) {
-  const [localBookmarks, setLocalBookmarks] = useState<Bookmark[]>(bookmarks);
+  const [localBookmarks, setLocalBookmarks] = useState<Bookmark[]>(bookmarks||[]);
   const bookmarksRef = useRef<HTMLDivElement | null>(null);
   const { updateBookmarks } = useContext(AuthContext);
 

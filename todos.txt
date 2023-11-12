@@ -6,6 +6,15 @@ triggered and numbers are added at the end.
 
 * Set route on rootSelection update.
 
+* Bookmark and Add Topics need deactivation when not logged in.
+
+* With the selections/navBar - have it at 100% height even without content - or add default content (Home)
+
+* In section nav bar we need to have a minimum closeness. With flex we can get even spacing, 
+but this is rendered moot if you have few sections chosen
+
+* Get actual section names
+
 ------------------------------------------ Todo ------------------------------------------
 * (Only on mobile) When a toggleSelector is pressed/de-pressed there is a slight flicker. 
 It must be something in the action/down state style conflicting with the selected style.
@@ -26,15 +35,12 @@ It must be something in the action/down state style conflicting with the selecte
 
 * If rootSelection is empty, populate it with default Sections
 
-* Get actual section names
-
 * Default set screen on load - right now we show top bars then we hide them; let's try the opposite- hide them first then reveal.
 
 * Section Selections in settings prevent the removal of all sections - a default to populate sections if empty might be a better solution.
 
-* In section nav bar we need to have a minimum closeness. With flex we can get even spacing, 
-but this is rendered moot if you have few sections chosen
-
 * Potential, idiopathic race condition between account creation and allocating database space. It says it's a permission issue.
 
-* Bookmark and Add Topics need deactivation when not logged in - maybe provide a link-copy-to-clipboard option.
+* Autosave - we need a minimum time deployed - and we might want to do a spinner. 
+
+* 429 Popup / redirect - So when a rate limit happens we show a popup instead of redirecting.

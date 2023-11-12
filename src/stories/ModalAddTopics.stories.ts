@@ -6,6 +6,11 @@ import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 const meta: Meta<typeof AddTopicsModal> = {
   title: 'Modals/Add Topics',
   component: AddTopicsModal,
+  argTypes: {
+    uid: {
+      control: 'inline-radio', options: ['abc123', null, undefined]
+    }
+  },
   parameters: {
     viewport: {
       viewports: INITIAL_VIEWPORTS,
@@ -25,6 +30,7 @@ export const Primary: Story = {
     currentTopics: ["Hawaii", "California", "Climate Change", "Pacific Ocean", "Natural Disasters", "Disaster Preparedness", "Mexico"],
     savedTopics: ["Pacific Ocean"],
     emailActive: false,
+    uid: 'abc123',
   }
 }
 

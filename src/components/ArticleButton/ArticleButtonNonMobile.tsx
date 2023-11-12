@@ -10,13 +10,26 @@ interface ArticleButtonMobileProps {
   url: string;
   bookmarked: boolean;
   addTopicsCallback: (value: { title: string, topics: string[]; }) => void;
-  toggleBookmarkCallback: (value:Bookmark) => void;
+  toggleBookmarkCallback: (value: Bookmark) => void;
   byline: string;
   topics: (string[])[];
   bookmarkInfo: Bookmark;
+  uid: string | null | undefined;
 }
 
-export default function ArticleButtonNonMobile({ imageURL, headline, summary, url, bookmarked, addTopicsCallback, toggleBookmarkCallback, topics, byline, bookmarkInfo }: ArticleButtonMobileProps) {
+export default function ArticleButtonNonMobile({
+  imageURL,
+  headline,
+  summary,
+  url,
+  bookmarked,
+  addTopicsCallback,
+  toggleBookmarkCallback,
+  topics,
+  byline,
+  bookmarkInfo,
+  uid
+}: ArticleButtonMobileProps) {
   const regexPattern = /(?:By|,|and)\s+/gi;
   const allTopics = byline.split(regexPattern).filter(Boolean);
   allTopics.push(...topics.flat());
@@ -31,7 +44,7 @@ export default function ArticleButtonNonMobile({ imageURL, headline, summary, ur
   }
 
   function handleBookmark() {
-    toggleBookmarkCallback(bookmarkInfo)
+    toggleBookmarkCallback(bookmarkInfo);
   }
 
   return (
@@ -49,6 +62,7 @@ export default function ArticleButtonNonMobile({ imageURL, headline, summary, ur
               alt={headline}
               unoptimized
               fill
+              priority
             />
           </div>
           <h2>{headline}</h2>
@@ -56,10 +70,13 @@ export default function ArticleButtonNonMobile({ imageURL, headline, summary, ur
         <summary>{summary}</summary>
       </div>
       <div className="article_tablet_content--bottom">
-        <div className="icon_wrap">
-          <EditClipboardIcon callback={handleShowTopics} />
-          <BookmarkIcon callback={handleBookmark} selected={bookmarked} />
-        </div>
+        {uid && <div className="icon_wrap">
+          <BookmarkIcon key="bookmark-icon" callback={handleBookmark} selected={bookmarked} />
+          <EditClipboardIcon key="clipboard-icon" callback={handleShowTopics} />
+        </div>}
+        {!uid && <div className="icon_wrap">
+          <EditClipboardIcon key="clipboard-icon" callback={handleShowTopics} />
+        </div>}
       </div>
     </article>
   );
