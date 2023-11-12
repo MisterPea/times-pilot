@@ -55,7 +55,7 @@ export default function SettingsSelectionsSelect({ sectionsSelected }: SettingsS
       </div>
       <div className="settings_block-sections-selector_group">
         <ToggleGroup
-          potentialSelections={potentialSections}
+          potentialSelections={Object.keys(potentialSections)}
           previousSelections={sectionsSelected}
           autoSaveCallback={handleAutoSaveTimeout}
           ref={sectionRef} />

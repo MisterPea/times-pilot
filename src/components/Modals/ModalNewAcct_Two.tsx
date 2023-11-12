@@ -32,8 +32,8 @@ export default function ModalNewAcctTwo({ userName, closeModal, closeModalToNext
 
   function selectAll() {
     if (showSelectAll) {
-      for (let i = 0; i < potentialSections.length; i += 1) {
-        setPrevSelectionsTemp((s) => [...s, potentialSections[i]]);
+      for (let i = 0; i < Object.keys(potentialSections).length; i += 1) {
+        setPrevSelectionsTemp((s) => [...s, Object.keys(potentialSections)[i]]);
       }
     } else {
       setPrevSelectionsTemp([]);
@@ -49,7 +49,7 @@ export default function ModalNewAcctTwo({ userName, closeModal, closeModalToNext
     if (picked.length > 0) {
       await updateRootSections(picked);
     } else {
-      await updateRootSections(potentialSections);
+      await updateRootSections(Object.keys(potentialSections));
     }
     closeModal();
   }
@@ -86,7 +86,7 @@ export default function ModalNewAcctTwo({ userName, closeModal, closeModalToNext
           </div>
           <div className="modal_main_new_acct-selections_group-sections">
             <ToggleGroup
-              potentialSelections={potentialSections}
+              potentialSelections={Object.keys(potentialSections)}
               previousSelections={prevSelectionsTemp}
               autoSaveCallback={getSectionValues}
               ref={sectionRef} />

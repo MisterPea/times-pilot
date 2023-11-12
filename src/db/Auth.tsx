@@ -106,7 +106,7 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
       } else {
         setUid(null);
         setUidState(undefined);
-        setRootSectionsTopLevel(baseNewsSections);
+        setRootSectionsTopLevel(Object.keys(baseNewsSections));
       }
     });
 
@@ -399,7 +399,7 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
     setEmail('');
     setSubscriptions([]);
     setBookmarks([]);
-    setRootSections(baseNewsSections);
+    setRootSections(Object.keys(baseNewsSections));
   }
 
   /**

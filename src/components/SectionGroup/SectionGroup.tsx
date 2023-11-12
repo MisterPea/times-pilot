@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import SectionButton from "../SectionButton/SectionButton";
 import { useRouter } from "next/router";
+import newsSections from "../../helpers/newsSections";
 
 interface SectionGroupProps {
   sections: string[],
@@ -12,18 +13,23 @@ export default function SectionGroup({ sections, startingSection = 'us' }: Secti
   const router = useRouter();
 
   function selectSection(label: string) {
-    setCurrentSection(label.toLowerCase());
-    router.push(label.toLowerCase());
+    setCurrentSection(newsSections[label]);
+    router.push(newsSections[label]);
   }
 
   useEffect(() => {
     if (ulRef.current) {
-      // const activeSection = ulRef.current.querySelector('.selected');
-      // window.setTimeout(() => {
-      //   activeSection!.scrollIntoView({ behavior: "smooth", inline: "start", block: "end" });
-      // }, 0);
+      const activeSection = ulRef.current.querySelector('.selected');
+      window.setTimeout(() => {
+        activeSection!.scrollIntoView({ behavior: "smooth", inline: "start", block: "end" });
+      }, 0);
     }
   }, [currentSection]);
+
+  if (!sections || sections.length === 0) {
+    sections = Object.keys(newsSections);
+  }
+
 
   return (
     <div className="section_group_base">
@@ -35,7 +41,7 @@ export default function SectionGroup({ sections, startingSection = 'us' }: Secti
             <SectionButton
               label={section}
               callback={selectSection}
-              selected={currentSection === section.toLowerCase()} />
+              selected={currentSection === section.toLowerCase().replace(' ','')} />
           </li>
         ))}
       </ul>

@@ -19,7 +19,7 @@ interface ToggleGroupProps {
  * @returns {JsxElement}
  */
 const ToggleGroupBase = forwardRef(({ potentialSelections, previousSelections, autoSaveCallback }: ToggleGroupProps, ref) => {
-  const [updatedSelections, setUpdatedSelections] = useState([...previousSelections]);
+  const [updatedSelections, setUpdatedSelections] = useState([...(previousSelections||[])] );
   const oneClickRef = useRef<boolean>(false);
 
   // Expose updateSelections
@@ -29,7 +29,7 @@ const ToggleGroupBase = forwardRef(({ potentialSelections, previousSelections, a
 
   // We have to listen to changes from outside the component and perform the update inside the component
   useEffect(() => {
-    setUpdatedSelections([...previousSelections]);
+    setUpdatedSelections([...(previousSelections || [])]);
   }, [previousSelections]);
 
   // We have to wait for a state update then we can call the autosaveCallback—else,the callback will fire before the state updates
