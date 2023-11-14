@@ -1,6 +1,5 @@
 @import "../../style/mixins.scss";
 
-
 // .settings_overlay-outer - set in addTopicsOverlay
 
 .settings_overlay-inner {
@@ -55,7 +54,6 @@ body:has(.settings_overlay) {
   position: absolute;
   top: 0;
 }
-
 
 // @keyframes showModalBackground {
 //   0% {

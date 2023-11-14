@@ -13,6 +13,7 @@ export default function SectionGroup({ sections, startingSection = 'us' }: Secti
   const router = useRouter();
 
   function selectSection(label: string) {
+    console.log(label)
     setCurrentSection(newsSections[label]);
     router.push(newsSections[label]);
   }
@@ -21,7 +22,7 @@ export default function SectionGroup({ sections, startingSection = 'us' }: Secti
     if (ulRef.current) {
       const activeSection = ulRef.current.querySelector('.selected');
       window.setTimeout(() => {
-        activeSection!.scrollIntoView({ behavior: "smooth", inline: "start", block: "end" });
+        activeSection?.scrollIntoView({ behavior: "smooth", inline: "start", block: "end" });
       }, 0);
     }
   }, [currentSection]);

@@ -2,6 +2,7 @@ import Image from "next/image";
 import EditClipboardIcon from "../Icons/EditClipboardIcon";
 import BookmarkIcon from "../Icons/BookmarkIcon";
 import { Bookmark } from "../types";
+import { useRef, useState } from "react";
 
 interface ArticleButtonMobileProps {
   imageURL: string;
@@ -30,6 +31,7 @@ export default function ArticleButtonNonMobile({
   bookmarkInfo,
   uid
 }: ArticleButtonMobileProps) {
+  const imageRef = useRef<HTMLDivElement>(null);
   const regexPattern = /(?:By|,|and)\s+/gi;
   const allTopics = byline.split(regexPattern).filter(Boolean);
   allTopics.push(...topics.flat());
@@ -56,13 +58,25 @@ export default function ArticleButtonNonMobile({
       }}>
       <div className="article_tablet_content--top">
         <div className="image_headline">
-          <div className="image_wrap">
+          <div key={imageURL+'div'} ref={imageRef} className='image_wrap loading'>
             <Image
+              key={imageURL}
               src={imageURL}
               alt={headline}
               unoptimized
               fill
               priority
+              placeholder="empty"
+              blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
+              onLoad={() => {
+                // Add a small delay to ensure the image is fully loaded
+                setTimeout(() => {
+                  const imageWrap = imageRef.current;
+                  if (imageWrap) {
+                    imageWrap.classList.add('resolved');
+                  }
+                }, 100);
+              }}
             />
           </div>
           <h2>{headline}</h2>
@@ -72,7 +86,8 @@ export default function ArticleButtonNonMobile({
       <div className="article_tablet_content--bottom">
         {uid && <div className="icon_wrap">
           <BookmarkIcon key="bookmark-icon" callback={handleBookmark} selected={bookmarked} />
-          <EditClipboardIcon key="clipboard-icon" callback={handleShowTopics} />
+          {/* Occasionally there are no topics - so we don't render a button */}
+          {!!allTopics.length && <EditClipboardIcon key="clipboard-icon" callback={handleShowTopics} />}
         </div>}
         {!uid && <div className="icon_wrap">
           <EditClipboardIcon key="clipboard-icon" callback={handleShowTopics} />

@@ -169,6 +169,14 @@
       width: 4rem;
       border: 0.5px solid rgba(64, 58, 49, 0.5);
       margin-right: 0.65rem;
+      opacity: 0;
+      transition: opacity 1340ms ease;
+      &.loading {
+        opacity: 0;
+      }
+      &.resolved {
+        opacity: 1;
+      }
     }
     summary {
       @include body-text;

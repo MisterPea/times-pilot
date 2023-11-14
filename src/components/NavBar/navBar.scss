@@ -18,11 +18,13 @@
     }
     h1 {
       @include headline-text-black;
-      font-size: 1.125rem;
-      // padding-left: 2rem;
+      font-size: 1.25rem;
+      padding-left: 0.5rem;
       margin-top: -0.15rem;
+      transition: all 300ms ease;
       @include small--768px-and-up {
-        font-size: 1.5rem;
+        padding-left: 0;
+        font-size: 1.4rem;
         text-align: center;
         margin-top: -0.5rem;
       }
@@ -31,12 +33,14 @@
       @include body-text;
       color: rgb(179, 179, 179);
       text-transform: uppercase;
-      // padding-left: 2rem;
+      padding-left: 0.5rem;
       font-size: 0.425rem;
       letter-spacing: 0.125rem;
       margin-bottom: 0.15rem;
+      transition: all 300ms ease;
       @include small--768px-and-up {
         letter-spacing: 0.1875rem;
+        padding-left: 0;
         text-align: center;
         font-size: 0.45rem;
         margin-top: -0.125rem;

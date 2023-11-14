@@ -15,6 +15,10 @@ but this is rendered moot if you have few sections chosen
 
 * Get actual section names
 
+* Modal Portal - innards too wide and causing horizontal scroll Bar
+
+* Default image is image url is empty
+
 ------------------------------------------ Todo ------------------------------------------
 * (Only on mobile) When a toggleSelector is pressed/de-pressed there is a slight flicker. 
 It must be something in the action/down state style conflicting with the selected style.
@@ -25,17 +29,15 @@ It must be something in the action/down state style conflicting with the selecte
 
 * News Sections Bar should have click and drag.
 
-* Gradual load of images (stories) upon load/change page.
+** Gradual load of images (stories) upon load/change page.
 
 * Eye position on (show) password. It's set left because of autofill icon. Maybe we can detect that.
 
-* Modal Portal - innards too wide and causing horizontal scroll Bar
-
 * Storybook - add password reset
 
-* If rootSelection is empty, populate it with default Sections
+* If rootSelection is empty, populate it with default Sections - add to db
 
-* Default set screen on load - right now we show top bars then we hide them; let's try the opposite- hide them first then reveal.
+** Default set screen on load - right now we show top bars then we hide them; let's try the opposite- hide them first then reveal.
 
 * Section Selections in settings prevent the removal of all sections - a default to populate sections if empty might be a better solution.
 
@@ -43,4 +45,12 @@ It must be something in the action/down state style conflicting with the selecte
 
 * Autosave - we need a minimum time deployed - and we might want to do a spinner. 
 
-* 429 Popup / redirect - So when a rate limit happens we show a popup instead of redirecting.
+** 429 Popup / redirect - So when a rate limit happens we show a popup instead of redirecting.
+
+* Mobile - Bookmark settings not clearing address bar on scroll
+
+* Might be interesting to add hidden double-tap to delete bookmarks
+
+* Mobile - stop scroll on swipe
+
+* Empty space - Article Cards. There must be some elements left out of the calculation

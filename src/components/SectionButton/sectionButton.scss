@@ -8,14 +8,15 @@
   overflow: hidden;
   p {
     @include body-text;
-    color: var(--white);
-    font-size: 1rem;
+    color:#b0b0b0;
+    font-size: 0.9rem;
     padding: 0 1.25rem;
+    letter-spacing: 0.03rem;
   }
   &::after {
     content: "";
     position: absolute;
-    height: 0.4rem;
+    height: 0.1rem;
     width: 100%;
     background-color: var(--accent-yellow);
     left: 0;
@@ -24,7 +25,7 @@
     transition: all 200ms ease-in-out;
   }
   &.selected::after {
-    transform: translateY(0);
+    transform: translateY(-4px);
   }
   &.selected {
     p {
