@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { initializeApp, FirebaseApp } from 'firebase/app';
 import { Auth as AuthProps, getAuth, onAuthStateChanged, updateProfile, updateEmail, reauthenticateWithCredential, EmailAuthProvider, updatePassword, createUserWithEmailAndPassword, deleteUser } from 'firebase/auth';
-import { getFirestore, doc, getDoc, Firestore, updateDoc, setDoc, deleteField } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, Firestore, updateDoc, setDoc, deleteField, setLogLevel } from 'firebase/firestore';
 import { Dispatch, createContext, useEffect, useRef, useState } from 'react';
 import { Bookmark } from '../components/types';
 import baseNewsSections from '../helpers/newsSections';
@@ -91,21 +91,20 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
     });
 
     const auth = getAuth(credentials);
+    setLogLevel('debug');
     if (credentialsRef.current === null && credentials) {
       credentialsRef.current = credentials;
-      dbRef.current = getFirestore(credentialsRef.current);
+      userInfo.setCredentials(credentials);
     }
 
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      if (authUser) {
+      if (authUser && authUser.uid) { // Added check for authUser.uid
         setUid(authUser.uid);
         setUserName(authUser.displayName);
-        setUidState(authUser.uid);
         setEmail(authUser.email);
-        fetchUserInfo(authUser.uid);
+        userInfo.setUid(authUser.uid);
       } else {
         setUid(null);
-        setUidState(undefined);
         setRootSectionsTopLevel(Object.keys(baseNewsSections));
       }
     });
@@ -120,28 +119,60 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
     };
   }, []);
 
-  /**
-   * Function update get update context with user info
-   * @returns void;
-   */
-  async function fetchUserInfo(scopedUid?: string) {
-    console.log("SCOPED UID", scopedUid);
-    console.log("UID>", uid);
-    const userId: string | undefined = uid ?? scopedUid;
-    if (dbRef.current && userId) {
-      const userRef = doc(dbRef.current, "users", userId);
-      const userSnapshot = await getDoc(userRef);
 
+  /**
+   * @module userInfo
+   * @description Module to set uid and credentials and fetch db collections
+   */
+  const userInfo = (function () {
+    let uid: null | string = null;
+    let credentials: null | FirebaseApp = null;
+
+    // private function 
+    function _checkAndFetchData() {
+      if (uid && credentials)
+        getDbContents(credentials, uid);
+    }
+
+    return {
+      setUid: function (newUid: string) {
+        uid = newUid;
+        _checkAndFetchData();
+      },
+      setCredentials: function (newCredentials: FirebaseApp) {
+        credentials = newCredentials;
+        _checkAndFetchData();
+      },
+      fetch: function () {
+        _checkAndFetchData();
+      }
+    };
+  })();
+
+
+  /**
+   * Function to get db collection and set state/context
+   * @param {FirebaseApp} credentials Credential created from Firebase auth
+   * @param {string} uid User id
+   */
+  async function getDbContents(credentials: FirebaseApp, uid: string) {
+    const dbRefLocal = getFirestore(credentials);
+    // Once we connect to db we're storing it.
+    dbRef.current = dbRefLocal;
+    const userRef = doc(dbRefLocal, "users", uid);
+    try {
+      const userSnapshot = await getDoc(userRef);
       if (userSnapshot.exists()) {
         const { selections, active, bookmarks, rootSections } = userSnapshot.data();
+        console.log({ selections, active, bookmarks, rootSections });
         setSubscriptions(selections);
         setEmailActive(active);
         setBookmarks(bookmarks);
         setRootSections(rootSections);
         setRootSectionsTopLevel(rootSections);
       }
-    } else {
-      return new Error('Error no uid or db');
+    } catch (error) {
+      console.log('!!!!!!!!!', error);
     }
   }
 
@@ -188,10 +219,10 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
   }
 
   /**
- * Function to handle update of rootSections - that the user sees atop their page. 
- * @param {string[]} rootSections Array of strings for the selections to be written. This is not a mutation; it's a complete rewrite
- * @param completeCallback Upon upload success / failure this function is called with success (true) or error (false) arg
- */
+  * Function to handle update of rootSections - that the user sees atop their page. 
+  * @param {string[]} rootSections Array of strings for the selections to be written. This is not a mutation; it's a complete rewrite
+  * @param completeCallback Upon upload success / failure this function is called with success (true) or error (false) arg
+  */
   async function updateRootSections(rootSections: string[]): Promise<{ success: boolean, message?: string; }> {
     if (!(dbRef.current && uid)) {
       return { success: false, message: 'No UID or Database Reference' };
@@ -457,7 +488,7 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
       emailActive,
       toggleEmailActive,
       updateSections,
-      fetchUserInfo,
+      fetchUserInfo: userInfo.fetch,
       bookmarks,
       updateBookmarks,
       rootSections,
