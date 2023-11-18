@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import PrimarySecondaryButtonsHTML from "../PrimarySecondaryButtonsHTML/PrimarySecondaryButtonsHTML";
 import TextInput from "../TextInput/TextInput";
-import TextInputStaticMock from "./SettingsInputLabel";
 import SettingsPortalBlank from "./SettingsPortalBlank";
 import { AuthContext } from "../../db/Auth";
 import ErrorWarn from "../ErrorWarn/ErrorWarn";
@@ -24,17 +23,16 @@ export default function SettingsPortalPassword({ backCallback }: SettingsPortalE
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
-  async function handleSubmitNewUsername() {
+  async function handleSubmitNewPassword() {
     if (updateUserPassword) {
       setIsSubmitted(true);
-      const isSuccess = await updateUserPassword(newPassword1, currPassword);
-      if (!isSuccess.success) {
+      try {
+        await updateUserPassword(newPassword1, currPassword);
+        handleBackNav();
+      } catch (error: any | { message: string; }) {
         setIsError(true);
-        setErrorMsg(isSuccess.message);
-        console.log(isSuccess.message)
+        setErrorMsg(error.message);
         setIsSubmitted(false);
-      } else {
-        handleBackNav()
       }
     }
   }
@@ -53,7 +51,7 @@ export default function SettingsPortalPassword({ backCallback }: SettingsPortalE
   function resetError() {
     setIsError(false);
   }
-  console.log({currValidPW, newValidPW1, newValidPW2})
+
   return (
     <SettingsPortalBlank headline="Let's Change Your Password." backCallback={handleBackNav}>
       <ErrorWarn isError={isError} errorMsg={createErrorMsg(errorMsg)} setIsError={resetError} watchArray={[currPassword, newPassword1, newPassword2]} />
@@ -87,7 +85,7 @@ export default function SettingsPortalPassword({ backCallback }: SettingsPortalE
       </div>
       <div className="settings_portal-button_wrap">
         <PrimarySecondaryButtonsHTML
-          primaryLink={handleSubmitNewUsername}
+          primaryLink={handleSubmitNewPassword}
           secondaryLink={handleBackNav}
           disabled={!(currValidPW && newValidPW1 && newValidPW2 && (newPassword1 === newPassword2))}
           spinner={true}

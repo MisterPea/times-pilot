@@ -31,9 +31,10 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
   const tempDivRef = useRef<HTMLDivElement | undefined>(undefined);
   const [deployModal, setDeployModal] = useState<boolean>(false);
   const whichModalRef = useRef<string | null>(null);
+  const [subModalOpen, setSubModalOpen] = useState<boolean>(false);
 
   const [currentModal, setCurrentModal] = useState<'login' | 'password' | 'createAccountOne' | 'createAccountTwo' | 'createAccountFinal'>('login');
-  const { uid, userName, email, subscriptions, emailActive, toggleEmailActive, fetchUserInfo } = useContext(AuthContext);
+  const { uid, userName, email, subscriptions, emailActive, toggleEmailActive, getDbContents, credentials } = useContext(AuthContext);
   const acctInfo = { uid, userName, email };
   const username = useRef<string>(''); // to be set by new account one component
 
@@ -124,6 +125,13 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
     }
   }
 
+  // This is manually calling an update to keep db and state linked
+  function handleUpdateMainState() {
+    if (uid && credentials && getDbContents) {
+      getDbContents(credentials, uid);
+    }
+  }
+
   function handleCloseModal() {
     if (listenerRef.current === null) {
       if (overlayRef.current && innerDivRef.current) {
@@ -138,8 +146,14 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
         }, { once: true });
         overlayRef.current.classList.add('hide');
         innerDivRef.current.classList.add('hide');
-        fetchUserInfo && fetchUserInfo();
+        handleUpdateMainState();
       }
+    }
+  }
+
+  function handleDragListen(e: PointerEvent) {
+    if (e.pageX < 100) {
+      setShowModal(null);
     }
   }
 
@@ -189,6 +203,11 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
               </motion.div>}
               {showModal === 'settings' && (
                 <motion.div
+                  drag='x'
+                  dragConstraints={{ right: 0 }}
+                  dragSnapToOrigin
+                  dragElastic={0.1}
+                  onDrag={handleDragListen}
                   key="settings" {...settingsVariants}
                   className="settings_overlay-panel"
                 >

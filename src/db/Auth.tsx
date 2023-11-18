@@ -13,18 +13,23 @@ interface AuthComponentProps {
   setRootSectionsTopLevel: Dispatch<string[]>; // Main Selection Buttons
 }
 
-type AuthStatus = {
+type ReAuthStatus = {
   success: boolean,
   message?: any,
+};
+
+type AuthStatusNew = {
+  name: "success" | "Error",
+  message?: string,
 };
 
 type AuthContextType = {
   uid: string | null | undefined,
   email: string | null | undefined,
-  updateUserEmail: ((newEmail: string, reAuthPassword: string) => Promise<AuthStatus>) | undefined;
-  updateUserPassword: ((newPassword: string, reAuthPassword: string) => Promise<AuthStatus>) | undefined;
-  createUser: ((email: string, password: string, userName: string) => Promise<AuthStatus>) | undefined,
-  deleteAccount: ((reAuthPassword: string) => Promise<AuthStatus>) | undefined,
+  updateUserEmail: ((newEmail: string, reAuthPassword: string) => Promise<AuthStatusNew>) | undefined;
+  updateUserPassword: ((newPassword: string, reAuthPassword: string) => Promise<AuthStatusNew>) | undefined;
+  createUser: ((email: string, password: string, userName: string) => Promise<AuthStatusNew>) | undefined,
+  deleteAccount: ((reAuthPassword: string) => Promise<AuthStatusNew>) | undefined,
   emailActive: boolean,
   userName: string | null | undefined,
   updateUserName: ((newName: string) => void) | undefined;
@@ -100,11 +105,13 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
       if (authUser && authUser.uid) { // Added check for authUser.uid
         setUid(authUser.uid);
+        setUidState(authUser.uid)
         setUserName(authUser.displayName);
         setEmail(authUser.email);
         userInfo.setUid(authUser.uid);
       } else {
-        setUid(null);
+        setUid(null); // Why are we treating Auth component state differently?
+        setUidState(undefined);
         setRootSectionsTopLevel(Object.keys(baseNewsSections));
       }
     });
@@ -170,8 +177,9 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
         setRootSections(rootSections);
         setRootSectionsTopLevel(rootSections);
       }
-    } catch (error) {
-      console.log('!!!!!!!!!', error);
+    } catch (error: any | { message: string; }) {
+      console.warn(error);
+      throw new Error(error.message);
     }
   }
 
@@ -291,8 +299,8 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
    * @param {string} reAuthPassword Current user password
    * @returns {Promise} in the shape of {success:boolean, result:any}
    */
-  async function reauthorize(reAuthPassword: string): Promise<AuthStatus> {
-    const reAuthResult: AuthStatus = { success: false };
+  async function reauthorize(reAuthPassword: string): Promise<ReAuthStatus> {
+    const reAuthResult: ReAuthStatus = { success: false };
     if (authState?.currentUser?.email) {
       try {
         const credential = EmailAuthProvider.credential(
@@ -318,20 +326,20 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
    * @param {string} newEmail String of new email
    * @param {string} reAuthPassword Current user password
    */
-  async function updateUserEmail(newEmail: string, reAuthPassword: string): Promise<AuthStatus> {
+  async function updateUserEmail(newEmail: string, reAuthPassword: string): Promise<AuthStatusNew> {
     if (!authState?.currentUser) {
-      return { success: false, message: 'No current user.' };
+      throw new Error('User not found');
     }
     const isReAuthed = await reauthorize(reAuthPassword);
     if (!isReAuthed.success) {
-      return { success: false, message: isReAuthed.message };
+      throw new Error(isReAuthed.message);
     }
     try {
       await updateEmail(authState.currentUser, newEmail);
       setEmail(newEmail);
-      return { success: true };
+      return { name: 'success' };
     } catch (error: any | { code: string; }) {
-      return { success: false, message: error.code || 'Failed to update user email.' };
+      throw new Error(error.code || 'Failed to update user email');
     }
   }
 
@@ -341,19 +349,19 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
    * @param {string} reAuthPassword Current password string
    * @returns {Promise} Returns a Promise that resolves to an object `{success:boolean, message?:string}` the message is an error message
    */
-  async function updateUserPassword(newPassword: string, reAuthPassword: string): Promise<AuthStatus> {
+  async function updateUserPassword(newPassword: string, reAuthPassword: string): Promise<AuthStatusNew> {
     if (!authState?.currentUser) {
-      return { success: false, message: 'No current user.' };
+      throw new Error('User not found');
     }
     const isReAuthed = await reauthorize(reAuthPassword);
     if (!isReAuthed.success) {
-      return { success: false, message: isReAuthed.message };
+      throw new Error(isReAuthed.message)
     }
     try {
       await updatePassword(authState.currentUser, newPassword);
-      return { success: true };
+      return { name: 'success' };
     } catch (error: any | { code: string; }) {
-      return { success: false, message: error.code || 'Failed to update password' };
+      throw new Error(error.code || 'Failed to update password');
     }
   }
 
@@ -364,20 +372,19 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
    * @param {string} userName User's user name
    * @returns {Promise} Returns a promise in the shape of `{success: boolean, message?: string}`
    */
-  async function createUser(email: string, password: string, userName: string): Promise<AuthStatus> {
+  async function createUser(email: string, password: string, userName: string): Promise<AuthStatusNew> {
     if (!authState) {
-      return { success: false, message: 'AuthStatus Not Available' };
+      throw new Error('AuthStatus Not Available');
     }
     try {
       const { user } = await createUserWithEmailAndPassword(authState, email, password);
       await updateUserName(userName);
       setUid(user.uid);
       setEmail(email);
-      const allocate = await allocateUserResources(user.uid);
-      console.log('ALLOCATE', allocate);
-      return { success: true };
+      await allocateUserResources(user.uid);
+      return { name: 'success' };
     } catch (error: any | { code: string; }) {
-      return { success: false, message: error.code };
+      throw new Error(error.code);
     }
   }
 
@@ -385,9 +392,9 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
    * Helper function to allocate user and empty database object.
    * @returns {Promise}
    */
-  async function allocateUserResources(uidArg: string): Promise<AuthStatus> {
+  async function allocateUserResources(uidArg: string): Promise<AuthStatusNew> {
     if (!dbRef.current) {
-      return { success: false, message: 'Database Unavailable' };
+      throw new Error('Database Unavailable');
     }
     try {
       await setDoc(doc(dbRef.current, 'users', uidArg), {
@@ -396,9 +403,9 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
         rootSections: [],
         selections: [],
       });
-      return { success: true };
+      return { name: 'success' };
     } catch (error) {
-      return { success: false, message: 'Unable To Allocate Database Resources' };
+      throw new Error('Unable To Allocate Database Resources');
     }
   }
 
@@ -411,7 +418,7 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
       return { loggedOut: false };
     }
     try {
-      console.log("TRY LOGOUT CALLED")
+      console.log("TRY LOGOUT CALLED");
       await authState.signOut();
       clearUserInfo();
       return { loggedOut: true };
@@ -436,28 +443,28 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
   /**
    * Function to delete the current user
    * @param {string} reAuthPassword Current password
-   * @returns {Promise} Returns a promise in the shape of `{success: boolean, message?: string}`
+   * @returns {Promise} Returns a promise in the shape of `{name: boolean, message?: string}`
    */
-  async function deleteAccount(reAuthPassword: string): Promise<AuthStatus> {
+  async function deleteAccount(reAuthPassword: string): Promise<AuthStatusNew> {
     if (!authState?.currentUser) {
-      return { success: false, message: 'No current user.' };
+      throw new Error('User not found');
     }
     const isReAuthed = await reauthorize(reAuthPassword);
     if (!isReAuthed.success) {
-      return { success: false, message: isReAuthed.message };
+      throw new Error(isReAuthed.message);
     }
     try {
       await deallocateDatabase();
       await deleteUser(authState.currentUser);
-      return { success: true };
+      return { name: 'success' };
     } catch (error: any | { code: string; }) {
-      return { success: false, message: error.code || 'Failed Delete Account' };
+      throw new Error(error.code || 'Failed Delete Account');
     }
   }
 
-  async function deallocateDatabase(): Promise<{ success: boolean; }> {
+  async function deallocateDatabase(): Promise<AuthStatusNew> {
     if (!(dbRef.current && uid)) {
-      return { success: false };
+      throw new Error('No database to deallocate');
     }
     try {
       const userRef = doc(dbRef.current, "users", uid);
@@ -467,10 +474,10 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
         rootSections: deleteField(),
         selections: deleteField(),
       });
-      return { success: true };
+      return { name: 'success' };
     }
     catch (error) {
-      return { success: false };
+      throw new Error('Could not deallocate resources');
     }
   }
 

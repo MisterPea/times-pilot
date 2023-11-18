@@ -58,7 +58,6 @@ export default function ModalNewAcctOne({ returnToSignIn, closeModalToBrowse, us
   };
 
   async function handleSubmit() {
-    console.log("SUBMITTED");
     if (!createUser) {
       return;
     }
@@ -67,8 +66,8 @@ export default function ModalNewAcctOne({ returnToSignIn, closeModalToBrowse, us
       userNameRef.current = userName;
       await createUser(email, password, userName);
       closeModalToNext();
-    } catch (error: any | { code: string; }) {
-      setErrorMsg(error.code);
+    } catch (error: any | { message: string; }) {
+      setErrorMsg(error.message);
       setIsBusy(false);
       setIsError(true);
     }
@@ -88,7 +87,7 @@ export default function ModalNewAcctOne({ returnToSignIn, closeModalToBrowse, us
         <div className="modal_main_new_acct-headline_wrap">
           <Label label="Let's Try A New Account on for Size." size="md" />
         </div>
-        <ErrorWarn errorMsg={createErrorMsg.call(null, errorMsg)} isError={isError} watchArray={[userName, email, password]} />
+        <ErrorWarn errorMsg={createErrorMsg.call(null, errorMsg)} isError={isError} watchArray={[userName, email, password]} setIsError={setIsError} />
         <div className="modal_main_new_acct-input_wrap">
           <div className="modal_main_new_acct-input_wrap-inputs">
             <TextInput label="Username" type="text" regexTest="(.){3}" parentSetState={setUserName} validInputCallback={(bool) => allInputsValid.call(null, 0, bool)} />

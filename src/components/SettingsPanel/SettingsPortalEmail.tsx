@@ -24,13 +24,13 @@ export default function SettingsPortalEmail({ currentEmail, backCallback }: Sett
   async function handleSubmitNewUsername() {
     if (updateUserEmail) {
       setIsSubmitted(true);
-      const isSuccess = await updateUserEmail(newEmail, password);
-      if (!isSuccess.success) {
-        setIsError(true);
-        setErrorMsg(isSuccess.message);
-        setIsSubmitted(false);
-      } else {
+      try{
+        await updateUserEmail(newEmail, password);
         handleBackNav();
+      } catch(error:any|{message:string}){
+        setIsError(true);
+        setErrorMsg(error.message);
+        setIsSubmitted(false);
       }
     }
   }

@@ -31,7 +31,6 @@ export default function SectionGroup({ sections, startingSection = 'us' }: Secti
     sections = Object.keys(newsSections);
   }
 
-
   return (
     <div className="section_group_base">
       <ul
