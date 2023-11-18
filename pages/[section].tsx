@@ -74,8 +74,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
   context.res.setHeader('Cache-Control', 'public, s-maxage=200, stale-while-revalidate=300');
-
-  const topStoriesUrl = `https://api.nytimes.com/svc/topstories/v2/${context.query.section}.json?api-key=${NYT_API_KEY}`;
+  // const envVar:any = process.env.NODE_ENV === 'development' ? process.env.NYT_API_KEY: 'NYT_API_KEY';
+  const topStoriesUrl = `https://api.nytimes.com/svc/topstories/v2/${context.query.section}.json?api-key=${process.env.NYT_API_KEY}`;
   const response = await axios.get(topStoriesUrl);
   const data = response.data;
   return {
