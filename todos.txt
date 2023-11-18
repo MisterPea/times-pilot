@@ -19,6 +19,8 @@ but this is rendered moot if you have few sections chosen
 
 * Default image is image url is empty
 
+** Gradual load of images (stories) upon load/change page.
+
 ------------------------------------------ Todo ------------------------------------------
 * (Only on mobile) When a toggleSelector is pressed/de-pressed there is a slight flicker. 
 It must be something in the action/down state style conflicting with the selected style.
@@ -29,15 +31,11 @@ It must be something in the action/down state style conflicting with the selecte
 
 * News Sections Bar should have click and drag.
 
-** Gradual load of images (stories) upon load/change page.
-
 * Eye position on (show) password. It's set left because of autofill icon. Maybe we can detect that.
 
 * Storybook - add password reset
 
 * If rootSelection is empty, populate it with default Sections - add to db
-
-** Default set screen on load - right now we show top bars then we hide them; let's try the opposite- hide them first then reveal.
 
 * Section Selections in settings prevent the removal of all sections - a default to populate sections if empty might be a better solution.
 
@@ -53,4 +51,6 @@ It must be something in the action/down state style conflicting with the selecte
 
 * Mobile - stop scroll on swipe
 
-* Empty space - Article Cards. There must be some elements left out of the calculation
+* Empty space on Article Card layout - usually there are 2 missing on the arts page. There must be some elements left out of the calculation
+
+* Stale state on Settings - Section Selection. Global state/db are updated, but the local state is stale.
