@@ -21,7 +21,6 @@ export type AccountInfo = {
 };
 
 interface SettingsPanelProps {
-  sectionsSelected: string[];
   emailSubscriptions: string[];
   emailActive: boolean;
   accountInfo: AccountInfo;
@@ -32,7 +31,6 @@ interface SettingsPanelProps {
 type SettingsOverlays = null | 'bookmarks' | 'username' | 'password' | 'email' | 'deleteAcct';
 
 export default function SettingsPanel({
-  sectionsSelected,
   emailSubscriptions,
   emailActive,
   accountInfo,
@@ -63,8 +61,9 @@ export default function SettingsPanel({
     setLogoutBusy(true);
     const { loggedOut } = await logoutUser();
     if (loggedOut) {
-      setLogoutBusy(false);
+      closeAction();
     }
+    setLogoutBusy(false);
   }
 
   return (

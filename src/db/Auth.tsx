@@ -29,7 +29,7 @@ type AuthContextType = {
   userName: string | null | undefined,
   updateUserName: ((newName: string) => void) | undefined;
   subscriptions: string[],
-  fetchUserInfo: (() => void) | undefined;
+  getDbContents: ((credentials: FirebaseApp, uid: string) => void) | undefined;
   bookmarks: Bookmark[],
   updateBookmarks: ((value: Bookmark) => void) | undefined;
   rootSections: string[],
@@ -53,7 +53,7 @@ export const AuthContext = createContext<AuthContextType>({
   updateUserEmail: undefined,
   emailActive: true,
   toggleEmailActive: undefined,
-  fetchUserInfo: undefined,
+  getDbContents: undefined,
   updateSections: undefined,
   subscriptions: [],
   bookmarks: [],
@@ -91,7 +91,7 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
     });
 
     const auth = getAuth(credentials);
-    setLogLevel('debug');
+    // setLogLevel('debug');
     if (credentialsRef.current === null && credentials) {
       credentialsRef.current = credentials;
       userInfo.setCredentials(credentials);
@@ -119,31 +119,30 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
     };
   }, []);
 
-
   /**
    * @module userInfo
    * @description Module to set uid and credentials and fetch db collections
    */
   const userInfo = (function () {
-    let uid: null | string = null;
-    let credentials: null | FirebaseApp = null;
+    let moduleUid: null | string = null;
+    let moduleCredentials: null | FirebaseApp = null;
 
     // private function 
     function _checkAndFetchData() {
-      if (uid && credentials)
-        getDbContents(credentials, uid);
+      let activeUid = moduleUid || uid;
+      let activeCredentials = moduleCredentials || credentialsRef.current;
+      if (activeUid && activeCredentials) {
+        getDbContents(activeCredentials, activeUid);
+      }
     }
 
     return {
       setUid: function (newUid: string) {
-        uid = newUid;
+        moduleUid = newUid;
         _checkAndFetchData();
       },
       setCredentials: function (newCredentials: FirebaseApp) {
-        credentials = newCredentials;
-        _checkAndFetchData();
-      },
-      fetch: function () {
+        moduleCredentials = newCredentials;
         _checkAndFetchData();
       }
     };
@@ -412,6 +411,7 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
       return { loggedOut: false };
     }
     try {
+      console.log("TRY LOGOUT CALLED")
       await authState.signOut();
       clearUserInfo();
       return { loggedOut: true };
@@ -488,7 +488,7 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
       emailActive,
       toggleEmailActive,
       updateSections,
-      fetchUserInfo: userInfo.fetch,
+      getDbContents,
       bookmarks,
       updateBookmarks,
       rootSections,
