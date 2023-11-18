@@ -35,18 +35,6 @@
   }
 }
 
-body {
-  transition: all 300ms;
-}
-
-body:has(.settings_overlay) {
-  overflow: hidden;
-  margin-top: -5rem;
-  .section_group_base {
-    transform: unset;
-    position: unset;
-  }
-}
 
 .settings_overlay-panel {
   width: 100%;

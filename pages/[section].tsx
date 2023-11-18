@@ -47,18 +47,20 @@ export default function SectionPage({ data, route }: SectionPageProps) {
   return (
     <>
       <Auth setUidState={setUid} setRootSectionsTopLevel={setRootSections}>
-        <SettingsOverlay
-          showModal={showModal}
-          setShowModal={setShowModal}
-          closeOverlay={setShowModal.bind(null, null)}
-        >
-          <Navbar
-            openLogin={setShowModal.bind(null, 'login')}
-            openSettings={setShowModal.bind(null, 'settings')}
-          />
-        </SettingsOverlay>
-        <SectionGroup sections={rootSections} startingSection={route} />
-        {data.results ? <ArticleButtonGroup articles={articlesFiltered} /> : <p>LOADING</p>}
+        <div className={`root_component_wrap${showModal !== null ? '--hide' : '--show'}`}>
+          <SettingsOverlay
+            showModal={showModal}
+            setShowModal={setShowModal}
+            closeOverlay={setShowModal.bind(null, null)}
+          >
+            <Navbar
+              openLogin={setShowModal.bind(null, 'login')}
+              openSettings={setShowModal.bind(null, 'settings')}
+            />
+          </SettingsOverlay>
+          <SectionGroup sections={rootSections} startingSection={route} />
+          {data.results ? <ArticleButtonGroup articles={articlesFiltered} /> : <p>LOADING</p>}
+        </div>
       </Auth>
     </>
   );
@@ -71,7 +73,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       notFound: true,
     };
   }
-  context.res.setHeader('Cache-Control','public, s-maxage=200, stale-while-revalidate=300')
+  context.res.setHeader('Cache-Control', 'public, s-maxage=200, stale-while-revalidate=300');
   const topStoriesUrl = `https://api.nytimes.com/svc/topstories/v2/${context.query.section}.json?api-key=${process.env.NYT_API_KEY}`;
   const response = await axios.get(topStoriesUrl);
   const data = response.data;

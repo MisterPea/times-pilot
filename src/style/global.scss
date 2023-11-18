@@ -84,6 +84,23 @@ li {
   list-style: none;
 }
 
+.root_component_wrap {
+  
+  &--hide {
+    transform: translateY(-5rem) translateZ(0);
+    transition: transform 220ms ease;
+  }
+  &--show {
+    transform: translateY(0rem) translateZ(0);
+    transition: transform 320ms ease;
+    transition-delay: 120ms;
+  }
+}
+
+body:has(.root_component_wrap--hide){
+  overflow: hidden;
+}
+
 /* @media (prefers-color-scheme: dark) {
   :root {}
 } */
