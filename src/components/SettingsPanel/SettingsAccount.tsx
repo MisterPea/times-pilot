@@ -1,6 +1,4 @@
-
 import Label from "../Label/Label";
-import { useState, useRef } from "react";
 import { AccountInfo } from "./SettingsPanel";
 
 interface SettingsAccountProps {
@@ -36,8 +34,8 @@ export default function SettingsAccount({ name, email, passwordCallback, usernam
       <Label label="Account Settings" size="smMd" />
       <div className="settings_block-sections-input_button-wrap">
         <SettingsElement label="Password" content="• • • • • • • • • • • • • • • • • • •" onClickAction={passwordCallback} />
-        <SettingsElement label="Username" content={name} onClickAction={usernameCallback} />
-        <SettingsElement label="Email" content={email} onClickAction={emailCallback} />
+        <SettingsElement label="Username" content={name!} onClickAction={usernameCallback} />
+        <SettingsElement label="Email" content={email!} onClickAction={emailCallback} />
       </div>
     </div>
   );

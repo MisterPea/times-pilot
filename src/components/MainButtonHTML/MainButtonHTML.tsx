@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { GrUndo } from 'react-icons/gr';
-import MaterialSpinner, { MaterialSpinnerProps } from '../MaterialSpinner/MaterialSpinner';
+import MaterialSpinner from '../MaterialSpinner/MaterialSpinner';
+import { MaterialSpinnerProps } from '../types';
 
 interface MainButtonHTMLProps {
   label: string;

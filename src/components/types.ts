@@ -29,7 +29,7 @@ export type Article = {
   geo_facet: string[];
   multimedia: Multimedia[];
   short_url: string;
-  addClass: string | undefined;
+  addClass?: string | undefined;
 };
 
 export type Bookmark = {

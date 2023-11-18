@@ -212,7 +212,6 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
                   className="settings_overlay-panel"
                 >
                   <SettingsPanel
-                    sectionsSelected={[]}
                     emailSubscriptions={subscriptions}
                     emailActive={emailActive}
                     accountInfo={acctInfo}

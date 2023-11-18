@@ -8,7 +8,7 @@ interface BookmarkGroupProps {
   bookmarks: Bookmark[];
 }
 export default function BookmarkedArticleGroup({ bookmarks }: BookmarkGroupProps) {
-  const [localBookmarks, setLocalBookmarks] = useState<Bookmark[]>(bookmarks||[]);
+  const [localBookmarks, setLocalBookmarks] = useState<Bookmark[]>(bookmarks || []);
   const bookmarksRef = useRef<HTMLDivElement | null>(null);
   const { updateBookmarks } = useContext(AuthContext);
 
@@ -25,7 +25,10 @@ export default function BookmarkedArticleGroup({ bookmarks }: BookmarkGroupProps
     }
   }
 
-  function parseDate(dateString: string) {
+  function parseDate(dateString?: string) {
+    if (!dateString) {
+      return '';
+    }
     const monthAbbreviations = [
       "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
       "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
@@ -45,7 +48,7 @@ export default function BookmarkedArticleGroup({ bookmarks }: BookmarkGroupProps
       <ul>
         {localBookmarks.map(({ id, date, title, summary, url }) => (
           <li id={id} className="bookmark_group--element" key={id}>
-            <BookmarkedArticle date={parseDate(date)} headline={title} summary={summary} id={id} linkToArticle={url} deleteCallback={deleteListItem} />
+            <BookmarkedArticle date={parseDate(date)} headline={title || ''} summary={summary || ''} id={id} linkToArticle={url || ''} deleteCallback={deleteListItem} />
           </li>
         ))}
       </ul>

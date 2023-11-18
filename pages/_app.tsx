@@ -1,7 +1,8 @@
+import { AppProps } from "next/app";
 import "../src/style/global.scss"
 import Head from "next/head";
 
-export default function MainApp({ Component, pageProps }) {
+export default function MainApp({ Component, pageProps }:AppProps) {
   return (
     <>
       <Head>

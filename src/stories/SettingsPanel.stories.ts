@@ -32,8 +32,8 @@ export const Primary: Story = {
     accountInfo: {
       userName: "Mr. Finchley",
       email: "mister.finchley@gmail.com",
+      uid:"abc123",
     },
-    sectionsSelected: ["Arts", "Books", "Business", "Food", "Science"],
     emailSubscriptions: ['Farhad Manjoo','Exercise','President Xi', 'TSMC (Company)', 'Intel (Company)', 'Venture Capital','OpenAI (Company)','China' ],
     emailActive: true,
   }

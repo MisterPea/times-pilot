@@ -17,7 +17,6 @@ type Story = StoryObj<typeof EditClipboardIcon>;
 
 export const Primary: Story = {
   args: {
-    selected: false,
     callback: () => console.log('Callback Called')
   }
 }

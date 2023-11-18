@@ -13,9 +13,9 @@ interface TextInputProps {
 }
 
 // Default regular expressions
-const regex = {
-  email: /[a-z0-9.]*@[a-z]*\.[a-z.]*[a-z]{2,}/,
-  password: /^(?=.*[A-Z])(?=.*[0-9]).{8,}$/g
+const regexObj: { [key: string]: RegExp; } = {
+  'email': /[a-z0-9.]*@[a-z]*\.[a-z.]*[a-z]{2,}/,
+  'password': /^(?=.*[A-Z])(?=.*[0-9]).{8,}$/g
 };
 
 export default function TextInput({
@@ -70,7 +70,14 @@ export default function TextInput({
 
   // Logic to test the text inputs
   function testInput() {
-    let appliedRegex = regex[regexTest] || new RegExp(regexTest!);
+    let appliedRegex: RegExp = /^$/;
+    if (typeof regexTest === 'string' && regexObj.hasOwnProperty(regexTest)) {
+      appliedRegex = regexObj[regexTest];
+    } else if (typeof regexTest === 'string') {
+      appliedRegex = new RegExp(regexTest);
+    } else if (regexTest instanceof RegExp) {
+      appliedRegex = regexTest;
+    }
 
     /*  This is resetting where we're searching from.
     When we get a true from .test it sets lastIndex to that index thats true.
