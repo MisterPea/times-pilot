@@ -48,8 +48,7 @@ export default function MakeToast({ data, deploy, viewLength = 5000, isError = f
 
   // Setup and deploy toast
   function createTempDiv() {
-
-    const body = documentRef.current!.querySelector('.article_group--base');
+    const body = documentRef.current!.querySelector('body');
     if (body) {
       toastRef.current = documentRef.current!.createElement('div');
       toastRef.current.classList.add('toaster_base');

@@ -21,13 +21,17 @@ but this is rendered moot if you have few sections chosen
 
 ** Gradual load of images (stories) upon load/change page.
 
+* Storybook: Toaster ref needs to be body or __next.
+
+* Empty space on Article Card layout - usually there are 2 missing on the arts page. There must be some elements left out of the calculation (css wasn't clearing on size change)
+
+* Stale state on Settings - Section Selection. Global state/db are updated, but the local state is stale.
+
 ------------------------------------------ Todo ------------------------------------------
 * (Only on mobile) When a toggleSelector is pressed/de-pressed there is a slight flicker. 
 It must be something in the action/down state style conflicting with the selected style.
 
 * Swipe color (mobile) doesn't go under border radius
-
-* Storybook: Toaster ref needs to be body or __next.
 
 * News Sections Bar should have click and drag.
 
@@ -51,6 +55,5 @@ It must be something in the action/down state style conflicting with the selecte
 
 * Mobile - stop scroll on swipe
 
-* Empty space on Article Card layout - usually there are 2 missing on the arts page. There must be some elements left out of the calculation
+* Gracefully populate sections bar
 
-* Stale state on Settings - Section Selection. Global state/db are updated, but the local state is stale.

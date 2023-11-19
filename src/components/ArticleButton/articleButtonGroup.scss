@@ -16,6 +16,7 @@
   }
 
   @include small--768px-and-up {
+  
     &--ul {
       grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
     }
@@ -25,6 +26,7 @@
     &-tablet {
       display: block;
       margin: 0 2.5px 5px;
+      grid-column: span 1;
     }
     &-tablet.two_wide {
       margin: 0 2.5px 5px;
@@ -42,6 +44,11 @@
     &-tablet {
       display: block;
       margin: 0 2.5px 5px;
+      grid-column: span 1;
+    }
+    &-tablet.two_wide {
+      margin: 0 2.5px 5px;
+      grid-column: span 1;
     }
     &-tablet.three_wide {
       margin: 0 2.5px 5px;
@@ -58,6 +65,7 @@
     &-tablet {
       display: block;
       margin: 0 2.5px 5px;
+      grid-column: span 1;
     }
     &-tablet.four_wide {
       margin: 0 2.5px 5px;
@@ -74,6 +82,15 @@
     &-tablet {
       display: block;
       margin: 0 2.5px 5px;
+      grid-column: span 1;
+    }
+    &-tablet.two_wide {
+      margin: 0 2.5px 5px;
+      grid-column: span 1;
+    }
+    &-tablet.four_wide {
+      margin: 0 2.5px 5px;
+      grid-column: span 1;
     }
     &-tablet.five_wide {
       margin: 0 2.5px 5px;

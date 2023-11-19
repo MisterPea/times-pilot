@@ -37,7 +37,7 @@ type AuthContextType = {
   getDbContents: ((credentials: FirebaseApp, uid: string) => void) | undefined;
   bookmarks: Bookmark[],
   updateBookmarks: ((value: Bookmark) => void) | undefined;
-  rootSections: string[],
+  rootSections: string[] | undefined,
   updateRootSections: ((rootSections: string[]) => Promise<{ success: boolean, message?: string; }>) | undefined;
   toggleEmailActive: any;
   updateSections: ((sections: string[], completeCallback: (value: boolean) => void, settingsPage?: boolean) => void) | undefined;
@@ -63,7 +63,7 @@ export const AuthContext = createContext<AuthContextType>({
   subscriptions: [],
   bookmarks: [],
   updateBookmarks: undefined,
-  rootSections: [],
+  rootSections: undefined,
   updateRootSections: undefined,
   credentials: null,
   logoutUser: undefined,
@@ -105,7 +105,7 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
       if (authUser && authUser.uid) { // Added check for authUser.uid
         setUid(authUser.uid);
-        setUidState(authUser.uid)
+        setUidState(authUser.uid);
         setUserName(authUser.displayName);
         setEmail(authUser.email);
         userInfo.setUid(authUser.uid);
@@ -170,7 +170,6 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
       const userSnapshot = await getDoc(userRef);
       if (userSnapshot.exists()) {
         const { selections, active, bookmarks, rootSections } = userSnapshot.data();
-        console.log({ selections, active, bookmarks, rootSections });
         setSubscriptions(selections);
         setEmailActive(active);
         setBookmarks(bookmarks);
@@ -355,7 +354,7 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
     }
     const isReAuthed = await reauthorize(reAuthPassword);
     if (!isReAuthed.success) {
-      throw new Error(isReAuthed.message)
+      throw new Error(isReAuthed.message);
     }
     try {
       await updatePassword(authState.currentUser, newPassword);
@@ -418,7 +417,6 @@ export default function Auth({ children, setUidState, setRootSectionsTopLevel }:
       return { loggedOut: false };
     }
     try {
-      console.log("TRY LOGOUT CALLED");
       await authState.signOut();
       clearUserInfo();
       return { loggedOut: true };

@@ -13,7 +13,6 @@ export default function SectionGroup({ sections, startingSection = 'us' }: Secti
   const router = useRouter();
 
   function selectSection(label: string) {
-    console.log(label)
     setCurrentSection(newsSections[label]);
     router.push(newsSections[label]);
   }
@@ -26,10 +25,6 @@ export default function SectionGroup({ sections, startingSection = 'us' }: Secti
       }, 0);
     }
   }, [currentSection]);
-
-  if (!sections || sections.length === 0) {
-    sections = Object.keys(newsSections);
-  }
 
   return (
     <div className="section_group_base">

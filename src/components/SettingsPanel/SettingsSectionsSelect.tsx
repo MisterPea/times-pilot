@@ -6,7 +6,7 @@ import { useState, useRef, useContext } from "react";
 import { AuthContext } from "../../db/Auth";
 
 interface SettingsSelectionsSelectProps {
-  sectionsSelected: string[];
+  sectionsSelected: string[] | undefined;
 }
 
 export default function SettingsSelectionsSelect({ sectionsSelected }: SettingsSelectionsSelectProps) {
@@ -56,7 +56,7 @@ export default function SettingsSelectionsSelect({ sectionsSelected }: SettingsS
       <div className="settings_block-sections-selector_group">
         <ToggleGroup
           potentialSelections={Object.keys(potentialSections)}
-          previousSelections={sectionsSelected}
+          previousSelections={sectionsSelected!}
           autoSaveCallback={handleAutoSaveTimeout}
           ref={sectionRef} />
       </div>

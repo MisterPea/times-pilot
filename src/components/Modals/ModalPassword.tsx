@@ -52,7 +52,7 @@ export default function ModalPassword({ returnToSignIn, createAccount }: ModalPa
   }
 
   function handleEmailSubmit() {
-    console.log("HANDLE EMAIL SUBMIT:",);
+    // console.log("HANDLE EMAIL SUBMIT:",);
     setSubmit(true);
   }
 

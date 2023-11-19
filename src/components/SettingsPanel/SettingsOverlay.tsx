@@ -99,7 +99,6 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
     }
     if (documentRef.current && showModal) {
       const existingOverlay = (documentRef.current.querySelector('.settings_overlay-outer') as HTMLDivElement) || undefined;
-      console.log(existingOverlay);
       if (existingOverlay) {
         tempDivRef.current = existingOverlay;
       }
