@@ -19,10 +19,10 @@ interface ErrorWarnProps {
  */
 export default function ErrorWarn({ isError, setIsError, errorMsg, watchArray }: ErrorWarnProps) {
   useEffect(() => {
-    if (watchArray && isError) {
-      setIsError && setIsError(false);
+    if (setIsError && watchArray && isError) {
+      setIsError(false);
     }
-  }, [ ...(watchArray || [])]);
+  }, [...(watchArray || [])]);
 
   return (
     <div className={`modal-error_wrap${isError ? " error" : ""}`}>

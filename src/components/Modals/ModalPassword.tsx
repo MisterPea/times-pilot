@@ -33,10 +33,7 @@ export default function ModalPassword({ returnToSignIn, createAccount }: ModalPa
     if (initialLabelElement) {
       setInitialLabelHeight(initialLabelElement.clientHeight);
     }
-  }, []);
-
-
-  useEffect(() => {
+    
     document.addEventListener('keydown', handleKeydown);
     return () => {
       document.removeEventListener('keydown', handleKeydown);

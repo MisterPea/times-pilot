@@ -38,7 +38,7 @@ const ToggleGroupBase = forwardRef(({ potentialSelections, previousSelections, a
       autoSaveCallback !== undefined && autoSaveCallback();
     }
   }, [updatedSelections]);
-
+  
   /**
    * Function to handle the updating of the local state: updatedSelections
    * @param {string} newLabel String of the toggle being called back
