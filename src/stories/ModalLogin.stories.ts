@@ -14,14 +14,14 @@ const meta: Meta<typeof ModalLogin> = {
     layout: 'fullscreen'
   }
 };
-const deleteCall = () => console.log("ready to delete")
+const deleteCall = () => console.log("ready to delete");
 
 export default meta;
 type Story = StoryObj<typeof ModalLogin>;
 
 export const Primary: Story = {
   args: {
-    hasLoginError: false,
+
   }
 }
 

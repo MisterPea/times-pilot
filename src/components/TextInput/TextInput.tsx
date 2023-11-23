@@ -23,14 +23,12 @@ export default function TextInput({
   label,
   parentSetState,
   regexTest,
-  foundError,
   errorText,
   validInputCallback
 }: TextInputProps) {
 
   const [localInputVal, setLocalInputValue] = useState<string>('');
   const [hasValidInput, setHasValidInput] = useState<boolean>(false);
-  const [localError, setLocalError] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -44,14 +42,6 @@ export default function TextInput({
       testInput();
     }
   }, [localInputVal]);
-
-  // We can receive errors from a parent component
-  useEffect(() => {
-    if (foundError !== undefined) {
-      foundError === true && setHasValidInput(false);
-      setLocalError(foundError);
-    }
-  }, [foundError]);
 
   // Capture for Enter and Esc
   useEffect(() => {
@@ -93,7 +83,7 @@ export default function TextInput({
 
   return (
     <div className="text_input">
-      <label className={`${localInputVal.length ? 'has-input' : ''}${localError ? 'error' : ''}`}>{label}</label>
+      <label className={`${localInputVal.length ? 'has-input' : ''}`}>{label}</label>
       {type === 'password' && <button tabIndex={-1} onClick={() => setShowPassword((s) => !s)} className='show-password'>
         {showPassword ? <BiHide /> : <BiShowAlt />}
       </button>}

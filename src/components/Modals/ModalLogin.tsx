@@ -9,7 +9,6 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import ErrorWarn from "../ErrorWarn/ErrorWarn";
 
 interface ModalLoginProps {
-  hasLoginError: boolean;
   closeModal: () => void;
   forgotPasswordCallback: () => void;
   createAccount: () => void;
@@ -22,7 +21,7 @@ interface ModalLoginProps {
  * 
  * @returns 
  */
-export default function ModalLogin({ closeModal, hasLoginError, forgotPasswordCallback, createAccount }: ModalLoginProps) {
+export default function ModalLogin({ closeModal, forgotPasswordCallback, createAccount }: ModalLoginProps) {
   const [validEmail, setValidEmail] = useState<boolean>(false);
   const [validPassword, setValidPassword] = useState<boolean>(false);
   const [emailValue, setEmailValue] = useState<string>('');
@@ -38,10 +37,6 @@ export default function ModalLogin({ closeModal, hasLoginError, forgotPasswordCa
       document.removeEventListener('keydown', handleEnterClick);
     };
   }, []);
-
-  useEffect(() => {
-    setLocalLoginError(hasLoginError);
-  }, [hasLoginError]);
 
   useEffect(() => {
     if (localLoginError === true) {

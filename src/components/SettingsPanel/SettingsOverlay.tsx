@@ -31,8 +31,6 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
   const tempDivRef = useRef<HTMLDivElement | undefined>(undefined);
   const [deployModal, setDeployModal] = useState<boolean>(false);
   const whichModalRef = useRef<string | null>(null);
-  const [subModalOpen, setSubModalOpen] = useState<boolean>(false);
-
   const [currentModal, setCurrentModal] = useState<'login' | 'password' | 'createAccountOne' | 'createAccountTwo' | 'createAccountFinal'>('login');
   const { uid, userName, email, subscriptions, emailActive, toggleEmailActive, getDbContents, credentials } = useContext(AuthContext);
   const acctInfo = { uid, userName, email };
@@ -167,7 +165,6 @@ export default function LoginSettingsOverlay({ children, showModal, setShowModal
             >
               {(showModal === 'login' && currentModal === 'login') && <motion.div key={'login'} {...leftToRight} style={{ width: '100%' }}>
                 <ModalLogin
-                  hasLoginError={false}
                   closeModal={handleCloseModal}
                   forgotPasswordCallback={setCurrentModal.bind(null, 'password')}
                   createAccount={setCurrentModal.bind(null, 'createAccountOne')}

@@ -59,7 +59,6 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
         toAddToClass[j].push(extraWideClasses[j][i]);
       }
     }
-
     for (let i = 0; i < truncated.length; i += 1) {
       articles[truncated[i]].addClass = toAddToClass[i].join(' ');
     }

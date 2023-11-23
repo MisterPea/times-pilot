@@ -27,6 +27,8 @@ but this is rendered moot if you have few sections chosen
 
 * Stale state on Settings - Section Selection. Global state/db are updated, but the local state is stale.
 
+* Gracefully populate sections bar
+
 ------------------------------------------ Todo ------------------------------------------
 * (Only on mobile) When a toggleSelector is pressed/de-pressed there is a slight flicker. 
 It must be something in the action/down state style conflicting with the selected style.
@@ -55,5 +57,5 @@ It must be something in the action/down state style conflicting with the selecte
 
 * Mobile - stop scroll on swipe
 
-* Gracefully populate sections bar
+
 
