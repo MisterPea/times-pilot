@@ -8,8 +8,9 @@ import { useEffect, useState } from 'react';
 import Auth from '../src/db/Auth';
 import axios from 'axios';
 import { Article } from '../src/components/types';
+import ShowArticleWithPlaceholder from '@/components/ShowArticlesWithPlaceholder/ShowArticlesWithPlaceholder';
 
-type SectionDataType = {
+export type SectionDataType = {
   status: string,
   copyright: string,
   section: string,
@@ -27,6 +28,7 @@ export default function SectionPage({ data, route }: SectionPageProps) {
   const [showModal, setShowModal] = useState<'login' | 'settings' | null>(null);
   const [uid, setUid] = useState<string | undefined | null>(null);
   const [rootSections, setRootSections] = useState<string[]>([]);
+  const [isNavigating, setIsNavigating] = useState<boolean>(true);
 
   // Check if we're logged in onload. This info is supplied by Auth component
   useEffect(() => {
@@ -38,11 +40,12 @@ export default function SectionPage({ data, route }: SectionPageProps) {
     }
   }, [uid]);
 
-  // Filter out articles without a title or summary
-  let articlesFiltered: Article[] = [];
-  if (data) {
-    articlesFiltered = data.results.filter(({ title, abstract }) => title.length > 0 && abstract.length > 0);
-  }
+  /* Any time data changes here, it means we have updated the section.
+  Since we are initially setting isNavigating to true and isNavigating is also being set
+  to true is on a section change, every time data is altered here, it means the data is new. */
+  useEffect(() => {
+    setIsNavigating(false);
+  }, [data]);
 
   return (
     <>
@@ -58,8 +61,11 @@ export default function SectionPage({ data, route }: SectionPageProps) {
               openSettings={setShowModal.bind(null, 'settings')}
             />
           </SettingsOverlay>
-          <SectionGroup sections={rootSections} startingSection={route} />
-          {data.results ? <ArticleButtonGroup articles={articlesFiltered} /> : <p>LOADING</p>}
+          <SectionGroup
+            setIsNav={setIsNavigating}
+            sections={rootSections} startingSection={route}
+          />
+          <ShowArticleWithPlaceholder isNavigating={isNavigating} data={data} />
         </div>
       </Auth>
     </>
