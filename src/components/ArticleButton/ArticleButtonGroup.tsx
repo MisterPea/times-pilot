@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useContext, useEffect, useState } from "react";
 import ArticleButtonMobile from "./ArticleButtonMobile";
 import ArticleButtonNonMobile from "./ArticleButtonNonMobile";
