@@ -24,7 +24,11 @@ export const Primary: Story = {
     headline: "Lorem ipsum dolor sit amet consectetur. Quis ut enim pharetra quisque id.",
     summary: "Lorem ipsum dolor sit amet consectetur. Tincidunt ac pharetra quisque id. Id sem faucibus nec imperdiet convallis.",
     bookmarked: false,
-
+    url: "#",
+    addTopicsCallback: () => { },
+    byline: "Mister Smith and Miss Smith",
+    topics: [["Topic One", "Topic Two"],["Topics One A", "Topics Two A"]],
+    uid:"abc123"
   }
 }
 

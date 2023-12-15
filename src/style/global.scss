@@ -29,12 +29,14 @@
 @import "../components/SettingsPanel/settingsOverlay.scss";
 @import "../components/SettingsPanel/settingsPortalBlank.scss";
 @import "../components/ErrorWarn/errorWarn.scss";
+@import "../components/ArticleButtonPlaceholder/articleButtonPlaceHolder.scss";
+@import "../components/ArticleButtonPlaceholderGroup/articleButtonPlaceholderGroup.scss";
 @import "./mixins.scss";
 
 :root {
   --green-text: #388634;
   --green-text-dark: #31762d;
-  --background-green: #40993b;
+  --background-green: #368433;
   --background-green-tsp: #40993b85;
   --accent-blue: #59789f;
   --accent-yellow: #ccff00;
