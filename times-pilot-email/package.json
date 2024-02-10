@@ -1,0 +1,24 @@
+{
+  "name": "functions",
+  "description": "Node methods for pulling user subscriptions and emailing pertinent articles.",
+  "scripts": {
+    "lint": "eslint .",
+    "start": "npm run shell",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "21"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@sendgrid/mail": "^8.1.0",
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.2",
+    "firebase-admin": "^12.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-google": "^0.14.0"
+  },
+  "private": true
+}
