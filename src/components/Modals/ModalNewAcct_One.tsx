@@ -91,8 +91,8 @@ export default function ModalNewAcctOne({ returnToSignIn, closeModalToBrowse, us
         <div className="modal_main_new_acct-input_wrap">
           <div className="modal_main_new_acct-input_wrap-inputs">
             <TextInput label="Username" type="text" regexTest="(.){3}" parentSetState={setUserName} validInputCallback={(bool) => allInputsValid.call(null, 0, bool)} />
-            <TextInput label="Email" type="email" regexTest="email" parentSetState={setEmail} validInputCallback={(bool) => allInputsValid.call(null, 1, bool)} />
-            <TextInput label="Password" type="password" regexTest="password" parentSetState={setPassword} validInputCallback={(bool) => allInputsValid.call(null, 2, bool)} />
+            <TextInput label="Email" type="email" regexTest="email" parentSetState={setEmail} validInputCallback={(bool) => allInputsValid.call(null, 1, bool)} autocomplete="email" />
+            <TextInput label="Password" type="password" regexTest="password" parentSetState={setPassword} validInputCallback={(bool) => allInputsValid.call(null, 2, bool)} autocomplete="new-password" />
           </div>
           <ul className="modal_main_new_acct-input_wrap-instructions">
             <p>The password should have:</p>

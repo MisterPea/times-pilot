@@ -62,7 +62,9 @@ export default function SettingsPortalPassword({ backCallback }: SettingsPortalE
             type="password"
             regexTest="password"
             parentSetState={setCurrPassword}
-            validInputCallback={setCurrValidPW} />
+            validInputCallback={setCurrValidPW} 
+            autocomplete="current-password"
+            />
         </div>
         <div className="settings_portal-input_bottom_wrap">
           <div className="settings_portal-input_element">
@@ -71,7 +73,8 @@ export default function SettingsPortalPassword({ backCallback }: SettingsPortalE
               type="password"
               regexTest="password"
               parentSetState={setNewPassword1}
-              validInputCallback={setNewValidPW1} />
+              validInputCallback={setNewValidPW1} 
+              />
           </div>
           <div className="settings_portal-input_element">
             <TextInput

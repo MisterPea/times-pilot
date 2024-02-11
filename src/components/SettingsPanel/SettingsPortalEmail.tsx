@@ -62,7 +62,9 @@ export default function SettingsPortalEmail({ currentEmail, backCallback }: Sett
             type="password"
             regexTest="password"
             parentSetState={setPassword}
-            validInputCallback={setValidPasswordInput} />
+            validInputCallback={setValidPasswordInput} 
+            autocomplete="current-password"
+            />
         </div>
         <div className="settings_portal-input_element">
           <TextInput

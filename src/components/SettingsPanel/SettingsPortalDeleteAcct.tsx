@@ -44,7 +44,9 @@ export default function SettingsPortalEmail({ username, backCallback }: Settings
           type="password"
           regexTest="password"
           parentSetState={setPassword}
-          validInputCallback={setValidPassword} />
+          validInputCallback={setValidPassword} 
+          autocomplete="current-password"
+          />
       </div>
       <TextInput label="Delete My Account" type="email" regexTest={/^Delete My Account$/} validInputCallback={setValidInput} />
       <div className="settings_portal-button_wrap">

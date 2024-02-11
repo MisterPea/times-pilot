@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Label from "../Label/Label";
 import PrimarySecondaryButtonsHTML from "../PrimarySecondaryButtonsHTML/PrimarySecondaryButtonsHTML";
 import TextInput from "../TextInput/TextInput";
 import ModalBlank from "./ModalBlank";
 import TextButtonHTML from "../TextButtonHTML/TextButtonHTML";
 import { AnimatePresence, motion } from 'framer-motion';
+import { AuthContext } from "@/db/Auth";
+import { sendPasswordResetEmail } from 'firebase/auth';
+
 
 interface ModalPasswordProps {
   returnToSignIn: () => void;
@@ -16,6 +19,9 @@ export default function ModalPassword({ returnToSignIn, createAccount }: ModalPa
   const [submit, setSubmit] = useState<boolean>(false);
   const clickRef = useRef<HTMLButtonElement | null>(null);
   const [initialLabelHeight, setInitialLabelHeight] = useState(0);
+  const [emailText, setEmailText] = useState<string>('');
+  const { auth } = useContext(AuthContext);
+
   const text = {
     headline: {
       initial: "Can't Recall Your Password?",
@@ -33,7 +39,7 @@ export default function ModalPassword({ returnToSignIn, createAccount }: ModalPa
     if (initialLabelElement) {
       setInitialLabelHeight(initialLabelElement.clientHeight);
     }
-    
+
     document.addEventListener('keydown', handleKeydown);
     return () => {
       document.removeEventListener('keydown', handleKeydown);
@@ -49,7 +55,11 @@ export default function ModalPassword({ returnToSignIn, createAccount }: ModalPa
   }
 
   function handleEmailSubmit() {
-    // console.log("HANDLE EMAIL SUBMIT:",);
+    try {
+      if (auth) sendPasswordResetEmail(auth, emailText);
+    } catch (err) {
+      console.warn(err);
+    }
     setSubmit(true);
   }
 
@@ -101,9 +111,13 @@ export default function ModalPassword({ returnToSignIn, createAccount }: ModalPa
               <Label label={text.headline.initial} size="md" />
               <div className="headline_wrap-cta_text">
                 <Label label={text.body.initial} size="sm" />
-
               </div>
-              <TextInput label="Email" regexTest="email" validInputCallback={setValidEmail} />
+              <TextInput
+                label="Email"
+                regexTest="email"
+                validInputCallback={setValidEmail}
+                parentSetState={setEmailText}
+              />
               <div className="headline_wrap-submit_btn">
                 <PrimarySecondaryButtonsHTML
                   primaryLabel="Submit"

@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useRef } from "react";
 import { BiShowAlt, BiHide } from 'react-icons/bi';
+import { AutocompleteValue } from "../types";
 
 interface TextInputProps {
   type?: "email" | "text" | "password";
@@ -10,6 +11,7 @@ interface TextInputProps {
   foundError?: boolean;
   errorText?: string;
   validInputCallback?: (newValue: boolean) => void;
+  autocomplete?: AutocompleteValue;
 }
 
 // Default regular expressions
@@ -24,7 +26,8 @@ export default function TextInput({
   parentSetState,
   regexTest,
   errorText,
-  validInputCallback
+  validInputCallback,
+  autocomplete
 }: TextInputProps) {
 
   const [localInputVal, setLocalInputValue] = useState<string>('');
@@ -92,7 +95,10 @@ export default function TextInput({
         type={showPassword ? 'text' : type}
         className={`${hasValidInput ? 'valid' : 'not-valid'}`}
         onChange={(e) => setLocalInputValue(e.target.value)}
-        value={localInputVal}>
+        value={localInputVal}
+        autoComplete={`${autocomplete ? autocomplete : "off"}`}
+      >
+
       </input>
       {errorText && <p className='error-text'>{errorText}</p>}
     </div>

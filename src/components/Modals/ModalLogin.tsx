@@ -92,8 +92,8 @@ export default function ModalLogin({ closeModal, forgotPasswordCallback, createA
 
         <div className="modal_login-inputs">
           <ErrorWarn isError={localLoginError} errorMsg="Incorrect Username or Password" />
-          <TextInput type="email" regexTest="email" label="Email" validInputCallback={setValidEmail} parentSetState={(f) => setEmailValue(f)} />
-          <TextInput type="password" regexTest="password" label="Password" validInputCallback={setValidPassword} parentSetState={setPasswordValue} />
+          <TextInput type="email" regexTest="email" label="Email" validInputCallback={setValidEmail} parentSetState={(f) => setEmailValue(f)} autocomplete="email" />
+          <TextInput type="password" regexTest="password" label="Password" validInputCallback={setValidPassword} parentSetState={setPasswordValue} autocomplete="current-password" />
         </div>
         <button onClick={handleForgotPassword} className="modal_login-forgot_password">Forgot Password?</button>
         <div className="modal_login-lower_group">
