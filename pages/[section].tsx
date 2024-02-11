@@ -1,14 +1,14 @@
 // import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next/types';
-import ArticleButtonGroup from '../src/components/ArticleButton/ArticleButtonGroup';
 import Navbar from '../src/components/NavBar/NavBar';
 import SectionGroup from '../src/components/SectionGroup/SectionGroup';
 import SettingsOverlay from '../src/components/SettingsPanel/SettingsOverlay';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Auth from '../src/db/Auth';
 import axios from 'axios';
 import { Article } from '../src/components/types';
 import ShowArticleWithPlaceholder from '@/components/ShowArticlesWithPlaceholder/ShowArticlesWithPlaceholder';
+import { LRUCache } from 'lru-cache';
 
 export type SectionDataType = {
   status: string,
@@ -29,7 +29,7 @@ export default function SectionPage({ data, route }: SectionPageProps) {
   const [uid, setUid] = useState<string | undefined | null>(null);
   const [rootSections, setRootSections] = useState<string[]>([]);
   const [isNavigating, setIsNavigating] = useState<boolean>(true);
-
+  const prevProps = useRef<SectionDataType>();
   // Check if we're logged in onload. This info is supplied by Auth component
   useEffect(() => {
     if (uid === undefined) {
@@ -40,11 +40,14 @@ export default function SectionPage({ data, route }: SectionPageProps) {
     }
   }, [uid]);
 
-  /* Any time data changes here, it means we have updated the section.
-  Since we are initially setting isNavigating to true and isNavigating is also being set
-  to true is on a section change, every time data is altered here, it means the data is new. */
+
   useEffect(() => {
-    setIsNavigating(false);
+    if (data && prevProps.current !== data) {
+      setIsNavigating(false);
+    }
+    if (data) {
+      prevProps.current = data;
+    }
   }, [data]);
 
   return (
@@ -65,12 +68,17 @@ export default function SectionPage({ data, route }: SectionPageProps) {
             setIsNav={setIsNavigating}
             sections={rootSections} startingSection={route}
           />
-          <ShowArticleWithPlaceholder isNavigating={isNavigating} data={data} />
+          <ShowArticleWithPlaceholder setIsNavigating={setIsNavigating} isNavigating={isNavigating} data={data} />
         </div>
       </Auth>
     </>
   );
 }
+
+const options = {
+  max: 1000 * 60 * 5, // maxAge 5 minutes
+};
+const cache = new LRUCache(options);
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const section = context.query.section;
@@ -79,10 +87,24 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       notFound: true,
     };
   }
-  context.res.setHeader('Cache-Control', 'public, s-maxage=200, stale-while-revalidate=300');
-  const topStoriesUrl = `https://api.nytimes.com/svc/topstories/v2/${context.query.section}.json?api-key=${process.env.NYT_API_KEY}`;
-  const response = await axios.get(topStoriesUrl);
-  const data = response.data;
+
+  let data;
+  const cacheKey = `topStories-${section}`;
+  const cachedData = cache.get(cacheKey);
+
+  if (cachedData) {
+    console.log('Serving from cache');
+    data = cachedData;
+  } else {
+    console.log('Fetching from API');
+    const topStoriesUrl = `https://api.nytimes.com/svc/topstories/v2/${context.query.section}.json?api-key=${process.env.NYT_API_KEY}`;
+    const response = await axios.get(topStoriesUrl);
+    data = response.data;
+    cache.set(cacheKey, data);
+  }
+
+  context.res.setHeader('Cache-Control', 'public, s-maxage=720, stale-while-revalidate=820');
+
   return {
     props: {
       data,
