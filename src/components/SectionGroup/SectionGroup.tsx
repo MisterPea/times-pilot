@@ -9,7 +9,7 @@ interface SectionGroupProps {
   startingSection: string;
   setIsNav: Dispatch<SetStateAction<boolean>>;
 }
-export default function SectionGroup({ sections, startingSection = 'us', setIsNav }: SectionGroupProps) {
+export default function SectionGroup({ sections, startingSection = 'home', setIsNav }: SectionGroupProps) {
   const [currentSection, setCurrentSection] = useState<string>(startingSection);
   const ulRef = useRef<HTMLUListElement | null>(null);
   const router = useRouter();
@@ -21,7 +21,6 @@ export default function SectionGroup({ sections, startingSection = 'us', setIsNa
 
   // We've passed in setIsNav from the parent. So, when we change section (and on initial load) we set
   // the isNavigating to true within the parent
-
   useEffect(() => {
     setIsNav(true);
     if (ulRef.current) {
