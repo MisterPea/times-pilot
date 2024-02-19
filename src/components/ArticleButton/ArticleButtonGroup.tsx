@@ -35,7 +35,7 @@ export default function ArticleButtonGroup({ articles }: ArticleButtonGroupProps
       const titleVal = articles[i].title.length * 1.25;
       const summaryVal = articles[i].abstract.length;
       seenArticles.push([i, titleVal + summaryVal]);
-    }
+    } 
     // Sort longest title/summary to shortest
     seenArticles.sort(([i_a, b], [i_c, d]) => d - b);
 

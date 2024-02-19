@@ -7,7 +7,7 @@ import { useEffect, useState, useRef } from 'react';
 import Auth from '../src/db/Auth';
 import axios from 'axios';
 import { Article } from '../src/components/types';
-import ShowArticleWithPlaceholder from '@/components/ShowArticlesWithPlaceholder/ShowArticlesWithPlaceholder';
+import ShowArticleWithPlaceholder from '../src/components/ShowArticlesWithPlaceholder/ShowArticlesWithPlaceholder';
 import { LRUCache } from 'lru-cache';
 
 export type SectionDataType = {

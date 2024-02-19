@@ -5,6 +5,13 @@ import '../style/global.scss'
 const meta: Meta<typeof TextInput> = {
   title: 'Text/Text Input',
   component: TextInput,
+  decorators: [
+    (Story) => (
+      <div style={{width:'520px'}}>
+        <Story />
+      </div>
+    )
+  ]
 };
 
 export default meta;

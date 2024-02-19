@@ -9,7 +9,8 @@
     "lint": "next lint",
     "type-check": "tsc",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=chpt_a393bfa45ec55fb"
   },
   "dependencies": {
     "@types/node": "20.5.9",
@@ -26,6 +27,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.11.0",
+    "storybook-addon-state": "^1.0.3",
     "typescript": "5.2.2"
   },
   "devDependencies": {
@@ -39,8 +41,10 @@
     "@storybook/nextjs": "^7.5.2",
     "@storybook/react": "^7.5.2",
     "@storybook/testing-library": "^0.2.2",
+    "chromatic": "^10.9.6",
     "eslint-plugin-storybook": "^0.6.15",
     "sass": "^1.66.1",
-    "storybook": "^7.5.2"
+    "storybook": "^7.5.2",
+    "storybook-react-context": "^0.6.0"
   }
 }

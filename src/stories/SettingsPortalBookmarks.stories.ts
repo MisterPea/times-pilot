@@ -4,7 +4,7 @@ import '../style/global.scss';
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 
 const meta: Meta<typeof ViewBookmarks> = {
-  title: 'Settings/Bookmarks Portal',
+  title: 'Article/Bookmarks Portal',
   component: ViewBookmarks,
   parameters: {
     viewport: {

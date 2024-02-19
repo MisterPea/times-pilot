@@ -19,10 +19,12 @@ const meta: Meta<typeof AddTopicsModal> = {
     layout: 'fullscreen'
   }
 };
+
 const deleteCall = () => console.log("ready to delete");
 
 export default meta;
 type Story = StoryObj<typeof AddTopicsModal>;
+
 
 export const Primary: Story = {
   args: {

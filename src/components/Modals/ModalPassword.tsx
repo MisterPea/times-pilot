@@ -5,7 +5,7 @@ import TextInput from "../TextInput/TextInput";
 import ModalBlank from "./ModalBlank";
 import TextButtonHTML from "../TextButtonHTML/TextButtonHTML";
 import { AnimatePresence, motion } from 'framer-motion';
-import { AuthContext } from "@/db/Auth";
+import { AuthContext } from "../../db/Auth";
 import { sendPasswordResetEmail } from 'firebase/auth';
 
 

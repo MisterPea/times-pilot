@@ -1,4 +1,4 @@
-import { NewsCategoryMap } from "@/components/types";
+import { NewsCategoryMap } from "../components/types";
 
 const newsSections:NewsCategoryMap = {
   "Arts": "arts",
