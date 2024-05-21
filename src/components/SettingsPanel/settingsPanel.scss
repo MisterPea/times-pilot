@@ -8,6 +8,8 @@
   padding: 0 2rem 0;
   margin: 0 4px;
   z-index: 0;
+  height: 100%;
+  overflow: auto;
 
   @include small--768px-and-up {
     margin: 0;
