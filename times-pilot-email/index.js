@@ -43,7 +43,7 @@ exports.userInfo = () => {
 function callGetArticleSelections(selectionsArray) {
   let i = 0;
   const callbackArticles = [];
-  const interval = setInterval(rateLimitedCaller, 12001);
+  const interval = setInterval(rateLimitedCaller, 13000);
 
   const getSelectionFromAPIcallback = (data) => {
     callbackArticles.push(data);

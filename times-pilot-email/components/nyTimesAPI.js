@@ -25,7 +25,7 @@ function delay(ms) {
  * - abstract: Article summary
  * - thumbnail: URL of the thumbnail image
  */
-async function getSelectionFromAPI(searchTerm, callback, retries = 3, retryDelay = 3000) {
+async function getSelectionFromAPI(searchTerm, callback, retries = 5, retryDelay = 12001) {
   const articles = { searchTerm, articles: [] };
   try {
     const response = await axios({
@@ -50,7 +50,7 @@ async function getSelectionFromAPI(searchTerm, callback, retries = 3, retryDelay
       callback(articles);
     }
   } catch (err) {
-    console.error(`Error thrown from getSelectionFromAPI: ${err}:${err.response && err.response.data ? err.response.data : 'No additional error information'}`);
+    console.error(`Error thrown from getSelectionFromAPI: ${err}:${err.response && err.response.data ? JSON.stringify(err.response.data) : 'No additional error information'}`);
     if (err.response && err.response.status === 429) {
       if (retries > 0) {
         console.log(`Retrying after ${retryDelay}ms`);
