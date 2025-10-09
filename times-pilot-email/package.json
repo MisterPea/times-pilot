@@ -1,13 +1,14 @@
 {
   "name": "functions",
   "description": "Node methods for pulling user subscriptions and emailing pertinent articles.",
+  "type": "module",
   "scripts": {
     "lint": "eslint .",
     "start": "npm run shell",
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "20"
+    "node": "22"
   },
   "main": "index.js",
   "dependencies": {

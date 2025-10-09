@@ -37,3 +37,4 @@ next-env.d.ts
 times-pilot-email/node_modules
 times-pilot-email/.env
 times-pilot-email/nyt-aggregator-b84bb62aec66.json
+times-pilot-email/.idea/
