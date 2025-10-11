@@ -1,5 +1,4 @@
 import { config } from 'dotenv';
-
 config();
 
 import { getUserInfo, getUniqueSelections, packageEmailAndArticles } from './components/userAcctMethods.js';

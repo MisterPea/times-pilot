@@ -5,7 +5,6 @@ config();
 // K_SERVICE exists within GCP
 const serviceName = process.env.K_SERVICE;
 
-
 if ( !serviceName ) {
     const serviceAccount = JSON.parse( process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON );
     admin.initializeApp( {

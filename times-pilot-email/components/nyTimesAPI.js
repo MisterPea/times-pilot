@@ -71,5 +71,3 @@ async function getSelectionFromAPI( url ) {
     return { success: false, data: undefined };
   }
 }
-
-

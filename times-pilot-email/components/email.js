@@ -54,6 +54,5 @@ async function sendEmail( email, date, htmlData ) {
   }
 
   console.log( 'EMAIL SENT:', email, { data } );
-
 }
 

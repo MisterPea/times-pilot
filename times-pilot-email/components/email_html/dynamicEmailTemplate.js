@@ -234,7 +234,6 @@ export const emailTemplate = `
     </ul>
   </main>
 </body>
-
 </html>
 `;
 
