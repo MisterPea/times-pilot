@@ -73,64 +73,32 @@ export function packageEmailAndArticles( articles, users ) {
                 user['searchArticles'].push( { sectionTitle: selection, articles: articles[selection] } );
             };
         } );
-        user.searchArticles.filter( Boolean );
+        
+        // Deduplicate articles in all sections
+        user.searchArticles = dedupeSections( user.searchArticles );
+        
+        // remove article subjects if empty
+        const lastIndex = user.searchArticles.length - 1;
+        for ( let i = lastIndex; i >= 0; i -= 1 ) {
+            if ( user.searchArticles[i].articles.length === 0 ) user.searchArticles.splice( i, 1 );
+        }
     }
     return users;
-    // const articleSearch = ( term ) => {
-    //     return articles.find( ( article ) => article.searchTerm === term ) || null;
-    // };
-
-    // for ( const user of users ) {
-    //     const userArticles = user.selections.map( ( select ) => {
-    //         return articleSearch( select );
-    //     } );
-    //     const articleObjects = userArticles.flatMap( ( entry ) => (
-    //         entry != null && entry != undefined ? entry : [] ) );
-
-    //     if ( articleObjects.length > 1 ) {
-    //         user.searchArticles = removeDuplicateArticles( articleObjects );
-    //     } else {
-    //         user.searchArticles = articleObjects;
-    //     }
-    // }
-    // return users;
 }
 
-/**
- * Simple method to look at web_urls, only passes unique ones through.
- * The information passed in (articleObjects) is for one user at a time.
- * @param {Array<object>} articleObjects Array of arrays of objects
- * @return {Array<object>} Returns an array of arrays of objects
- */
-function removeDuplicateArticles( articles ) {
-    const tempArray = [];
-    // const seenLinks = [];
-    // for ( let i = articleObjects.length - 1; i >= 0; i-- ) {
-    //     const { searchTerm, articles } = articleObjects[i];
-    //     tempArray[i] = { searchTerm: searchTerm, articles: [] };
+// Function to remove duplicates per user—to prevent the same article showing up in different sections
+function dedupeSections( searchArticles ) {
+    const seen = new Set();
 
-    //     let articleIndex = 0;
-    //     const articleLength = articles.length;
-    //     while ( articleIndex < articleLength ) {
-    //         const currentArticle = articles[articleIndex];
-    //         if ( !seenLinks.includes( currentArticle.web_url ) ) {
-    //             seenLinks.push( currentArticle.web_url );
-    //             const { headline, abstract, web_url, thumbnail } = currentArticle;
-    //             const newThumbnail = !thumbnail ? "https://avatars.githubusercontent.com/u/221409?s=75" : thumbnail;
-    //             tempArray[i].articles.push( {
-    //                 headline,
-    //                 abstract,
-    //                 web_url,
-    //                 thumbnail: newThumbnail
-    //             } );
-    //         }
-    //         // Look for empty article arrays. Remove them, if not empty, advance index
-    //         if ( tempArray[i].articles.length === 0 ) {
-    //             console.log( "length 0", tempArray[i].searchTerm );
-    //             tempArray.splice( i, 1 );
-    //         }
-    //         articleIndex++;
-    //     }
-    // }
-    return tempArray;
-}
+    return searchArticles.map( section => {
+        const filteredArticles = section.articles.filter( article => {
+            const { web_url, thumbnail } = article;
+            if ( seen.has( web_url ) ) return false;
+            seen.add( web_url );
+            // if thumbnail missing - insert default placeholder
+            if ( thumbnail.length === 0 ) article.thumbnail = "https://avatars.githubusercontent.com/u/221409?s=75";
+            return true;
+        } );
+        return { ...section, articles: filteredArticles };
+    } );
+};

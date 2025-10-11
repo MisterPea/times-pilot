@@ -20,7 +20,7 @@ export async function getArticles( topics ) {
   const fq = `firstPublished:["${today}T00:00:00Z" TO "${today}T23:59:59Z"]`;
   const uri = ( q, key ) => `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${encodeURIComponent( `"${q}"` )}&fq=${encodeURIComponent( fq )}&sort=newest&api-key=${key}`;
   const urlsAndTopics = topics.map( ( topic ) => ( { url: uri( topic, apiKey ), topic: topic, retry: 0 } ) );
-  console.log(urlsAndTopics)
+
   while ( urlsAndTopics.length > 0 ) {
 
     // We pop off a url if it's successful we pop the next else we re-queue it
